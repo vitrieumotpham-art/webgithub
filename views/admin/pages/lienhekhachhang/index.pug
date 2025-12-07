@@ -1,0 +1,176 @@
+extends ../../layout/defaut.pug 
+include ../../mixins/search.pug 
+
+block main
+    //- -------------------------------------------
+    //- [KHU VỰC GIẢ LẬP DỮ LIỆU]
+    //- -------------------------------------------
+    -
+        // (Giữ nguyên phần xử lý dữ liệu của bạn ở đây)
+
+    //- ---------------------------------   ----------
+    //- [CSS TÙY CHỈNH CHO KANBAN]
+    //- -------------------------------------------
+    style.
+        /* CẬP NHẬT: Chia đều 4 cột, mỗi cột 25% */
+        .kanban-col { 
+            flex: 0 0 25%;        /* Cố định chiều rộng 25% */
+            max-width: 25%;       /* Không được vượt quá 25% */
+            padding: 0 10px;      /* Tạo khoảng cách giữa các cột thay cho gap */
+            display: flex; 
+            flex-direction: column; 
+        }
+        
+        /* Tùy chỉnh thanh cuộn dọc bên trong từng cột nếu danh sách dài */
+        .col-scroll::-webkit-scrollbar { width: 6px; }
+        .col-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
+        .col-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+
+        /* Avatar tròn */
+        .avatar-circle { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 50%; font-size: 14px; }
+        
+        /* Hiệu ứng hover cho card */
+        .kanban-card { transition: all 0.2s; cursor: pointer; }
+        .kanban-card:hover { transform: translateY(-3px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
+
+        /* RESPONSIVE: Trên mobile thì quay về dạng cuộn ngang hoặc xếp chồng để không bị nát */
+        @media (max-width: 992px) {
+            .kanban-container { flex-wrap: nowrap; overflow-x: auto; }
+            .kanban-col { flex: 0 0 300px; max-width: 300px; } 
+        }
+
+    .container-fluid.mt-4
+        //- 1. HEADER & CÔNG CỤ
+        .d-flex.justify-content-between.align-items-end.mb-4
+            div
+                h1.text-primary.fw-bold Quản Lý Tiến Độ (Board)
+                p.text-muted.mb-0 Tổng quan quy trình làm việc
+            
+
+            +search(keyword)
+        //- 2. KANBAN BOARD CONTAINER
+        //- Đã bỏ class 'gap-4' và 'overflow-auto', thêm class 'kanban-container' để xử lý responsive
+        .d-flex.kanban-container.pb-4(style="min-height: calc(100vh - 200px); align-items: flex-start; margin: 0 -10px;")
+            
+            //- =========================================
+            //- CỘT 1: CHỜ XỬ LÝ (MỚI) - 25%
+            //- =========================================
+            .kanban-col
+                //- Header Cột
+                .bg-white.p-3.rounded-3.shadow-sm.border-top.border-4.border-danger.mb-3.d-flex.justify-content-between.align-items-center
+                    h6.fw-bold.text-uppercase.mb-0.text-danger Chờ xử lý
+                    - const countNew = lienhe.filter(x => x.status == 'Chờ xử lý').length
+                    span.badge.bg-danger.bg-opacity-10.text-danger.rounded-pill #{countNew}
+                
+                //- Danh sách cards (Thêm overflow-auto để cuộn dọc nếu danh sách dài)
+                .d-flex.flex-column.gap-3.col-scroll(style="overflow-y: auto; max-height: calc(100vh - 300px); padding: 2px;")
+                    each item in lienhe
+                        if item.status === 'Chờ xử lý'
+                            //- Card Item
+                            .card.kanban-card.border-0.shadow-sm.rounded-3
+                                .card-body.p-3
+                                    .d-flex.align-items-center.mb-2
+                                        .avatar-circle.bg-danger.bg-opacity-10.text-danger.me-2 #{item.fullName ? item.fullName.charAt(0) : 'N'}
+                                        div
+                                            h6.fw-bold.mb-0.text-dark(style="font-size: 0.95rem;") #{item.fullName}
+                                            small.text-muted(style="font-size: 0.75rem;") #{item.createdAt ? item.createdAt.toLocaleDateString('vi-VN') : ''}
+                                    
+                                    .bg-light.rounded-2.p-2.mb-2
+                                        p.card-text.small.text-secondary.mb-0.text-truncate(title=item.message) #{item.message}
+
+                                    .d-flex.justify-content-between.align-items-center.pt-2.border-top
+                                        a.text-decoration-none.small.fw-bold.text-dark(href=`tel:${item.phone}`) 
+                                            i.fas.fa-phone-alt.me-1.text-muted
+                                            | #{item.phone}
+                                        button.btn.btn-sm.btn-light.rounded-circle.text-danger(onclick=`openUpdateModal('${item.id}', '${item.status}')`)
+                                            i.fas.fa-arrow-right
+
+            //- =========================================
+            //- CỘT 2: ĐÃ LIÊN HỆ - 25%
+            //- =========================================
+            .kanban-col
+                .bg-white.p-3.rounded-3.shadow-sm.border-top.border-4.border-warning.mb-3.d-flex.justify-content-between.align-items-center
+                    h6.fw-bold.text-uppercase.mb-0.text-warning(style="color: #fd7e14 !important") Đã liên hệ
+                    - const countContacted = lienhe.filter(x => x.status == 'Đã liên hệ').length
+                    span.badge.bg-warning.bg-opacity-10.text-warning.rounded-pill #{countContacted}
+                
+                .d-flex.flex-column.gap-3.col-scroll(style="overflow-y: auto; max-height: calc(100vh - 300px); padding: 2px;")
+                    each item in lienhe
+                        if item.status === 'Đã liên hệ'
+                            .card.kanban-card.border-0.shadow-sm.rounded-3
+                                .card-body.p-3
+                                    .d-flex.align-items-center.mb-2
+                                        .avatar-circle.bg-warning.bg-opacity-10.text-warning.me-2 #{item.fullName ? item.fullName.charAt(0) : 'N'}
+                                        div
+                                            h6.fw-bold.mb-0.text-dark(style="font-size: 0.95rem;") #{item.fullName}
+                                            small.text-muted(style="font-size: 0.75rem;") #{item.createdAt ? item.createdAt.toLocaleDateString('vi-VN') : ''}
+                                    
+                                    .bg-light.rounded-2.p-2.mb-2
+                                        p.card-text.small.text-secondary.mb-0.text-truncate(title=item.message) #{item.message}
+
+                                    .d-flex.justify-content-between.align-items-center.pt-2.border-top
+                                        a.text-decoration-none.small.fw-bold.text-dark(href=`tel:${item.phone}`) 
+                                            i.fas.fa-phone-alt.me-1.text-muted
+                                            | #{item.phone}
+                                        button.btn.btn-sm.btn-light.rounded-circle.text-warning(onclick=`openUpdateModal('${item.id}', '${item.status}')`)
+                                            i.fas.fa-exchange-alt
+
+            //- =========================================
+            //- CỘT 3: ĐANG TƯ VẤN - 25%
+            //- =========================================
+            .kanban-col
+                .bg-white.p-3.rounded-3.shadow-sm.border-top.border-4.border-primary.mb-3.d-flex.justify-content-between.align-items-center
+                    h6.fw-bold.text-uppercase.mb-0.text-primary Đang tư vấn
+                    - const countConsulting = lienhe.filter(x => x.status == 'Đang tư vấn').length
+                    span.badge.bg-primary.bg-opacity-10.text-primary.rounded-pill #{countConsulting}
+                
+                .d-flex.flex-column.gap-3.col-scroll(style="overflow-y: auto; max-height: calc(100vh - 300px); padding: 2px;")
+                    each item in lienhe
+                        if item.status === 'Đang tư vấn'
+                            .card.kanban-card.border-0.shadow-sm.rounded-3
+                                .card-body.p-3
+                                    .d-flex.align-items-center.mb-2
+                                        .avatar-circle.bg-primary.bg-opacity-10.text-primary.me-2 #{item.fullName ? item.fullName.charAt(0) : 'N'}
+                                        div
+                                            h6.fw-bold.mb-0.text-dark(style="font-size: 0.95rem;") #{item.fullName}
+                                            small.text-muted(style="font-size: 0.75rem;") #{item.createdAt ? item.createdAt.toLocaleDateString('vi-VN') : ''}
+                                    
+                                    .bg-light.rounded-2.p-2.mb-2
+                                        p.card-text.small.text-secondary.mb-0.text-truncate(title=item.message) #{item.message}
+
+                                    .d-flex.justify-content-between.align-items-center.pt-2.border-top
+                                        span.badge.bg-primary.bg-opacity-10.text-primary.small Đang chat
+                                        button.btn.btn-sm.btn-light.rounded-circle.text-primary(onclick=`openUpdateModal('${item.id}', '${item.status}')`)
+                                            i.fas.fa-exchange-alt
+
+            //- =========================================
+            //- CỘT 4: HOÀN THÀNH - 25%
+            //- =========================================
+            .kanban-col
+                .bg-white.p-3.rounded-3.shadow-sm.border-top.border-4.border-success.mb-3.d-flex.justify-content-between.align-items-center
+                    h6.fw-bold.text-uppercase.mb-0.text-success Hoàn thành
+                    - const countDone = lienhe.filter(x => x.status == 'Hoàn thành').length
+                    span.badge.bg-success.bg-opacity-10.text-success.rounded-pill #{countDone}
+                
+                .d-flex.flex-column.gap-3.col-scroll(style="overflow-y: auto; max-height: calc(100vh - 300px); padding: 2px;")
+                    each item in lienhe
+                        if item.status === 'Hoàn thành'
+                            .card.kanban-card.border-0.shadow-sm.rounded-3.bg-light(style="opacity: 0.8")
+                                .card-body.p-3
+                                    .d-flex.align-items-center.mb-2
+                                        .avatar-circle.bg-success.text-white.me-2
+                                            i.fas.fa-check(style="font-size: 10px")
+                                        div
+                                            h6.fw-bold.mb-0.text-muted.text-decoration-line-through(style="font-size: 0.95rem;") #{item.fullName}
+                                            small.text-muted(style="font-size: 0.75rem;") #{item.createAt ? item.createAt.toLocaleDateString('vi-VN') : ''}
+                                    
+                                    .d-flex.justify-content-between.align-items-center.pt-2.border-top
+                                        small.text-success.fw-bold Đã chốt deal
+                                        button.btn.btn-sm.btn-outline-danger.border-0(data-id=item.id, button-delete)
+                                            i.fas.fa-trash
+
+    //- (Giữ nguyên phần Modal và Script phía dưới của bạn)
+    div#modalChangeStatus.modal.fade(tabindex="-1", aria-hidden="true")
+    // ... code modal ...
+    form#form-delete-item(method="POST", action="", data-path="/admin/lienhe/delete")
+    // ... script ...

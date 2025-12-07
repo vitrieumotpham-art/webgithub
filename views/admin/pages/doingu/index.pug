@@ -1,0 +1,88 @@
+extends ../../layout/defaut.pug 
+include ../../mixins/search.pug
+block main
+    .container-fluid.mt-4
+        //- 1. Tiêu đề và Nút Thêm Mới
+        .d-flex.justify-content-between.align-items-center.mb-4
+            h1.text-primary.fw-bold Quản Lý Đội Ngũ Nhân Sự
+            a.btn.btn-primary.shadow-sm(href="/admin/doingu/create")
+                i.fas.fa-plus-circle.me-2
+                | Thêm Thành Viên Mới
+
+        //- 2. Khối Bộ Lọc và Tìm Kiếm
+        .card.shadow-sm.mb-4
+            .card-body
+                form.row.g-3.align-items-end(action="/admin/doingu", method="GET")
+                    //- Tìm kiếm
+                    .col-md-5
+                         +search(keyword)
+                    //- Lọc trạng thái
+                    .col-md-3
+                        label.form-label(for="statusFilter") Trạng thái:
+                        select#statusDoingu.form-select(name="status")
+                            option(value="", selected=(!status)) -- Tất cả --
+                            option(value="active", selected=(status === "active")) Đang hoạt động
+                            option(value="inactive", selected=(status === "inactive")) Tạm dừng
+
+        //- 3. DANH SÁCH NHÂN SỰ DẠNG LƯỚI (GRID CARD)
+        //- Kiểm tra xem có dữ liệu không (biến 'records' được truyền từ Controller)
+        if (doingu && doingu.length > 0)
+            .row.row-cols-1.row-cols-md-2.row-cols-lg-3.row-cols-xl-4.g-4
+                each item in doingu
+                    .col
+                        .card.h-100.shadow-sm.border-0.hover-shadow
+                            //- Phần ảnh đại diện và Status
+                            .card-body.text-center.pt-4
+                                .position-relative.d-inline-block.mb-3
+                                    //- Avatar
+                                    if item.avatar
+                                        img.rounded-circle.img-thumbnail(src=item.avatar, alt=item.fullname, style="width: 120px; height: 120px; object-fit: cover;")
+                                    else
+                                        img.rounded-circle.img-thumbnail(src="/images/default-avatar.png", alt="No Image", style="width: 120px; height: 120px; object-fit: cover;")
+                                    
+                                    //- Chấm tròn trạng thái (Status dot)
+                                    if item.status === 'active'
+                                        span.position-absolute.bottom-0.end-0.p-2.bg-success.border.border-2.border-white.rounded-circle(title="Đang hoạt động")
+                                    else
+                                        span.position-absolute.bottom-0.end-0.p-2.bg-danger.border.border-2.border-white.rounded-circle(title="Dừng hoạt động")
+
+                                //- Tên và Chức vụ
+                                h5.card-title.fw-bold.text-dark.mb-1 #{item.fullname}
+                                p.text-primary.small.fw-bold.mb-2 #{item.position}
+                                
+                                //- Mô tả ngắn (giới hạn 2 dòng)
+                                if item.description
+                                    p.card-text.text-muted.small.px-2(style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 40px;")
+                                        | #{item.description}
+                                else 
+                                    p.card-text.text-muted.small(style="height: 40px;") Chưa có mô tả
+
+                                //- Mạng xã hội (Nếu có)
+                                .d-flex.justify-content-center.gap-2.mt-3
+                                    if item.socials
+                                        if item.socials.facebook
+                                            a.text-secondary.fs-5(href=item.socials.facebook target="_blank"): i.fab.fa-facebook
+                                        if item.socials.zalo
+                                            a.text-secondary.fs-5(href=item.socials.zalo target="_blank"): i.fas.fa-comment-dots
+                                        if item.socials.linkedin
+                                            a.text-secondary.fs-5(href=item.socials.linkedin target="_blank"): i.fab.fa-linkedin
+
+                            //- Phần nút thao tác (Footer card)
+                            .card-footer.bg-transparent.border-top-0.pb-4.d-flex.justify-content-center.gap-2
+                                a.btn.btn-outline-primary.btn-sm.px-3(href=`/admin/doingu/edit/${item.id}`)
+                                    i.fas.fa-pen.me-1
+                                    | Sửa
+                                button.btn.btn-outline-danger.btn-sm.px-3(data-id=item.id, button-delete)
+                                    i.fas.fa-trash.me-1
+                                    | Xóa
+
+            //- 4. Phân trang (Pagination)
+            //- (Code phân trang giữ nguyên như cũ hoặc thêm vào nếu cần)
+            
+        else
+            .alert.alert-info.text-center.mt-4
+                | Chưa có nhân sự nào trong danh sách. 
+                a.alert-link(href="/admin/doingu/create") Thêm mới ngay.
+
+    //- Form ẩn để xử lý xóa
+    form#form-delete-item(method="POST" action="" data-path="/admin/doingu/delete")

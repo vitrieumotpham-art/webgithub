@@ -1,0 +1,102 @@
+extends ../../layout/defaut.pug 
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug 
+block main
+  .container-fluid.mt-4
+    //- 1. TIÊU ĐỀ & NÚT THÊM MỚI
+    .d-flex.justify-content-between.align-items-center.mb-4
+      div
+        h1.h3.text-primary.fw-bold Danh Sách Bài Viết
+        p.text-muted Quản lý tin tức, blog và các bài viết kiến trúc
+      
+      a.btn.btn-success.shadow-sm(href="/admin/baiviet/create")
+        i.fas.fa-plus-circle.me-2
+        | Thêm Bài Viết Mới
+
+    //- 2. BỘ LỌC & TÌM KIẾM
+    .card.border-0.shadow-sm.mb-4
+      .card-body
+        .row.g-3
+          //- Tìm kiếm
+          .col-md-8
+             +search(keyword)
+          //- Lọc trạng thái (Có Script xử lý bên dưới)
+          .col-md-4
+            select.form-select(name="statusBaiViet", id="statusBaiviet")
+              option(value="", selected=(!status)) -- Tất cả trạng thái --
+              option(value="active", selected=(status === "active")) Đang hoạt động
+              option(value="inactive", selected=(status === "inactive")) Dừng hoạt động
+
+    //- 3. DANH SÁCH BÀI VIẾT DẠNG LIST
+    .d-flex.flex-column.gap-3
+      if baiviet.length > 0
+        each article, index in baiviet
+          .card.shadow-sm.border-0.overflow-hidden
+            .card-body.p-0
+              .d-flex.flex-column.flex-md-row
+                //- Cột Hình ảnh (Bên trái)
+                .flex-shrink-0
+                  if article.thumbnail
+                    img(src=article.thumbnail, alt=article.title, style="width: 100%; height: 150px; width: 200px; object-fit: cover;")
+                  else
+                    img(src="/images/no-image.png", alt="No Image", style="width: 100%; height: 150px; width: 200px; object-fit: cover; background: #eee;")
+                
+                //- Cột Nội dung (Ở giữa)
+                .flex-grow-1.p-3
+                  .d-flex.justify-content-between.align-items-start
+                    h5.fw-bold.mb-1 
+                      a.text-decoration-none.text-dark(href=`/admin/baiviet/detail/${article.id}`) #{article.title}
+                    
+                    //- Trạng thái
+                    if article.status === 'active'
+                      a(href="javascript:;"
+                      data-status=article.status
+                      data-id= article.id
+                      button-change-status 
+                      class="badge bg-success rounded-pill"
+                      ) Active
+                    else
+                      a(href="javascript:;"
+                      data-status=article.status
+                      data-id= article.id
+                      button-change-status 
+                       class="badge bg-secondary rounded-pill"
+                       ) Inactive
+
+                  p.text-muted.small.mb-2
+                    | Ngày tạo: #{article.createdAt ? article.createdAt.toLocaleDateString('vi-VN') : 'N/A'} 
+                    span.mx-1 |
+                    | Người tạo: #{article.createdBy ? article.createdBy.account_id : '---'}
+                  
+                  //- Mô tả ngắn (nếu có trường description)
+                  //- p.text-muted.mb-0.text-truncate #{article.description}
+
+                //- Cột Hành động (Bên phải cùng)
+                .d-flex.flex-row.flex-md-column.justify-content-center.align-items-center.bg-light.p-3.gap-2.border-start
+                   a.btn.btn-sm.btn-warning.w-100(href=`/admin/baiviet/edit/${article.id}`) 
+                      i.fas.fa-pen.me-1
+                      | Sửa
+                   
+                   form.w-100(
+                      action=`/admin/baiviet/delete/${article.id}?_method=DELETE`
+                      method="POST"
+                      onsubmit="return confirm('Xóa bài viết này?')"
+                   )
+                      button.btn.btn-sm.btn-danger.w-100(type="submit")
+                        i.fas.fa-trash.me-1
+                        | Xóa
+
+      else
+         .text-center.py-5
+            p.text-muted Không có dữ liệu.
+  .mt-4.d-flex.justify-content-center
+    +pagination(pagination) 
+  form(
+  action=""
+  method="POST"
+  id="form-change-status"
+  data-path=`${PefixAdmin}/baiviet/change-status`
+   ) 
+  script(src="/js/admin/baiviet.js")
+    
+      

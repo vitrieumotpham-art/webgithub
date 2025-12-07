@@ -1,5 +1,191 @@
 extends ../../layouts/defaut.pug
 include ../../mixins/box.head.pug
+
 block main
-  
-        
+  // ======================================= SECTION-ONE ====================================
+  section.section-one
+    img(src="/img/nha/thiet-ke-biet-thu-hien-dai-anh-hung.jpg" alt="Banner PNT Decor - Kiến tạo không gian sống")
+    .text Chất đến từ chi tiết
+
+  // ======================================= SECTION-TWO ====================================
+  section.section-two
+    .nav-container
+      a.item(href="#gioithieu") TỔNG QUAN
+      a.item(href="#pnt-cot-moc-phat-trien") LỊCH SỬ HÌNH THÀNH
+      a.item(href="#pnt-linh-vuc-hoat-dong") HỆ SINH THÁI DỊCH VỤ
+      a.item(href="#pnt-nen-tang-kinh-doanh") TRIẾT LÝ & NỀN TẢNG
+      a.item(href="#pnt-chien-luoc-kinh-doanh") CHIẾN LƯỢC DÀI HẠN
+      a.item(href="#pnt-san-pham-chien-luoc") SẢN PHẨM MŨI NHỌN
+      a.item(href="#pnt-chung-chi-chat-luong") HỒ SƠ NĂNG LỰC
+
+  // =============================================== GIỚI THIỆU =========================================
+  section#gioithieu.intro-section
+    .intro-container
+      .intro-left.fade-item
+        img.intro-image(src="/img/pngtree-salon-logo-png-image_4004444.png" alt="Logo PNT DECOR")
+      .intro-right.fade-item
+        h2.intro-title THƯ NGỎ TỪ BAN LÃNH ĐẠO CÔNG TY PNT DECOR
+        p.intro-text
+          strong Công ty TNHH Thiết Kế và Xây Dựng PNT DECOR 
+          | xin gửi lời chào trân trọng và lời chúc sức khỏe đến Quý khách hàng, Quý đối tác. Được thành lập từ năm 2025, tiền thân là một xưởng thiết kế kiến trúc nhỏ đầy nhiệt huyết, PNT DECOR đã vươn mình trở thành một trong những đơn vị Tổng thầu Thiết kế - Thi công (Design & Build) uy tín hàng đầu tại khu vực Miền Trung và Tây Nguyên.
+        p.intro-text
+          | Chúng tôi hiểu rằng, ngôi nhà không chỉ là nơi che mưa nắng, mà là tổ ấm, là nơi nuôi dưỡng cảm xúc và là tài sản tích lũy qua nhiều thế hệ. Chính vì vậy, đội ngũ hơn 200 nhân sự bao gồm các Kiến trúc sư, Kỹ sư kết cấu, Kỹ sư M&E và nghệ nhân thi công của PNT luôn làm việc với tôn chỉ: 
+          em "Đặt tâm huyết vào từng viên gạch, thổi hồn vào từng không gian".
+        p.intro-text
+          | PNT DECOR sở hữu hệ thống quy trình quản lý chất lượng khắt khe theo tiêu chuẩn quốc tế ISO 9001:2015, kết hợp với công nghệ quản lý dự án 4.0, cam kết mang lại những công trình đạt chuẩn mực cao nhất về Thẩm mỹ - Công năng - Kinh tế - Bền vững.
+
+  // =============================================== CỘT MỐC PHÁT TRIỂN =========================================
+  section#pnt-cot-moc-phat-trien.timeline-section
+    .timeline-container
+      h2.timeline-title LỊCH SỬ HÌNH THÀNH VÀ PHÁT TRIỂN
+      p.timeline-intro
+        | Hành trình vạn dặm bắt đầu từ một bước chân. Nhìn lại chặng đường đã qua, tập thể PNT DECOR tự hào về những dấu ấn đã kiến tạo nên diện mạo đô thị hiện đại.
+      .timeline
+        - 
+          var milestones = [
+            { year: 2015, title: "Viên gạch đầu tiên", desc: "Thành lập Đội thi công PNT với 10 nhân sự, chuyên nhận thầu nhân công các công trình nhà phố dân dụng tại Đà Nẵng. Dù quy mô nhỏ, nhưng sự tỉ mỉ đã giúp đội ngũ tạo dựng được niềm tin lớn từ chủ đầu tư." },
+            { year: 2017, title: "Chính thức hóa pháp nhân", desc: "Thành lập Công ty TNHH PNT DECOR. Đầu tư mạnh mẽ vào trang thiết bị máy móc thi công hiện đại. Mở xưởng sản xuất nội thất gỗ tự nhiên quy mô 500m2 tại Quảng Nam để chủ động nguồn cung ứng." },
+            { year: 2019, title: "Mở rộng thị phần", desc: "Đánh dấu sự phát triển vượt bậc khi ký kết thành công 5 dự án Biệt thự nghỉ dưỡng ven biển. Doanh thu tăng trưởng 200% so với cùng kỳ. Ra mắt bộ phận R&D chuyên nghiên cứu giải pháp kiến trúc xanh." },
+            { year: 2021, title: "Vượt bão & Chuyển mình", desc: "Trong bối cảnh khó khăn chung của nền kinh tế, PNT DECOR thực hiện tái cấu trúc, áp dụng công nghệ BIM (Building Information Modeling) vào thiết kế, giúp giảm 30% chi phí phát sinh cho khách hàng." },
+            { year: 2023, title: "Khẳng định vị thế", desc: "Khai trương chi nhánh văn phòng đại diện tại TP.HCM. Đạt chứng chỉ năng lực hoạt động xây dựng Hạng I. Tổng nhân sự cán mốc 150 người. Hoàn thiện hệ sinh thái: Thiết kế - Xây dựng - Nội thất - Cảnh quan." },
+            { year: 2025, title: "Kỷ nguyên mới", desc: "Hướng tới mục tiêu IPO và trở thành Tập đoàn xây dựng đa ngành. Tập trung phát triển các dự án Bất động sản xanh, thông minh, tích hợp công nghệ AI vào vận hành tòa nhà (Smart Building)." }
+          ]
+        each m in milestones
+          .timeline-item
+            .timeline-date #{m.year}
+            .timeline-content
+              h3 #{m.title}
+              p #{m.desc}
+
+  // ==================================== LĨNH VỰC HOẠT ĐỘNG ====================================
+  article#pnt-linh-vuc-hoat-dong.company-services
+    .services-container
+      h2.section-title HỆ SINH THÁI DỊCH VỤ TOÀN DIỆN
+      p.intro
+        | PNT DECOR cung cấp giải pháp trọn gói "All-in-one", giúp khách hàng tiết kiệm thời gian, chi phí và hạn chế rủi ro khi phải làm việc với quá nhiều nhà thầu phụ.
+      ol.services-list
+        li#service-architecture
+          h3 1. Tư vấn Thiết kế Kiến trúc & Quy hoạch
+          p Chúng tôi không vẽ nhà, chúng tôi vẽ phong cách sống. Các bản thiết kế của PNT luôn đảm bảo sự hài hòa giữa Kiến trúc hiện đại và Phong thủy Á Đông.
+          ul
+            li Thiết kế quy hoạch tổng mặt bằng khu dân cư, resort, khu công nghiệp 1/500.
+            li Thiết kế kiến trúc công trình cao tầng, chung cư, tòa nhà văn phòng hạng A.
+            li Thiết kế biệt thự đơn lập, song lập, nhà phố thương mại (Shophouse).
+        li#service-interior
+          h3 2. Thiết kế & Thi công Nội thất (Fit-out)
+          p Sự tinh tế nằm ở chi tiết. Xưởng sản xuất trực tiếp giúp PNT kiểm soát chất lượng từ phôi gỗ đến nước sơn hoàn thiện.
+          ul
+            li Sản xuất đồ gỗ nội thất: Bàn, ghế, tủ, giường theo thiết kế riêng (Bespoke).
+            li Thi công trần thạch cao, vách ngăn, sàn gỗ, thảm trải sàn văn phòng.
+            li Cung cấp giải pháp chiếu sáng nghệ thuật và trang trí Decor.
+        li#service-construction
+          h3 3. Tổng thầu Thi công Xây dựng (General Contractor)
+          p Cam kết "Chìa khóa trao tay" với quy trình kiểm soát 3 lớp: Kỹ thuật hiện trường - Giám sát độc lập - Quản lý dự án (PM).
+          ul
+            li Thi công phần thô (bê tông cốt thép, xây trát) đảm bảo đúng mác, đúng thép.
+            li Thi công hoàn thiện (ốp lát, sơn bả, lắp đặt thiết bị) với độ chính xác cao.
+            li Thi công hệ thống M&E (Điện, Nước, Điều hòa không khí, PCCC).
+        li#service-consulting
+          h3 4. Tư vấn Pháp lý & Quản lý dự án
+          p Giải quyết nỗi lo về thủ tục hành chính cho Chủ đầu tư.
+          ul
+            li Xin giấy phép xây dựng, giấy phép PCCC, hoàn công công trình.
+            li Tư vấn lập dự toán, quản lý chi phí, đấu thầu.
+
+  // ==================================== NỀN TẢNG KINH DOANH ====================================
+  section#pnt-nen-tang-kinh-doanh.business-foundation
+    .foundation-container
+      h2.section-title NỀN TẢNG VĂN HÓA DOANH NGHIỆP
+      p.intro
+        | Văn hóa doanh nghiệp là "phần hồn" của PNT DECOR. Chúng tôi xây dựng môi trường làm việc dựa trên sự tôn trọng, sáng tạo và kỷ luật.
+      .foundation-grid
+        .foundation-block
+          h3 Tầm nhìn (Vision)
+          p Đến năm 2030, PNT DECOR phấn đấu trở thành thương hiệu Quốc gia trong lĩnh vực Tổng thầu Xây dựng & Nội thất, tiên phong trong việc kiến tạo các công trình Xanh (Green Building) đạt chuẩn LEED/LOTUS, góp phần nâng cao diện mạo kiến trúc Việt Nam trên bản đồ quốc tế.
+        .foundation-block
+          h3 Sứ mệnh (Mission)
+          p Đối với Khách hàng: Cung cấp giải pháp không gian sống vượt trội về thẩm mỹ và công năng.
+          p Đối với Nhân viên: Xây dựng môi trường làm việc hạnh phúc, thu nhập cao và cơ hội thăng tiến không giới hạn.
+          p Đối với Xã hội: Đóng góp vào sự phát triển bền vững của cộng đồng thông qua các công trình thân thiện môi trường.
+        .foundation-block
+          h3 Giá trị cốt lõi (Core Values)
+          ul
+            li 
+              strong TÍN (Credibility): 
+              | PNT bảo vệ chữ Tín như bảo vệ danh dự của chính mình. Luôn chuẩn bị đầy đủ năng lực thực thi và nỗ lực hết mình để đảm bảo đúng cam kết.
+            li 
+              strong TÂM (Dedication): 
+              | Đặt lợi ích khách hàng làm trung tâm. Tư vấn bằng cái Tâm của người làm nghề, không vẽ vời phát sinh, trung thực về chủng loại vật tư.
+            li 
+              strong TRÍ (Creativity): 
+              | Coi sáng tạo là sức sống. Không ngừng học hỏi, cập nhật các xu hướng thiết kế mới (Minimalism, Indochine, Wabi Sabi...) và công nghệ thi công tiên tiến.
+            li 
+              strong TỐC (Speed): 
+              | "Tốc độ, hiệu quả trong từng hành động". Quyết định nhanh, triển khai nhanh, nhưng không ẩu.
+
+  // ==================================== CHIẾN LƯỢC KINH DOANH ====================================
+  section#pnt-chien-luoc-kinh-doanh.strategy-section
+    .strategy-container
+      h2.strategy-title CHIẾN LƯỢC PHÁT TRIỂN 2025 - 2030
+      p.strategy-intro
+        | Để hiện thực hóa tầm nhìn vĩ mô, Ban lãnh đạo PNT DECOR đã hoạch định bản đồ chiến lược dựa trên 5 trụ cột chính:
+      .strategy-grid
+        - 
+          var strategies = [
+            { num: "01", title: "Chiến lược Khác biệt hóa sản phẩm", desc: "Không cạnh tranh bằng giá rẻ, PNT cạnh tranh bằng chất lượng và giải pháp độc bản. Mỗi bản vẽ là duy nhất, mang đậm dấu ấn cá nhân của gia chủ (Personalization). Tập trung vào phân khúc cao cấp và hạng sang." },
+            { num: "02", title: "Chiến lược Chuyển đổi số toàn diện", desc: "Số hóa 100% quy trình vận hành. Ứng dụng phần mềm ERP quản lý nguồn lực, App Mobile cho khách hàng theo dõi tiến độ thi công real-time, Công nghệ VR/AR cho phép khách hàng trải nghiệm nhà trước khi xây." },
+            { num: "03", title: "Chiến lược Phát triển nguồn nhân lực", desc: "Thực hiện chính sách 'Chiêu hiền đãi sĩ'. Hợp tác với các trường Đại học Kiến trúc, Bách khoa để tuyển dụng nhân tài. Xây dựng lộ trình đào tạo chuyên sâu và chế độ đãi ngộ cổ phần hóa cho nhân sự cấp cao." },
+            { num: "04", title: "Chiến lược Mở rộng chuỗi cung ứng", desc: "Ký kết hợp tác chiến lược với các nhà sản xuất vật liệu hàng đầu thế giới (Bosch, Hafele, Daikin, Toto...). Loại bỏ khâu trung gian để mang lại giá thành tốt nhất cho khách hàng (Direct-to-Consumer)." },
+            { num: "05", title: "Chiến lược Phát triển bền vững (ESG)", desc: "Cam kết giảm thiểu rác thải xây dựng. Ưu tiên sử dụng vật liệu tái chế, vật liệu không nung. Thiết kế công trình tận dụng tối đa năng lượng tự nhiên (gió, ánh sáng) để giảm tiêu thụ điện năng." }
+          ]
+        each s in strategies
+          .strategy-item
+            .strategy-num #{s.num}
+            h3.strategy-head #{s.title}
+            p #{s.desc}
+
+  // ==================================== SẢN PHẨM CHIẾN LƯỢC ====================================
+  section#pnt-san-pham-chien-luoc.product-section
+    .product-container
+      h2.product-title CÁC DÒNG SẢN PHẨM MŨI NHỌN
+      p.product-intro
+        | Sự đa dạng trong danh mục sản phẩm giúp PNT DECOR đáp ứng mọi nhu cầu khắt khe của thị trường:
+      .product-grid
+        - 
+          var products = [
+            { icon: "🏰", title: "Dinh thự & Lâu đài", desc: "Dành cho giới thượng lưu. Phong cách Cổ điển, Tân cổ điển Châu Âu với độ tinh xảo cao trong từng phào chỉ, hoa văn." },
+            { icon: "🏡", title: "Biệt thự vườn (Garden Villa)", desc: "Xu hướng nghỉ dưỡng tại gia (Staycation). Thiết kế mở, hòa nhập thiên nhiên, chú trọng cảnh quan sân vườn và hồ bơi." },
+            { icon: "🏢", title: "Tòa nhà Văn phòng & Khách sạn", desc: "Thiết kế tối ưu diện tích sàn thương mại, đảm bảo tiêu chuẩn PCCC, thoát hiểm và hệ thống kỹ thuật phức tạp." },
+            { icon: "🏪", title: "Shophouse & Showroom", desc: "Giải pháp thiết kế mặt tiền ấn tượng, thu hút khách hàng, tối ưu không gian trưng bày sản phẩm kinh doanh." },
+            { icon: "🛋️", title: "Nội thất Căn hộ cao cấp", desc: "Giải pháp 'Chìa khóa trao tay' cho các căn hộ Penthouse, Duplex với vật liệu gỗ óc chó, gỗ sồi nhập khẩu." },
+            { icon: "🏭", title: "Nhà xưởng công nghiệp", desc: "Thiết kế nhà thép tiền chế khẩu độ lớn, tối ưu dây chuyền sản xuất và logistics cho doanh nghiệp." }
+          ]
+        each p in products
+          .product-item
+            .product-icon #{p.icon}
+            h3 #{p.title}
+            p #{p.desc}
+
+  // ==================================== CHỨNG CHỈ CHẤT LƯỢNG ====================================
+  section#pnt-chung-chi-chat-luong.certificate-section
+    .certificate-container
+      h2.certificate-title CHỨNG CHỈ & GIẢI THƯỞNG UY TÍN
+      p.certificate-intro
+        | Năng lực của PNT DECOR được bảo chứng bởi các tổ chức uy tín trong và ngoài nước. Đây là "giấy thông hành" để chúng tôi tham gia các dự án trọng điểm quốc gia.
+      .certificate-grid
+        - 
+          var certs = [
+            { icon: '🏅', title: 'ISO 9001:2015', desc: 'Hệ thống quản lý chất lượng đạt chuẩn quốc tế do tổ chức QMS (Australia) cấp.' },
+            { icon: '📜', title: 'Chứng chỉ năng lực Hạng I', desc: 'Đủ năng lực thi công các công trình cấp I, công trình tôn giáo, di tích lịch sử quy mô lớn.' },
+            { icon: '🛡️', title: 'ISO 45001:2018', desc: 'Hệ thống quản lý an toàn và sức khỏe nghề nghiệp. PNT tự hào với 1 triệu giờ làm việc an toàn.' },
+            { icon: '🌿', title: 'Chứng nhận LOTUS Gold', desc: 'Đơn vị tư vấn thiết kế công trình xanh được Hội đồng Công trình Xanh Việt Nam (VGBC) công nhận.' },
+            { icon: '🏆', title: 'Top 10 Thương hiệu mạnh', desc: 'Vinh danh tại Lễ trao giải Thương hiệu Mạnh ASEAN 2024 tổ chức tại Singapore.' },
+            { icon: '🤝', title: 'Đối tác Vàng', desc: 'Chứng nhận Đối tác chiến lược phân phối vật liệu cao cấp từ Tập đoàn An Cường, Vicostone, Hafele.' }
+          ]
+        each c in certs
+          .certificate-item
+            .certificate-icon #{c.icon}
+            h3 #{c.title}
+            p #{c.desc}
+      p.certificate-quote
+        em “Chất lượng không phải là một hành động, đó là một thói quen. Tại PNT, chất lượng là danh dự.”

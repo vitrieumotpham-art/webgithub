@@ -1,0 +1,211 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+.text-center { text-align: center; }
+.mt-12 { margin-top: 3rem; }
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.fade-in.appear {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.box-head {
+    text-align: center;
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+.box-head .inner-title {
+    font-size: 2.2rem; 
+    font-weight: 700;
+    color: #333; 
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 15px;
+    letter-spacing: 1px;
+}
+.box-head .inner-title::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #007bff;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.section-banner {
+    position: relative;
+    height: 30vh;
+    overflow: hidden;
+}
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6);
+}
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.banner-title {
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    z-index: 2;
+}
+
+.section-articles {
+    padding: 60px 0;
+}
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.article-card {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.article-image-link {
+    display: block;
+    height: 200px;
+    overflow: hidden;
+}
+.article-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.article-card:hover .article-image {
+    transform: scale(1.05);
+}
+
+.article-content {
+    padding: 20px;
+}
+.article-meta {
+    font-size: 0.85rem;
+    color: #999;
+    margin-bottom: 10px;
+}
+.article-meta i {
+    margin-right: 5px;
+    color: #007bff;
+}
+.article-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+.article-title a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.article-title a:hover {
+    color: #007bff;
+}
+.article-summary {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+.article-readmore {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #007bff;
+    text-decoration: none;
+    display: inline-block;
+}
+.article-readmore:hover {
+    text-decoration: underline;
+}
+
+/* SECTION 3: CTA (Tái sử dụng) */
+.section-cta {
+    padding: 50px 0;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    margin-top: 30px;
+}
+.cta-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+.cta-text {
+    font-size: 1.1rem;
+    color: #ccc;
+    margin-bottom: 30px;
+}
+.btn-white {
+    background-color: #fff;
+    color: #333;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+.btn-white:hover {
+    background-color: #f0f0f0;
+    color: #007bff;
+}
+.btn-secondary {
+    display: inline-block;
+    padding: 10px 25px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+.btn-secondary:hover {
+    background-color: #f0f0f0;
+    border-color: #333;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+    .articles-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+}
+@media (max-width: 600px) {
+    .banner-title {
+        font-size: 2.5rem;
+    }
+    .article-title {
+        font-size: 1.2rem;
+    }
+}

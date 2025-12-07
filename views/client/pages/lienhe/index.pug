@@ -1,0 +1,73 @@
+extends ../../layouts/defaut.pug
+
+include ../../mixins/box.head.pug 
+include ../../mixins/form-field.pug 
+block main
+    title Liên Hệ - PNT DECOR
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
+    link(rel="stylesheet", href="/css/client/contact.css") 
+
+
+block main
+    main
+        section.section-banner
+            img.banner-image(src="https://khonhamaudep.com/wp-content/uploads/2024/11/mau-san-vuon-nha-cap-4-mai-nhat-dien-tich-350m2.jpg" alt="Văn phòng làm việc")
+            .banner-overlay
+                h1.banner-title.fade-in.appear LIÊN HỆ VỚI CHÚNG TÔI
+
+        section.section-contact
+            .container
+                .contact-grid
+                    .contact-info.fade-in
+                        +box-head('THÔNG TIN LIÊN HỆ')
+                        
+                        .info-item
+                            i.fas.fa-map-marker-alt
+                            div
+                                h4 Địa chỉ Văn phòng
+                                p Tầng 5, Tòa nhà A, 123 Đường Nguyễn Văn Linh, TP. HCM
+
+                        .info-item
+                            i.fas.fa-phone
+                            div
+                                h4 Điện thoại
+                                p 0987.654.321 (Hotline)
+                                p 028.1234.5678 (Văn phòng)
+
+                        .info-item
+                            i.fas.fa-envelope
+                            div
+                                h4 Email
+                                p info@pntdecor.vn
+                                p support@pntdecor.vn
+                        
+                        .info-item
+                            i.fas.fa-clock
+                            div
+                                h4 Giờ làm việc
+                                p Thứ Hai - Thứ Sáu: 8:00 - 17:30
+                                p Thứ Bảy: 8:00 - 12:00
+
+                    .contact-form-wrapper.fade-in(data-delay="0.2")
+                        +box-head('ĐỂ LẠI LỜI NHẮN')
+                        
+                        form#contactForm(method="POST", action="/contact/send")
+                            +form-field('text', 'fullName', 'Họ và tên của bạn')
+                            +form-field('email', 'email', 'Email liên hệ')
+                            +form-field('text', 'phone', 'Số điện thoại', false)
+                            +form-field('textarea', 'message', 'Nội dung bạn muốn nhắn gửi')
+
+                            button.btn-submit(type="submit")
+                                | Gửi Yêu Cầu 
+                                i.fas.fa-paper-plane.ml-2
+                        
+                        #form-status.alert.hidden
+
+        section.section-map.fade-in
+            .container
+                +box-head('VỊ TRÍ CỦA CHÚNG TÔI')
+            
+            .map-container
+                iframe(src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.6750917646545!2d106.6908586147656!3d10.77258389232388!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f205001c1f1%3A0x6b6e4e548d7b3225!2zVmluY29tIENlbnRyYWwgUGFyayDEkC4gTeDqYyBUaOG7iSBVb25nLCBCw6BuIG5nbyAxNSwxNSwgcGj6MnggQnhu!5e0!3m2!1svi!2s!4v1634567890123!5m2!1svi!2s", width="100%", height="450", style="border:0;", allowfullscreen="", loading="lazy")
+
+    

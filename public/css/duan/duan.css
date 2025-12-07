@@ -1,0 +1,264 @@
+/* =================================== CƠ SỞ CHUNG =================================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.section-heading {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 3rem;
+}
+
+/* =================================== 1. BANNER =================================== */
+.section-banner {
+    position: relative;
+    height: 40vh;
+    overflow: hidden;
+    margin-bottom: 3rem;
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-title {
+    color: #fff;
+    font-size: 3.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+
+/* =================================== 2. BỘ LỌC DỰ ÁN =================================== */
+.section-filters {
+    padding: 30px 0;
+    background-color: #f8f8f8;
+}
+
+.filter-menu {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.filter-item {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 600;
+    text-transform: uppercase;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.filter-item:hover {
+    background-color: #eee;
+    border-color: #a0a0a0;
+}
+
+.filter-item.active {
+    background-color: #007bff; /* Màu chủ đạo của bạn */
+    color: #fff;
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+/* =================================== 3. DANH SÁCH DỰ ÁN (GRID) =================================== */
+.section-project-list {
+    padding: 50px 0;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* 3 cột trên màn hình lớn */
+    gap: 30px;
+}
+
+/* Thẻ Dự Án (Project Card) */
+.project-card {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.project-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.project-image-wrapper {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.project-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.project-card:hover .project-image {
+    transform: scale(1.05);
+}
+
+.project-category {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.project-info {
+    padding: 20px;
+}
+
+.project-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.project-view-link {
+    font-size: 0.9rem;
+    color: #007bff; /* Màu chủ đạo */
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.project-view-link:hover {
+    color: #0056b3;
+}
+
+/* Nút Xem Thêm */
+.load-more-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #f0f0f0;
+    color: #555;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    border: 1px solid #ccc;
+}
+
+.load-more-btn:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+/* =================================== 4. CTA =================================== */
+.section-cta {
+    background-color: #333;
+    color: #fff;
+    padding: 60px 0;
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.cta-title {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.cta-text {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    color: #ccc;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cta-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* =================================== RESPONSIVE =================================== */
+@media (max-width: 768px) {
+    .project-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .banner-title {
+        font-size: 2.5rem;
+    }
+    .filter-menu {
+        gap: 10px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+    .filter-item {
+        flex-shrink: 0;
+    }
+}
+
+/* =================================== HIỆU ỨNG CHUNG =================================== */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.appear {
+    opacity: 1;
+    transform: translateY(0);
+}
+.container-fluid.mt-4 .card.shadow-sm.mb-4  .card-body .row.g-3.align-items-end .selectCongTring{
+    display: flex; 
+    justify-content: space-between;
+}

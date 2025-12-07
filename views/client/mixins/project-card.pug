@@ -1,0 +1,11 @@
+mixin project-card(title, category, image, link)
+    .project-card.fade-in(data-category=category)
+        a(href=link)
+            .project-image-wrapper
+                img.project-image(src=image, alt=title)
+                .project-category #{category}
+            .project-info
+                h4.project-title #{title}
+                p.project-view-link
+                    | Xem chi tiết 
+                    i.fas.fa-arrow-right

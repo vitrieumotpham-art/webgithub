@@ -1,0 +1,17 @@
+        .review-card { transition: all 0.3s ease; border: 1px solid #eee; }
+        .review-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important; }
+        
+        /* Avatar Initials */
+        .avatar-circle { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 50%; font-size: 18px; color: white; }
+        
+        /* Màu ngẫu nhiên cho avatar (giả lập bằng css) */
+        .avatar-bg-1 { background: #4e73df; }
+        .avatar-bg-2 { background: #1cc88a; }
+        .avatar-bg-3 { background: #f6c23e; }
+        .avatar-bg-4 { background: #e74a3b; }
+        .avatar-bg-5 { background: #36b9cc; }
+
+        .star-filled { color: #f6c23e; } /* Màu vàng sao */
+        .star-empty { color: #d1d3e2; }
+
+        .quote-icon { font-size: 1.5rem; color: #e3e6f0; position: absolute; top: 15px; right: 20px; }

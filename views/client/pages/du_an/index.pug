@@ -1,0 +1,64 @@
+extends ../../layouts/defaut.pug
+include ../../mixins/box.head.pug
+
+block main 
+    title Dự Án Nổi Bật - PNT DECOR
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
+
+    main
+        //- 1. BANNER
+        section.section-banner
+            img.banner-image(src="/img/nha/thiet-ke-biet-thu-hien-dai-anh-hung.jpg" alt="Kiến trúc hiện đại")
+            .banner-overlay
+                h1.banner-title.fade-in.appear DỰ ÁN ĐÃ THỰC HIỆN
+
+        //- 2. BỘ LỌC (FILTER)
+        section.section-filters
+            .container
+                +box-head('CÁC DỰ ÁN NỔI BẬT CỦA PNT DECOR')
+                
+                .filter-menu
+                    //- Lưu ý: data-filter phải khớp với value trong Database (VD: BietThu, NhaPho)
+                    a.filter-item.active(href="#", data-filter="all") TẤT CẢ
+                    a.filter-item(href="#", data-filter="BietThu") BIỆT THỰ
+                    a.filter-item(href="#", data-filter="NhaPho") NHÀ PHỐ
+                    a.filter-item(href="#", data-filter="NoiThat") NỘI THẤT
+                    a.filter-item(href="#", data-filter="VanPhong") VĂN PHÒNG
+
+        //- 3. DANH SÁCH DỰ ÁN (GRID) - PHẦN BẠN CẦN THÊM VÀO
+        section.section-project-list
+            .container
+                .project-grid
+                    //- Vòng lặp lấy dữ liệu từ biến 'projects' (được gửi từ Controller)
+                    each item in duan
+                        //- Thêm data-category để JS lọc được dự án
+                        .project-card.fade-in(data-category=item.loai_hinh)
+                            a(href=`/du-an/${item.slug}`)
+                                .project-image-wrapper
+                                    //- Lấy ảnh đầu tiên trong mảng hinh_anh
+                                    if item.hinh_anh && item.hinh_anh.length > 0
+                                        img.project-image(src=item.hinh_anh[0], alt=item.ten_du_an)
+                                    else 
+                                        img.project-image(src="/img/nha/thiet-ke-biet-thu-hien-dai-anh-hung.jpg", alt="Default Image")
+                                    
+                                    //- Badge hiển thị loại hình
+                                    span.project-category #{item.loai_hinh}
+                                
+                                .project-info
+                                    h3.project-titl  #{item.ten_du_an}
+                                    
+                                    //- Mô tả ngắn (cắt bớt chữ nếu dài quá)
+                                    p.project-desc #{item.mo_ta}
+                                    
+                                    span.project-view-link 
+                                        | Xem chi tiết 
+                                        i.fas.fa-arrow-right
+
+        //- 4. CTA (CALL TO ACTION)
+        section.section-cta
+            .container.fade-in
+                h3.cta-title Bắt đầu dự án mơ ước của bạn ngay hôm nay!
+                p.cta-text Liên hệ với đội ngũ chuyên gia của PNT DECOR để nhận tư vấn miễn phí ngay hôm nay.
+                a.cta-button(href="http://localhost:3000/lienhe")
+                    | Yêu Cầu Tư Vấn 
+                    i.fas.fa-chevron-right.ml-2

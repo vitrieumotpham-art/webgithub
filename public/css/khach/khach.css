@@ -1,0 +1,126 @@
+/* ================= CẤU HÌNH CHUNG ================= */
+:root {
+    --primary-color: #007bff;
+    --dark-color: #2c3e50;
+    --text-color: #555;
+    --bg-light: #f8f9fa;
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+.text-center { text-align: center; }
+.mr-2 { margin-right: 10px; }
+
+/* ================= 1. BANNER (Đã Fix căn giữa) ================= */
+.section-banner {
+    position: relative; height: 50vh; background: #222;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.banner-image { position: absolute; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); }
+.banner-overlay { position: relative; z-index: 2; text-align: center; color: #fff; width: 100%; }
+.banner-title { font-size: 3rem; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; }
+.banner-subtitle { font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; }
+
+
+/* ================= 2. INTRO & STATS ================= */
+.section-intro { padding: 80px 0; background: #fff; }
+.intro-wrapper { display: grid; grid-template-columns: 1.5fr 1fr; gap: 50px; align-items: center; }
+
+.intro-heading { font-size: 2rem; font-weight: 800; color: var(--dark-color); margin-bottom: 20px; text-transform: uppercase; }
+.intro-text p { font-size: 1.05rem; line-height: 1.8; color: var(--text-color); margin-bottom: 15px; text-align: justify; }
+
+.intro-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.stat-box {
+    background: var(--bg-light); padding: 30px 20px; text-align: center; border-radius: 8px; border: 1px solid #eee;
+    transition: 0.3s;
+}
+.stat-box:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+.stat-box h3 { font-size: 2.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 5px; }
+.stat-box p { font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #666; margin: 0; }
+
+
+/* ================= 3. PARTNERS (LOGO GRID) ================= */
+.section-partners { padding: 60px 0 80px; background: #fff; }
+.section-desc { max-width: 700px; margin: 0 auto 40px; color: #777; font-size: 1rem; }
+
+.partner-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px;
+}
+.partner-item {
+    background: #fff; border: 1px solid #eee; border-radius: 8px;
+    height: 120px; display: flex; align-items: center; justify-content: center;
+    padding: 20px; transition: 0.3s;
+}
+/* Hiệu ứng Logo đen trắng -> Có màu khi hover */
+.partner-item img {
+    max-width: 100%; max-height: 100%;
+    filter: grayscale(100%); 
+    opacity: 0.7; transition: 0.3s;
+}
+.partner-item:hover { border-color: var(--primary-color); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+.partner-item:hover img { filter: grayscale(0%); opacity: 1; transform: scale(1.1); }
+
+
+/* ================= 4. CORPORATE CLIENTS ================= */
+.section-corporate { padding: 80px 0; background: var(--bg-light); }
+.corporate-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+
+.corporate-card {
+    background: #fff; padding: 30px; border-radius: 10px; display: flex; gap: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: 0.3s;
+}
+.corporate-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
+
+.corp-logo {
+    width: 60px; height: 60px; background: rgba(0,123,255,0.1); color: var(--primary-color);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+    flex-shrink: 0;
+}
+.corp-info h3 { font-size: 1.2rem; font-weight: 800; color: var(--dark-color); margin-bottom: 10px; }
+.corp-project { font-size: 0.9rem; font-weight: 600; color: #444; margin-bottom: 10px; }
+.corp-project i { color: var(--primary-color); margin-right: 5px; }
+.corp-desc { font-style: italic; color: #666; font-size: 0.95rem; line-height: 1.5; }
+
+
+/* ================= 5. TESTIMONIALS ================= */
+.section-testimonials { padding: 80px 0; background: #fff; }
+.testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+
+.testi-item {
+    background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 30px;
+    display: flex; flex-direction: column; transition: 0.3s;
+}
+.testi-item:hover { border-color: var(--primary-color); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+.testi-content { flex: 1; margin-bottom: 20px; position: relative; }
+.quote-icon { font-size: 3rem; color: #eee; position: absolute; top: -20px; left: -10px; z-index: 1; font-family: serif; }
+.testi-content p { position: relative; z-index: 2; color: #555; line-height: 1.6; font-style: italic; }
+
+.testi-user { display: flex; align-items: center; gap: 15px; border-top: 1px solid #f0f0f0; padding-top: 20px; }
+.testi-user img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+.testi-user h5 { font-size: 1rem; font-weight: 700; color: var(--dark-color); margin-bottom: 3px; }
+.testi-user span { font-size: 0.85rem; color: #888; }
+
+
+/* ================= 6. CTA ================= */
+.section-cta { padding: 80px 0; background: linear-gradient(135deg, #111 0%, #333 100%); color: #fff; text-align: center; }
+.cta-title { font-size: 2rem; margin-bottom: 10px; }
+.cta-text { color: #ccc; margin-bottom: 30px; }
+.cta-buttons { display: flex; justify-content: center; gap: 20px; }
+.cta-btn { padding: 12px 35px; border-radius: 50px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; transition: 0.3s; }
+.btn-white { background: #fff; color: var(--primary-color); }
+.btn-white:hover { transform: translateY(-3px); }
+.btn-outline { border: 2px solid #fff; color: #fff; }
+.btn-outline:hover { background: #fff; color: #333; }
+
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 992px) {
+    .intro-wrapper { grid-template-columns: 1fr; }
+    .partner-grid { grid-template-columns: repeat(2, 1fr); }
+    .corporate-grid { grid-template-columns: 1fr; }
+    .testimonial-grid { grid-template-columns: 1fr; }
+}
+
+/* Animation Classes */
+.fade-in { opacity: 0; transform: translateY(30px); transition: 0.8s; }
+.appear { opacity: 1; transform: translateY(0); }

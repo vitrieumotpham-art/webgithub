@@ -1,12 +1,12 @@
-header.admin-header
-  .header-left
-    h2 Admin Dashboard
-  .header-right
-    // Optional: thanh tìm kiếm
-    form.search-form(action="#", method="GET")
-      input.form-control(type="text", placeholder="Search...")
-      button.btn.btn-primary(type="submit") Search
-    // User info
-    .user-info
-      span Welcome, Admin
-      a.btn.btn-danger.ml-2(href="#") Logout
+header.admin-header.py-3.border-bottom
+    .container-fluid.d-flex.align-items-center.justify-content-between
+        .header-left.d-flex.align-items-center
+            img.header-logo(src="/img/pngtree-salon-logo-png-image_4004444.png" alt="Logo PNT DECOR")
+            h2.h5.mb-0.font-weight-bold.ml-3 Admin Dashboard
+        .header-right
+            .user-info.d-flex.align-items-center
+                i.fas.fa-user-circle.fa-lg.text-muted.mr-2
+                span.welcome-message.mr-3.text-dark Chào mừng, Admin
+                a.btn.btn-sm.btn-outline-danger(href="#") 
+                    i.fas.fa-sign-out-alt.mr-1
+                    span Đăng xuất

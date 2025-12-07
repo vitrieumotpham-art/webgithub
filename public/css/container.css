@@ -1,0 +1,51 @@
+/* ======================= CONTAINER ======================= */
+.container {
+  overflow: visible;
+  position: relative;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Responsive container */
+@media (max-width: 1024px) {
+  .container {
+    margin: 0 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-two {
+    justify-content: flex-start;
+    padding: 6px 10px;
+  }
+
+  .section-two .item {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    margin: 0 4px;
+  }
+}
+
+/* Section content (left-right layout) */
+.container .section-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40px 0;
+  z-index: 100;
+}
+
+.container .section-content .right {
+  width: 60%;
+}
+
+.container .section-content .left {
+  width: 40%;
+}
+
+.container .section-content .left img {
+  width: 100%;
+  height: auto;
+}

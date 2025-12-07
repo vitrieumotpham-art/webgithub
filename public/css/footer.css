@@ -1,0 +1,156 @@
+/* Thiết lập chung */
+.footer {
+  background-color: #1a1a1a; /* Màu nền tối sang trọng */
+  color: #b0b0b0; /* Màu chữ xám nhạt */
+  padding: 70px 0 0;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Layout chia cột */
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.footer-col {
+  flex: 1;
+  min-width: 200px;
+}
+
+.brand-col {
+  flex: 1.5; /* Cột logo rộng hơn chút */
+}
+
+/* Logo và Brand */
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  text-decoration: none;
+}
+
+.footer-logo img {
+  height: 50px;
+  width: auto;
+}
+
+.footer-logo span {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.footer-desc {
+  margin-bottom: 25px;
+  max-width: 300px;
+}
+
+/* Tiêu đề cột */
+.footer-title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 25px;
+  position: relative;
+  text-transform: uppercase;
+}
+
+/* Đường gạch dưới tiêu đề trang trí */
+.footer-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 40px;
+  height: 2px;
+  background-color: #e6b325; /* Màu vàng Gold */
+}
+
+/* Links */
+.footer-links, .footer-contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 12px;
+}
+
+.footer-links a {
+  color: #b0b0b0;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+/* Hiệu ứng Hover xịn */
+.footer-links a:hover {
+  color: #e6b325; /* Đổi màu vàng khi di chuột */
+  transform: translateX(5px); /* Dịch chuyển nhẹ sang phải */
+}
+
+/* Contact List */
+.footer-contact-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.footer-contact-list .icon {
+  color: #e6b325;
+}
+
+/* Social Icons */
+.footer-social {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-social a img {
+  width: 30px;
+  height: 30px;
+  filter: grayscale(100%); /* Làm icon trắng đen */
+  transition: 0.3s;
+  opacity: 0.7;
+}
+
+.footer-social a:hover img {
+  filter: grayscale(0%); /* Hiển thị màu gốc khi hover */
+  opacity: 1;
+  transform: translateY(-3px);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  background-color: #111;
+  padding: 20px 0;
+  text-align: center;
+  border-top: 1px solid #333;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+/* Responsive cho điện thoại */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+  }
+  .brand-col {
+    flex: 1;
+  }
+}

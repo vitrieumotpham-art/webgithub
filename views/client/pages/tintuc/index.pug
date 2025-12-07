@@ -1,0 +1,71 @@
+extends ../../layouts/defaut.pug
+
+include ../../mixins/box.head.pug
+include ../../mixins/article-card.pug 
+
+block main
+    title Tin Tức & Sự Kiện - PNT DECOR
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
+    link(rel="stylesheet", href="/css/client/news.css") 
+
+block main
+    main
+        section.section-banner
+            img.banner-image(src="/img/nha/du-an-biet-thu-hien-dai-san-vuon-rong-800m²-quan-9.jpg" alt="Tin tức và Sự kiện")
+            .banner-overlay
+                h1.banner-title.fade-in.appear TIN TỨC & KIẾN THỨC
+
+        section.section-articles
+            .container
+                +box-head('BÀI VIẾT MỚI NHẤT')
+                
+                .articles-grid
+                    - 
+                        const articles = [
+                            { 
+                                title: "Xu hướng thiết kế nội thất Minimalism 2025", 
+                                date: "10/11/2025", 
+                                image: "https://images.unsplash.com/photo-1512918728841-f9273c545747?q=80&w=2070&auto=format&fit=crop",
+                                link: "/tin-tuc/xu-huong-minimalism",
+                                summary: "Phân tích các yếu tố chính tạo nên phong cách tối giản được ưa chuộng nhất trong năm 2025."
+                            },
+                            { 
+                                title: "4 bước thi công biệt thự không phát sinh chi phí", 
+                                date: "05/11/2025", 
+                                image: "https://images.unsplash.com/photo-1579762715118-a6f1d4b93471?q=80&w=2070&auto=format&fit=crop",
+                                link: "/tin-tuc/thi-cong-biet-thu",
+                                summary: "Quy trình quản lý vật tư và tiến độ giúp chủ nhà kiểm soát ngân sách hiệu quả."
+                            },
+                            { 
+                                title: "Công nghệ BIM trong quản lý dự án kiến trúc", 
+                                date: "01/11/2025", 
+                                image: "https://images.unsplash.com/photo-1543286386-713fe7260533?q=80&w=2070&auto=format&fit=crop",
+                                link: "/tin-tuc/cong-nghe-bim",
+                                summary: "Vai trò của Building Information Modeling trong việc tối ưu hóa thiết kế và thi công."
+                            },
+                            { 
+                                title: "Bí quyết chọn vật liệu thân thiện môi trường", 
+                                date: "25/10/2025", 
+                                image: "https://images.unsplash.com/photo-1502920875042-421712ae43dc?q=80&w=1934&auto=format&fit=crop",
+                                link: "/tin-tuc/vat-lieu-xanh",
+                                summary: "Những vật liệu xây dựng và nội thất an toàn, bền vững và tốt cho sức khỏe."
+                            }
+                        ]
+                    
+                    each article in articles
+                        +article-card(article.title, article.date, article.image, article.link, article.summary)
+
+                .text-center.mt-12
+                    a.btn-secondary(href="#")
+                        | TẢI THÊM BÀI VIẾT 
+                        i.fas.fa-chevron-down.ml-2
+
+        section.section-cta.fade-in
+            .container
+                h3.cta-title BẮT ĐẦU DỰ ÁN KIẾN TẠO KHÔNG GIAN CỦA BẠN
+                p.cta-text Liên hệ ngay để nhận được tư vấn từ kiến trúc sư chuyên nghiệp.
+                a.cta-btn.btn-white(href="http://localhost:3000/lienhe")
+                    | YÊU CẦU TƯ VẤN 
+                    i.fas.fa-phone-alt
+
+    

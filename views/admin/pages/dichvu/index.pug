@@ -1,0 +1,155 @@
+extends ../../layout/defaut.pug 
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug 
+block main
+    .container-fluid.mt-4
+        //- 1. Tiêu đề và Nút Thêm Mới
+        .d-flex.justify-content-between.align-items-center.mb-4
+            h1.text-primary.fw-bold Quản Lý Dịch Vụ
+            a.btn.btn-primary.shadow-sm(href="/admin/dichvu/create")
+                i.fas.fa-plus-circle.me-2
+                | Thêm Dịch Vụ Mới
+
+        //- 2. Khối Bộ Lọc và Tìm Kiếm
+        .card.shadow-sm.mb-4
+            .card-body
+                form.row.g-3.align-items-end(action="/admin/dichvu", method="GET")
+                    //- Tìm kiếm theo tên
+                    .col-md-8
+                        +search(keyword)
+                    //- Lọc theo trạng thái
+                    .col-md-4
+                        label.form-label(for="statusDichvu") Trạng thái:
+                        select.form-select(name="status", id="statusDichvu")
+                            option(value="", selected=(!status)) -- Tất cả --
+                            option(value="active", selected=(status === "active")) Đang hoạt động
+                            option(value="inactive", selected=(status === "inactive")) Dừng hoạt động
+                form(
+                    action=`${PrefixAdmin}/dichvu/change-multi?_method=PATCH`
+                    method="POST"
+                    form-change-multi
+                    )
+                    .d-flex.align-items-start
+                        .form-group
+                            select(name="type" class="form-control")
+                                option(value="active") Hoạt động
+                                option(value="inactive") Dừng hoạt động
+                        .form-group
+                            input(
+                                type="text"
+                                name="ids"
+                                value=""
+                                class="form-control d-none"
+                            )
+                        input(type="hidden", name="returnUrl", value="")
+                        button(type="submit" class="btn btn-primary") Áp dụng
+        //- 3. Bảng Danh Sách Dịch Vụ
+        .card.shadow-sm
+            .card-body.p-0
+                .table-responsive
+                    table(
+                        class="table table-hover mb-0 align-middle"
+                        checkbox-multi 
+                        )
+                        thead
+                            tr.text-uppercase.text-secondary.bg-light
+                                th 
+                                     input(type="checkbox" name="checkall")
+                                th.text-center(style="width: 50px") STT
+                                th.text-center(style="width: 100px") Hình ảnh
+                                th Tiêu đề
+                                th Giá tham khảo
+                                th.text-center(style="width: 100px") Vị trí
+                                th.text-center Trạng thái
+                                th.text-center(style="width: 150px") Thao tác
+                        tbody
+                            //- Kiểm tra xem có dữ liệu không
+                            if (dichvu && dichvu.length > 0)
+                                each item, index in dichvu
+                                    tr
+                                        td 
+                                           input(type="checkbox" name="id" value=item.id )
+                                        //- STT (Tính toán dựa trên phân trang nếu có, ở đây để index + 1 cơ bản)
+                                        td.text-center #{index + 1}
+                                        
+                                        //- Hình ảnh (thumbnail)
+                                        td.text-center
+                                            if item.thumbnail
+                                                img.rounded(src=item.thumbnail, alt=item.title, style="width: 80px; height: auto; object-fit: cover;")
+                                            else
+                                                span.text-muted (No Image)
+
+                                        //- Tiêu đề (title)
+                                        td
+                                            h6.mb-0.text-primary= item.title
+                                            //- Hiển thị slug hoặc mô tả ngắn nếu cần
+                                            small.text-muted ID: #{item.slug}
+
+                                        //- Giá (price) - Format số
+                                        td
+                                            if item.price
+                                                strong.text-success #{item.price.toLocaleString()} đ
+                                            else 
+                                                span.text-muted Liên hệ
+
+                                        //- Vị trí (position)
+                                        td.text-center
+                                            input.form-control.form-control-sm.text-center(name="inn" type="number", value=item.position, style="width: 60px; margin: 0 auto;", min="1")
+
+                                        //- Trạng thái (status)
+                                        td.text-center
+                                            if item.status == "active"
+                                                a.badge.bg-success.text-decoration-none(
+                                                 href="javascript:;"
+                                                 data-hoatdong=item.status 
+                                                 data-idhoatdong=item.id
+                                                 button-change-hoatdong
+                                                 data-return-url=url
+                                                 ) Hoạt động
+                                            else
+                                                a.badge.bg-danger.text-decoration-none(
+                                                href="javascript:;" 
+                                                data-hoatdong=item.status 
+                                                data-idhoatdong=item.id
+                                                button-change-hoatdong
+                                                data-return-url=url
+                                                ) Dừng HĐ
+
+                                        //- Thao tác (Sửa/Xóa/Chi tiết)
+                                        td.text-center
+                                            .btn-group.btn-group-sm(role="group")
+                                                a.btn.btn-outline-info(href=`/admin/dichvu/detail/${item.id}`, title="Chi tiết")
+                                                    i.fas.fa-eye
+                                                a.btn.btn-outline-warning(href=`/admin/dichvu/edit/${item.id}`, title="Chỉnh sửa")
+                                                    i.fas.fa-edit
+                                                button.btn.btn-outline-danger(data-id=item.id, button-delete, title="Xóa")
+                                                    i.fas.fa-trash-alt
+                            else 
+                                tr
+                                    td.text-center(colspan="7") Chưa có dịch vụ nào được tạo.
+
+        //- 4. Phân trang (Pagination)
+        //- Cần biến pagination từ server gửi về để render dynamic
+        if (pagination && pagination.totalPage > 1)
+            .d-flex.justify-content-center.mt-4
+                nav(aria-label="Phân trang")
+                    ul.pagination
+                        li.page-item(class=(pagination.currentPage == 1 ? "disabled" : ""))
+                            button.page-link(button-pagination=pagination.currentPage-1) &laquo;
+                        
+                        - for (var i = 1; i <= pagination.totalPage; i++)
+                            li.page-item(class=(pagination.currentPage == i ? "active" : ""))
+                                button.page-link(button-pagination=i) #{i}
+                        
+                        li.page-item(class=(pagination.currentPage == pagination.totalPage ? "disabled" : ""))
+                            button.page-link(button-pagination=pagination.currentPage+1) &raquo;
+    .mt-4.d-flex.justify-content-center
+        +pagination(pagination) 
+    //- Form ẩn để xử lý xóa (nếu dùng method DELETE override)
+    form#form-change-hoatdong(
+        action="" 
+        method="POST" 
+        data-path=`${PrefixAdmin}/dichvu/change-hoatdong`
+        )
+        input(type="hidden", name="returnUrl", value="")
+        input(type="hidden", name="_method", value="PATCH")

@@ -1,0 +1,18 @@
+mixin article-card(title, date, image, link, summary)
+    .article-card.fade-in
+        a.article-image-link(href=link)
+            img.article-image(src=image, alt=title)
+        
+        .article-content
+            .article-meta
+                i.fas.fa-calendar-alt
+                span.article-date #{date}
+            
+            h3.article-title
+                a(href=link) #{title}
+            
+            p.article-summary #{summary}
+            
+            a.article-readmore(href=link)
+                | Đọc thêm 
+                i.fas.fa-arrow-right

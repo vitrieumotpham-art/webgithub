@@ -1,0 +1,183 @@
+extends ../../layouts/defaut.pug
+include ../../mixins/box.head.pug
+
+block main
+    title Đối Tác & Khách Hàng - PNT DECOR
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
+    link(rel="stylesheet", href="/css/client/clients.css") 
+
+    main
+        //- ================= 1. BANNER =================
+        section.section-banner
+            img.banner-image(src="/img/nha/thiet-ke-biet-thu-hien-dai-anh-hung.jpg" alt="Đối tác PNT Decor")
+            .banner-overlay
+                .banner-content
+                    h1.banner-title.fade-in.appear MẠNG LƯỚI ĐỐI TÁC & KHÁCH HÀNG
+                    p.banner-subtitle.fade-in.appear VỮNG BƯỚC ĐỒNG HÀNH - KIẾN TẠO THÀNH CÔNG
+
+        //- ================= 2. INTRO & STATS =================
+        section.section-intro
+            .container
+                .intro-wrapper
+                    .intro-text.fade-in
+                        h2.intro-heading NIỀM TIN ĐƯỢC KHẲNG ĐỊNH
+                        p
+                            | Trải qua hơn một thập kỷ hình thành và phát triển, 
+                            strong PNT DECOR 
+                            | vinh dự trở thành đối tác tin cậy của hơn 500+ Khách hàng cá nhân và Doanh nghiệp. 
+                        p
+                            | Chúng tôi hiểu rằng, sự thành công của một công trình không chỉ đến từ thiết kế đẹp, mà còn từ chất lượng vật tư của những nhà cung cấp uy tín hàng đầu thế giới.
+                    
+                    .intro-stats.fade-in
+                        .stat-box
+                            h3 500+
+                            p Khách hàng hài lòng
+                        .stat-box
+                            h3 50+
+                            p Đối tác chiến lược
+                        .stat-box
+                            h3 100%
+                            p Đúng cam kết
+
+        //- ================= 3. ĐỐI TÁC CHIẾN LƯỢC (SUPPLIERS) =================
+        section.section-partners
+            .container
+                +box-head('ĐỐI TÁC CUNG ỨNG VẬT LIỆU CHIẾN LƯỢC')
+                p.section-desc.text-center PNT DECOR cam kết chỉ sử dụng vật tư chính hãng từ các thương hiệu hàng đầu để đảm bảo tuổi thọ công trình.
+                
+                .partner-grid
+                    //- LOGO 1: Hòa Phát
+                    .partner-item.fade-in
+                        img(src="/img/khach/images.png", alt="Hòa Phát")
+
+                    //- LOGO 2: Dulux
+                    .partner-item.fade-in
+                        img(src="/img/khach/logo-vat-lieu-xay-dung-2.jpg", alt="Dulux")
+
+                    //- LOGO 3: Eurowindow
+                    .partner-item.fade-in
+                        img(src="/img/khach/logo-vat-lieu-xay-dung-4.jpg", alt="Eurowindow")
+
+                    //- LOGO 4: An Cường
+                    .partner-item.fade-in
+                        img(src="/img/khach/logo-vat-lieu-xay-dung-14.jpg", alt="Gỗ An Cường")
+
+                    //- LOGO 5: TOTO
+                    .partner-item.fade-in
+                        img(src="/img/khach/logo-vat-lieu-xay-dung-12.jpg", alt="Thiết bị TOTO")
+                    
+                    //- LOGO 6: Viglacera
+                    .partner-item.fade-in
+                        img(src="/img/khach/tải xuống.jpg", alt="Viglacera")
+
+                    //- LOGO 7: Hafele
+                    .partner-item.fade-in
+                        img(src="/img/khach/logo-vat-lieu-xay-dung-2.jpg", alt="Hafele")
+
+                    //- LOGO 8: Bosch
+                    .partner-item.fade-in
+                        img(src="/img/khach/thiet-ke-logo-vat-lieu-xay-dung-6.jpg", alt="Bosch")
+
+        //- ================= 4. KHÁCH HÀNG DOANH NGHIỆP =================
+        section.section-corporate
+            .container
+                +box-head('KHÁCH HÀNG TIÊU BIỂU')
+                
+                .corporate-grid
+                    //- Client 1
+                    .corporate-card.fade-in
+                        .corp-logo
+                            i.fas.fa-hotel
+                        .corp-info
+                            h3 TẬP ĐOÀN KHÁCH SẠN SUNRISE
+                            p.corp-project <i class="fas fa-check"></i> Dự án: Chuỗi khách sạn nghỉ dưỡng 4 sao Đà Nẵng.
+                            p.corp-desc "PNT DECOR đã đáp ứng xuất sắc các yêu cầu khắt khe về tiến độ và thẩm mỹ của chúng tôi."
+
+                    //- Client 2
+                    .corporate-card.fade-in
+                        .corp-logo
+                            i.fas.fa-university
+                        .corp-info
+                            h3 NGÂN HÀNG VIETCOMBANK
+                            p.corp-project <i class="fas fa-check"></i> Dự án: Thiết kế & Thi công PGD Quận 9.
+                            p.corp-desc "Không gian giao dịch hiện đại, chuyên nghiệp, đúng nhận diện thương hiệu."
+
+                    //- Client 3
+                    .corporate-card.fade-in
+                        .corp-logo
+                            i.fas.fa-building
+                        .corp-info
+                            h3 CÔNG TY BẤT ĐỘNG SẢN NOVA
+                            p.corp-project <i class="fas fa-check"></i> Dự án: Khu nhà mẫu (Sales Gallery).
+                            p.corp-desc "Sự chuyên nghiệp của PNT giúp chúng tôi tự tin đón tiếp khách hàng."
+
+                    //- Client 4
+                    .corporate-card.fade-in
+                        .corp-logo
+                            i.fas.fa-coffee
+                        .corp-info
+                            h3 CHUỖI CAFE HIGHLANDS
+                            p.corp-project <i class="fas fa-check"></i> Dự án: Thi công nội thất 5 cửa hàng.
+                            p.corp-desc "Tiến độ thi công thần tốc, chất lượng hoàn thiện sắc nét."
+
+        //- ================= 5. CẢM NHẬN KHÁCH HÀNG =================
+        section.section-testimonials
+            .container
+                +box-head('KHÁCH HÀNG NÓI VỀ CHÚNG TÔI')
+                
+                .testimonial-grid
+                    .testi-item.fade-in
+                        .testi-content
+                            .quote-icon “
+                            p Tôi thực sự ấn tượng với quy trình làm việc của PNT. Từ lúc lên ý tưởng đến khi nhận nhà là một hành trình đầy cảm xúc. Cảm ơn các bạn đã xây dựng tổ ấm cho gia đình tôi.
+                        .testi-user
+                            img(src="https://via.placeholder.com/60", alt="User")
+                            div
+                                h5 Anh Nguyễn Văn An
+                                span Chủ biệt thự Garden Hills
+
+                    .testi-item.fade-in
+                        .testi-content
+                            .quote-icon “
+                            p Đội ngũ giám sát rất kỹ tính, còn kỹ hơn cả chủ nhà. Vật liệu đưa vào công trình đều đúng cam kết hợp đồng. Rất đáng tin cậy!
+                        .testi-user
+                            img(src="https://via.placeholder.com/60", alt="User")
+                            div
+                                h5 Chị Trần Thu Hà
+                                span Doanh nhân
+
+                    .testi-item.fade-in
+                        .testi-content
+                            .quote-icon “
+                            p Giá cả hợp lý so với chất lượng nhận được. Dịch vụ bảo hành sau bàn giao cũng rất nhiệt tình, gọi là có mặt ngay.
+                        .testi-user
+                            img(src="https://via.placeholder.com/60", alt="User")
+                            div
+                                h5 Chú Lê Văn Nam
+                                span Cán bộ hưu trí
+
+        //- ================= 6. CTA =================
+        section.section-cta
+            .container.fade-in
+                h3.cta-title TRỞ THÀNH ĐỐI TÁC CỦA PNT DECOR NGAY HÔM NAY
+                p.cta-text Cùng hợp tác, cùng phát triển bền vững.
+                .cta-buttons
+                    a.cta-btn.btn-white(href="http://localhost:3000/lienhe") 
+                        i.fas.fa-handshake.mr-2
+                        | LIÊN HỆ HỢP TÁC
+                    a.cta-btn.btn-outline(href="tel:0914761150") 
+                        i.fas.fa-phone-alt.mr-2
+                        | HOTLINE: 0914.761.150
+
+    //- Script JS xử lý hiệu ứng
+    script.
+        document.addEventListener("DOMContentLoaded", function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('appear');
+                    }
+                });
+            }, { threshold: 0.15 });
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        });

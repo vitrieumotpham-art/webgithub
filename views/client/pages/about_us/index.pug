@@ -1,0 +1,116 @@
+extends ../../layouts/defaut.pug
+include ../../mixins/box.head.pug
+
+block main
+    title Về Chúng Tôi - PNT DECOR
+    // Link tới file CSS riêng
+    // Tải Font Awesome cho Icons
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
+
+block main
+    main
+        // SECTION 1: Banner Giới Thiệu
+        section.section-banner
+            img.banner-image(src="https://images.unsplash.com/photo-1549419131-b84781498877?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Kiến trúc hiện đại")
+            .banner-overlay
+                h1.banner-title.fade-in.appear KIẾN TẠO KHÔNG GIAN SỐNG
+
+        // SECTION 2: Giới Thiệu Công Ty
+        section#gioithieu.section-intro
+            .container
+                .intro-grid
+                    .intro-image-container.fade-in
+                        img.intro-image(src="/img/nha/doingu.jpg" alt="Hình ảnh đội ngũ PNT DECOR")
+                    .intro-content.fade-in
+                        h2.intro-heading-sub VỀ CHÚNG TÔI
+                        h3.intro-heading-main Công Ty TNHH Thiết Kế và Xây Dựng PNT DECOR
+                        p.intro-text
+                            | Được thành lập năm 
+                            strong 2025
+                            | , PNT DECOR hoạt động trong lĩnh vực thiết kế và thi công kiến trúc – nội thất, mang đến những giải pháp không gian tối ưu cho khách hàng.
+                        p.intro-text.intro-quote
+                            | Đội ngũ kiến trúc sư và kỹ sư chuyên môn cao của chúng tôi cam kết 
+                            strong chất lượng, tiến độ và thẩm mỹ
+                            | , kiến tạo nên những không gian sống đẳng cấp và bền vững.
+                        a.intro-text-link(href="http://localhost:3000/duan")
+                            | Xem Dự Án Của Chúng Tôi 
+                            i.fas.fa-arrow-right
+
+        // SECTION 3: Tầm Nhìn & Giá Trị Cốt Lõi
+        section#nen-tang.section-foundation
+            .container
+                h2.intro-heading-sub.text-center.fade-in NỀN TẢNG
+                h3.intro-heading-main.text-center.mb-12.fade-in Tầm Nhìn & Giá Trị Cốt Lõi
+                
+                .foundation-grid
+                    // Khối 1: Tầm Nhìn
+                    .foundation-block.foundation-block-1.fade-in
+                        i.fas.fa-eye.foundation-icon
+                        h4.foundation-title 1. Tầm Nhìn
+                        p.text-gray-600 PNT hướng đến trở thành thương hiệu kiến trúc – xây dựng hàng đầu Việt Nam, nổi bật với sự sáng tạo, công nghệ BIM và các giải pháp kiến trúc bền vững.
+
+                    // Khối 2: Sứ Mệnh
+                    .foundation-block.foundation-block-2.fade-in(data-delay="0.2")
+                        i.fas.fa-handshake.foundation-icon
+                        h4.foundation-title 2. Sứ Mệnh
+                        p.text-gray-600 Mang đến cho khách hàng giải pháp thiết kế và thi công tối ưu, vượt trên sự mong đợi bằng sự chuyên nghiệp, tận tâm và trách nhiệm với cộng đồng.
+
+                    // Khối 3: Giá Trị Cốt Lõi
+                    .foundation-block.foundation-block-3.fade-in(data-delay="0.4")
+                        i.fas.fa-gem.foundation-icon
+                        h4.foundation-title 3. Giá Trị Cốt Lõi
+                        ul.list-disc(style="list-style-position: inside; padding-left: 0.5rem;")
+                            li.text-gray-600 
+                                strong Chất lượng:
+                                | Cam kết trong từng chi tiết.
+                            li.text-gray-600 
+                                strong Sáng tạo:
+                                | Không ngừng đổi mới.
+                            li.text-gray-600 
+                                strong Uy tín:
+                                | Giữ vững niềm tin khách hàng.
+
+        // SECTION 4: Cột Mốc Phát Triển (Timeline)
+        section#cot-moc.section-timeline
+            .container
+                h2.intro-heading-sub.text-center.fade-in HÀNH TRÌNH
+                h3.intro-heading-main.text-center.mb-16.fade-in Các Cột Mốc Phát Triển
+                
+                .timeline-wrapper
+                    .timeline-line
+                    
+                    // Cột Mốc 1: 2021 (Lẻ - Bên phải)
+                    .timeline-item.fade-in
+                        .timeline-dot
+                        .timeline-year 2021
+                        .timeline-content
+                            h5.foundation-title Thành lập công ty và Dự án đầu tiên
+                            p.text-gray-600 Thành lập công ty TNHH Kiến trúc và tập trung vào các dự án thiết kế nhà ở dân dụng tại TP.HCM.
+
+                    // Cột Mốc 2: 2023 (Chẵn - Bên trái)
+                    .timeline-item.fade-in(data-delay="0.3")
+                        .timeline-dot
+                        .timeline-year 2023
+                        .timeline-content
+                            h5.foundation-title Mở rộng sang Lĩnh vực Thi công
+                            p.text-gray-600 Chính thức cung cấp dịch vụ thi công trọn gói. Đạt mốc 20 dự án hoàn thành trong năm.
+                    
+                    // Cột Mốc 3: 2025 (Lẻ - Bên phải)
+                    .timeline-item.fade-in(data-delay="0.6")
+                        .timeline-dot
+                        .timeline-year 2025
+                        .timeline-content
+                            h5.foundation-title Áp dụng công nghệ BIM & Kiến trúc Xanh
+                            p.text-gray-600 Đầu tư vào công nghệ BIM và đào tạo đội ngũ về thiết kế kiến trúc bền vững, thân thiện với môi trường.
+
+                .text-center.mt-12.fade-in(data-delay="0.8")
+                    p.text-xl.font-medium.italic.text-gray-500 "Mỗi cột mốc là một bước tiến vững chắc trên hành trình kiến tạo giá trị."
+
+        // SECTION 5: Lời Kêu Gọi Hành Động (Call to Action)
+        section.section-cta
+            .container.fade-in
+                h3.cta-title Sẵn sàng kiến tạo không gian mơ ước của bạn?
+                p.cta-text Liên hệ với đội ngũ chuyên gia của PNT DECOR để nhận tư vấn miễn phí ngay hôm nay.
+                a.cta-button(href="http://localhost:3000/lienhe")
+                    | Tư Vấn Miễn Phí 
+                    i.fas.fa-chevron-right.ml-2

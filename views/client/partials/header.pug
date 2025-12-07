@@ -1,14 +1,33 @@
 header.header
-  .container
-    .row.align-items-center
-      .col-3
-        .inner-logo
-          a(href="/")
-            img(src="/img/61622ec8899cffaa687a8342a84ea525.jpg", alt="Logo")
-      .col-9
-        .inner-menu
-          ul
-            li
-              a(href="/") Trang chủ
-            li
-              a(href="/products") Sản phẩm
+  //- 1. LOGO (Bên trái)
+  a.logo(href="/")
+    img(src="/img/pngtree-salon-logo-png-image_4004444.png" alt="Logo PNT DECOR")
+  
+  //- 2. MENU (Ở giữa)
+  nav.list-menu
+    a(href="/") Trang chủ
+    a(href="/about_us") Về Chúng Tôi
+    a(href="/dichvu") dịch vụ
+    a(href="/duan") Dự án
+    a(href="/khach") Khách hàng
+    a(href="/tintuc") Tin tức
+    a(href="/lienhe") Liên Hệ 
+  
+  //- 3. KHU VỰC BÊN PHẢI (Thông tin + Social + Search)
+  .header-right
+    //- Thông tin liên hệ (Ẩn trên mobile cho gọn)
+    .thongtin
+      p +84 914 761 150
+      p info@apes.com.vn
+    
+    //- Mạng xã hội
+    .social
+      a(href="https://www.facebook.com/profile.php?id=100068020086155&locale=vi_VN"): img(src="/img/sosial/icons8-facebook-30.png" alt="FB" target="_blank")
+      a(href="https://www.instagram.com/bin__258/"): img(src="/img/sosial/icons8-instagram-30.png" alt="Insta" target="_blank")
+    
+    //- Ô tìm kiếm (Mới thêm)
+    .search-box
+      form(action="/search" method="GET")
+        input.search-input(type="text" name="keyword" placeholder="Tìm kiếm...")
+        button.search-btn(type="submit")
+          i.fa-solid.fa-magnifying-glass

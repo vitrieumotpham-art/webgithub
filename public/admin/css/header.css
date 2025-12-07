@@ -1,0 +1,84 @@
+/* --- 1. Định kiểu chung cho Header --- */
+.admin-header {
+    background-color: #ffffff; /* Nền trắng sáng */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08); /* Đổ bóng chuyên nghiệp hơn */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    /* Đảm bảo không có viền border-bottom dư thừa nếu Bootstrap có */
+    border-bottom: none !important; 
+}
+
+/* --- 2. Định kiểu cho Logo và Branding --- */
+
+/* Đặt kích thước cố định cho logo để không làm hỏng bố cục */
+.admin-header .header-left .header-logo {
+    height: 40px; /* Chiều cao cố định */
+    width: auto;
+    object-fit: contain; /* Đảm bảo hình ảnh không bị méo */
+    margin-right: 15px; /* Khoảng cách với tiêu đề */
+    /* Hiệu ứng nổi nhẹ */
+    border-radius: 4px; 
+}
+
+.admin-header .header-left h2 {
+    font-family: 'Inter', sans-serif; /* Sử dụng font hiện đại */
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #212529; /* Màu chữ đậm */
+    letter-spacing: 0.5px; /* Thêm khoảng cách chữ */
+}
+
+/* --- 3. Định kiểu cho User Info --- */
+.admin-header .user-info {
+    /* Sử dụng flex gap để quản lý khoảng cách dễ hơn */
+    gap: 20px; 
+}
+
+/* Định kiểu cho icon user (Avatar Placeholder) */
+.admin-header .user-info .fa-user-circle {
+    color: #007bff; /* Màu chủ đạo/xanh dương */
+    font-size: 1.5rem; /* Kích thước lớn hơn một chút */
+}
+
+/* Định kiểu cho thông điệp chào mừng */
+.admin-header .user-info .welcome-message {
+    color: #495057;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* --- 4. Định kiểu cho Nút Logout --- */
+.admin-header .user-info .btn-outline-danger {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    /* Hiệu ứng chuyển động mượt mà */
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.admin-header .user-info .btn-outline-danger:hover {
+    /* Đổi màu nền khi hover */
+    background-color: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
+}
+
+/* --- Điều chỉnh cho màn hình nhỏ (Mobile/Tablet) --- */
+@media (max-width: 768px) {
+    .admin-header .header-left h2 {
+        /* Ẩn tiêu đề lớn để tiết kiệm không gian */
+        display: none; 
+    }
+
+    .admin-header .header-left .header-logo {
+        height: 30px; /* Logo nhỏ hơn trên mobile */
+        margin-right: 0;
+    }
+    
+    .admin-header .user-info .welcome-message {
+        /* Ẩn thông điệp chào mừng trên mobile */
+        display: none; 
+    }
+}

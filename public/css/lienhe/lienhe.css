@@ -1,0 +1,217 @@
+/* =================================== CƠ SỞ CHUNG =================================== */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Hiệu ứng Fade In cơ bản */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.fade-in.appear {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* =================================== 1. BANNER =================================== */
+.section-banner {
+    position: relative;
+    height: 35vh;
+    overflow: hidden;
+    margin-bottom: 3rem;
+}
+.banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+}
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.banner-title {
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* =================================== 2. MIXIN BOX HEAD (Tiêu đề) =================================== */
+.box-head {
+    text-align: center;
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
+.box-head .inner-title {
+    font-size: 2.2rem; 
+    font-weight: 700;
+    color: #333; 
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 15px;
+    letter-spacing: 1px;
+}
+.box-head .inner-title::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #007bff; /* Màu chủ đạo */
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+
+/* =================================== 3. CONTACT GRID & INFO =================================== */
+.section-contact {
+    padding: 50px 0;
+}
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr; /* Chia 1 phần cho info, 1.5 phần cho form */
+    gap: 50px;
+}
+
+.contact-info {
+    padding-right: 20px;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+.info-item i {
+    font-size: 1.5rem;
+    color: #007bff; /* Màu chủ đạo */
+    margin-right: 20px;
+    flex-shrink: 0;
+    padding-top: 5px;
+}
+.info-item h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #333;
+}
+.info-item p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+/* =================================== 4. FORM =================================== */
+.contact-form-wrapper {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.btn-submit {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+
+/* Form Status (Thông báo) */
+#form-status {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-align: center;
+}
+.alert.hidden {
+    display: none;
+}
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+.alert.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* =================================== 5. BẢN ĐỒ =================================== */
+.section-map {
+    padding: 50px 0;
+}
+.map-container {
+    width: 100%;
+    height: 450px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+}
+
+/* =================================== RESPONSIVE =================================== */
+@media (max-width: 900px) {
+    .contact-grid {
+        grid-template-columns: 1fr; /* Xếp chồng cột trên màn hình nhỏ */
+    }
+    .contact-info {
+        padding-right: 0;
+        margin-bottom: 30px;
+    }
+}
+@media (max-width: 600px) {
+    .banner-title {
+        font-size: 2.5rem;
+    }
+}

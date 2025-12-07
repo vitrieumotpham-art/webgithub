@@ -1,3 +1,53 @@
 footer.footer
   .container
-    p © 2025 28Tech. All rights reserved.
+    .footer-content
+      // Cột 1: Thông tin thương hiệu
+      .footer-col.brand-col
+        a.footer-logo(href="#")
+          img(src="/img/pngtree-salon-logo-png-image_4004444.png" alt="PNT DECOR Logo")
+          span PNT DECOR
+        p.footer-desc Kiến tạo không gian sống đẳng cấp. Chúng tôi mang đến giải pháp nội thất tinh tế và tiện nghi nhất cho ngôi nhà của bạn.
+        .footer-social
+          a(href="#")
+            img(src="/img/sosial/icons8-facebook-30.png" alt="Facebook")
+          a(href="#")
+            img(src="/img/sosial/icons8-instagram-30.png" alt="Instagram")
+          a(href="#")
+            img(src="/img/sosial/icons8-social-30.png" alt="Social")
+
+      // Cột 2: Menu Chính
+      .footer-col
+        h4.footer-title Khám Phá
+        ul.footer-links
+          li: a(href="/") Trang chủ
+          li: a(href="/about_us") Về Chúng Tôi
+          li: a(href="/duan") Dự án tiêu biểu
+          li: a(href="/tintuc") Tin tức & Sự kiện
+
+      // Cột 3: Dịch vụ (Thêm vào cho đầy đặn)
+      .footer-col
+        h4.footer-title Dịch Vụ
+        ul.footer-links
+          li: a(href="/dichvu") Thiết kế nội thất
+          li: a(href="/dichvu") Thi công trọn gói
+          li: a(href="/dichvu") Tư vấn phong thủy
+          li: a(href="/lienhe") Liên hệ tư vấn
+
+      // Cột 4: Thông tin liên hệ
+      .footer-col
+        h4.footer-title Liên Hệ
+        ul.footer-contact-list
+          li 
+            span.icon 📍
+            span 123 Đường ABC, Quận XYZ, TP. Đà Nẵng
+          li 
+            span.icon 📞
+            span +84 914 761 150
+          li 
+            span.icon ✉️
+            span info@apes.com.vn
+
+  // Phần bản quyền dưới cùng
+  .footer-bottom
+    .container
+      p © 2025 PNT DECOR. All Rights Reserved. Designed by You.

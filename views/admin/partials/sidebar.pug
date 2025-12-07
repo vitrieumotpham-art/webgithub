@@ -1,15 +1,24 @@
 aside.sidebar
   .logo
-    a(href="#") AdminPanel
+    a(href=`${PefixAdmin}/dashboard`) AdminPanel
   nav.sidebar-nav
     ul
+      li  
+        a(href=`${PefixAdmin}/dashboard`) Trang tổng quan
       li
-        a(href="#") Dashboard
+         a(href=`${PefixAdmin}/Project`) Quản lý Dự án
       li
-        a(href="#") Users
+        a(href=`${PefixAdmin}/Baiviet`) Quản lý Bài viết
       li
-        a(href="#") Posts
+        a(href=`${PefixAdmin}/Dichvu`) Quản lý Dịch vụ
       li
-        a(href="#") Settings
+        a(href=`${PefixAdmin}/Doingu`) Quản lý Đội ngũ
+      li   
+        a(href=`${PefixAdmin}/Lienhe`) Quản lý Liên hệ / Khách hàng
       li
-        a(href="#") Logout
+        a(href=`${PefixAdmin}/Hinhanh`) Quản lý Ảnh & Thư viện
+      li
+        a(href=`${PefixAdmin}/Account`) Quản lý Tài khoản
+      li
+        a(href=`${PefixAdmin}/Phanhoi`) (Tùy chọn) Phản hồi & Đánh giá khách hàng
+      

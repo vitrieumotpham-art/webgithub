@@ -1,0 +1,1012 @@
+/* ======================= SECTION ONE ======================= */
+.section-one {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.section-one img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.section-one .text {
+  position: absolute;
+  top: 20%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+}
+
+/* ======================= SECTION TWO (Sticky Menu) ======================= */
+.section-two {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  background-color: #fff;
+  padding: 8px 15px;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #eee;
+  scrollbar-width: thin;
+  z-index: 100;
+}
+
+/* Menu items */
+.section-two a {
+  text-decoration: none;
+  margin: 0 6px;
+  flex-shrink: 0;
+}
+
+.section-two .item {
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #333;
+  background-color: #f8f8f8;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;   
+}
+
+.section-two .item:hover,
+.section-two .item.active {
+  border-color: #ff6600;
+  color: #ff6600;
+  background-color: #fff;
+  box-shadow: 0 3px 8px rgba(255, 102, 0, 0.3);
+}
+/* ===== CSS: LĨNH VỰC HOẠT ĐỘNG - PNT ===== */
+
+.company-services {
+  max-width: 1250px;
+  margin: 60px auto;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.7;
+}
+
+.company-services p {
+  margin-bottom: 16px;
+  text-align: justify;
+}
+
+.company-services h3 {
+  color: #004aad;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-size: 1.3rem;
+  position: relative;
+  padding-left: 12px;
+}
+
+.company-services h3::before {
+  content: "◆";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #0078ff;
+  font-size: 0.9rem;
+  line-height: 1.5rem;
+}
+
+.services-list {
+  counter-reset: service-counter;
+  list-style: none;
+  padding: 0;
+}
+
+.services-list li {
+  margin-bottom: 36px;
+  padding: 20px;
+  border-left: 4px solid #0078ff;
+  background: #f8faff;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.services-list li:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 120, 255, 0.2);
+}
+
+.services-list li ul {
+  list-style-type: disc;
+  padding-left: 25px;
+  margin-top: 10px;
+}
+
+.services-list li ul li {
+  margin-bottom: 6px;
+}
+
+/* Hiệu ứng responsive */
+@media (max-width: 768px) {
+  .company-services {
+    padding: 24px;
+  }
+
+  .company-services h3 {
+    font-size: 1.15rem;
+  }
+
+  .services-list li {
+    padding: 16px;
+  }
+}
+
+/* Hiệu ứng xuất hiện (animation) */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.services-list li {
+  animation: fadeInUp 0.6s ease both;
+}
+
+.services-list li:nth-child(1) { animation-delay: 0.1s; }
+.services-list li:nth-child(2) { animation-delay: 0.2s; }
+.services-list li:nth-child(3) { animation-delay: 0.3s; }
+.services-list li:nth-child(4) { animation-delay: 0.4s; }
+.services-list li:nth-child(5) { animation-delay: 0.5s; }
+.services-list li:nth-child(6) { animation-delay: 0.6s; }
+
+/* ===== CSS: NỀN TẢNG KINH DOANH - PNT ===== */
+
+.business-foundation {
+  background: #f9fbff;
+  padding: 60px 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.foundation-container {
+  max-width: 1250px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 40px 50px;
+  border-radius: 16px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease both;
+}
+
+.section-title {
+  text-align: center;
+  color: #004aad;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: #0078ff;
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+.foundation-container .intro {
+  text-align: justify;
+  margin-bottom: 30px;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.foundation-block {
+  background: #f5f9ff;
+  border-left: 5px solid #0078ff;
+  padding: 20px 25px;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.foundation-block:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 120, 255, 0.2);
+}
+
+.foundation-block h3 {
+  color: #004aad;
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.foundation-block p {
+  text-align: justify;
+  margin-bottom: 10px;
+}
+
+.foundation-block ul {
+  list-style: disc;
+  padding-left: 25px;
+  margin: 10px 0;
+}
+
+.foundation-block ul li {
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.quote {
+  margin-top: 30px;
+  font-style: italic;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #004aad;
+  background: #eef6ff;
+  padding: 16px;
+  border-radius: 12px;
+  border-left: 4px solid #0078ff;
+}
+
+/* Hiệu ứng animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .foundation-container {
+    padding: 25px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .foundation-block {
+    padding: 18px;
+  }
+
+  .foundation-block h3 {
+    font-size: 1.1rem;
+  }
+}
+
+/* ===== CSS: CỘT MỐC PHÁT TRIỂN - PNT ===== */
+
+.timeline-section {
+  background: #f4f8ff;
+  padding: 70px 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.timeline-container {
+  max-width: 1250px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 50px 40px;
+  border-radius: 16px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #004aad;
+  font-weight: 700;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.timeline-title::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: #0078ff;
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+.timeline-intro {
+  text-align: justify;
+  margin-bottom: 50px;
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+/* ===== Timeline style ===== */
+.timeline {
+  position: relative;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4px;
+  height: 100%;
+  background: #0078ff;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.timeline-item {
+  position: relative;
+  width: 50%;
+  padding: 25px 35px;
+  box-sizing: border-box;
+}
+
+.timeline-item:nth-child(odd) {
+  left: 0;
+  text-align: right;
+}
+
+.timeline-item:nth-child(even) {
+  left: 50%;
+}
+
+.timeline-date {
+  background: #004aad;
+  color: #fff;
+  font-weight: bold;
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.timeline-content {
+  background: #f8faff;
+  border-radius: 10px;
+  padding: 18px 22px;
+  position: relative;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 120, 255, 0.1);
+}
+
+.timeline-content h3 {
+  color: #004aad;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+.timeline-content p {
+  margin: 0;
+  text-align: justify;
+  line-height: 1.6;
+}
+
+.timeline-item::after {
+  content: "";
+  position: absolute;
+  top: 30px;
+  width: 18px;
+  height: 18px;
+  background: #0078ff;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.timeline-item:nth-child(odd)::after {
+  right: -9px;
+}
+
+.timeline-item:nth-child(even)::after {
+  left: -9px;
+}
+
+/* Hover & animation */
+.timeline-content:hover {
+  background: #eaf3ff;
+  box-shadow: 0 8px 20px rgba(0, 120, 255, 0.2);
+  transform: translateY(-5px);
+}
+
+/* Quote */
+.timeline-quote {
+  margin-top: 40px;
+  text-align: center;
+  font-style: italic;
+  color: #004aad;
+  font-size: 1.1rem;
+  background: #eef6ff;
+  padding: 16px;
+  border-radius: 12px;
+  border-left: 4px solid #0078ff;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .timeline::before {
+    left: 8px;
+  }
+
+  .timeline-item {
+    width: 100%;
+    padding-left: 40px;
+    padding-right: 20px;
+    text-align: left !important;
+  }
+
+  .timeline-item::after {
+    left: 0;
+  }
+
+  .timeline-item:nth-child(odd),
+  .timeline-item:nth-child(even) {
+    left: 0;
+  }
+}
+.timeline-item {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+
+.timeline-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* ===== CSS: CHIẾN LƯỢC KINH DOANH - PNT ===== */
+
+.strategy-section {
+  background: #f4f8ff;
+  padding: 80px 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.strategy-container {
+  max-width: 1250px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 50px 40px;
+  border-radius: 16px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+.strategy-title {
+  text-align: center;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #004aad;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.strategy-title::after {
+  content: "";
+  display: block;
+  width: 90px;
+  height: 4px;
+  background: #0078ff;
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+.strategy-intro {
+  text-align: justify;
+  margin-bottom: 45px;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  color: #444;
+}
+
+/* ===== GRID LAYOUT ===== */
+.strategy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.strategy-item {
+  background: #f8faff;
+  border-radius: 14px;
+  padding: 25px 28px;
+  box-shadow: 0 3px 12px rgba(0, 120, 255, 0.1);
+  border-left: 5px solid #0078ff;
+  transition: all 0.3s ease;
+}
+
+.strategy-item:hover {
+  background: #eaf3ff;
+  box-shadow: 0 8px 20px rgba(0, 120, 255, 0.2);
+  transform: translateY(-5px);
+}
+
+.strategy-item h3 {
+  color: #004aad;
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.strategy-item p {
+  text-align: justify;
+  line-height: 1.7;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* ===== QUOTE ===== */
+.strategy-quote {
+  margin-top: 50px;
+  text-align: center;
+  font-style: italic;
+  color: #004aad;
+  font-size: 1.1rem;
+  background: #eef6ff;
+  padding: 18px;
+  border-radius: 12px;
+  border-left: 4px solid #0078ff;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .strategy-container {
+    padding: 40px 25px;
+  }
+
+  .strategy-title {
+    font-size: 1.6rem;
+  }
+
+  .strategy-item h3 {
+    font-size: 1.15rem;
+  }
+
+  .strategy-item {
+    padding: 22px;
+  }
+}
+.strategy-item {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+
+.strategy-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* ===== CSS: SẢN PHẨM CHIẾN LƯỢC - PNT ===== */
+
+.product-section {
+  background: #f4f8ff;
+  padding: 80px 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.product-container {
+  max-width: 1250px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 60px 40px;
+  border-radius: 16px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+.product-title {
+  text-align: center;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #004aad;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.product-title::after {
+  content: "";
+  display: block;
+  width: 90px;
+  height: 4px;
+  background: #0078ff;
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+.product-intro {
+  text-align: justify;
+  margin-bottom: 45px;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  color: #444;
+}
+
+/* ===== GRID LAYOUT ===== */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 35px;
+  margin-top: 30px;
+}
+
+.product-item {
+  background: #f8faff;
+  border-radius: 14px;
+  padding: 30px 25px;
+  box-shadow: 0 3px 12px rgba(0, 120, 255, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+  border-top: 5px solid #0078ff;
+}
+
+.product-item:hover {
+  background: #eaf3ff;
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 120, 255, 0.2);
+}
+
+/* ===== ICON ===== */
+.product-icon {
+  width: 70px;
+  height: 70px;
+  background: #0078ff;
+  color: #fff;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto 18px;
+  box-shadow: 0 3px 10px rgba(0, 120, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.product-item:hover .product-icon {
+  background: #004aad;
+  transform: scale(1.1);
+}
+
+.product-item h3 {
+  color: #004aad;
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.product-item p {
+  text-align: justify;
+  line-height: 1.7;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* ===== QUOTE ===== */
+.product-quote {
+  margin-top: 50px;
+  text-align: center;
+  font-style: italic;
+  color: #004aad;
+  font-size: 1.1rem;
+  background: #eef6ff;
+  padding: 18px;
+  border-radius: 12px;
+  border-left: 4px solid #0078ff;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .product-container {
+    padding: 40px 25px;
+  }
+
+  .product-title {
+    font-size: 1.6rem;
+  }
+
+  .product-item h3 {
+    font-size: 1.15rem;
+  }
+
+  .product-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+  }
+}
+
+.product-item {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+
+.product-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* ===== CSS: CHỨNG CHỈ CHẤT LƯỢNG - PNT ===== */
+
+.certificate-section {
+  background: #f4f9ff;
+  padding: 80px 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.certificate-container {
+  max-width: 1250px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 60px 40px;
+  border-radius: 16px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+.certificate-title {
+  text-align: center;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #004aad;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.certificate-title::after {
+  content: "";
+  display: block;
+  width: 90px;
+  height: 4px;
+  background: #0078ff;
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+.certificate-intro {
+  text-align: justify;
+  margin-bottom: 45px;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  color: #444;
+}
+
+/* ===== GRID LAYOUT ===== */
+.certificate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 35px;
+  margin-top: 30px;
+}
+
+.certificate-item {
+  background: #f8fbff;
+  border-radius: 14px;
+  padding: 30px 25px;
+  box-shadow: 0 3px 12px rgba(0, 120, 255, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+  border-top: 5px solid #0078ff;
+}
+
+.certificate-item:hover {
+  background: #eaf3ff;
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 120, 255, 0.2);
+}
+
+/* ===== ICON ===== */
+.certificate-icon {
+  width: 70px;
+  height: 70px;
+  background: #0078ff;
+  color: #fff;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto 18px;
+  box-shadow: 0 3px 10px rgba(0, 120, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.certificate-item:hover .certificate-icon {
+  background: #004aad;
+  transform: scale(1.1);
+}
+
+.certificate-item h3 {
+  color: #004aad;
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.certificate-item p {
+  text-align: justify;
+  line-height: 1.7;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* ===== QUOTE ===== */
+.certificate-quote {
+  margin-top: 50px;
+  text-align: center;
+  font-style: italic;
+  color: #004aad;
+  font-size: 1.1rem;
+  background: #eef6ff;
+  padding: 18px;
+  border-radius: 12px;
+  border-left: 4px solid #0078ff;
+}
+
+/* ===== HIỆU ỨNG FADE-IN ===== */
+.certificate-item {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+
+.certificate-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .certificate-container {
+    padding: 40px 25px;
+  }
+
+  .certificate-title {
+    font-size: 1.6rem;
+  }
+
+  .certificate-item h3 {
+    font-size: 1.15rem;
+  }
+
+  .certificate-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+  }
+}
+.certificate-item {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+
+.certificate-item.visible {
+  opacity: 1;
+ transform: translateY(0);
+}
+/* ===== CSS: GIỚI THIỆU PNT DECOR ===== */
+.intro-section {
+  background: #f4f9ff;
+  padding: 90px 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.intro-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  max-width: 1250px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 60px 40px;
+  border-radius: 18px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+.intro-left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.intro-image {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 4px 20px rgba(0, 120, 255, 0.2);
+  transition: all 0.4s ease;
+}
+
+.intro-image:hover {
+  transform: scale(1.05);
+}
+
+.intro-right {
+  flex: 1.2;
+}
+
+.intro-title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #004aad;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.intro-title::after {
+  content: "";
+  display: block;
+  width: 90px;
+  height: 4px;
+  background: #0078ff;
+  margin-top: 10px;
+  border-radius: 2px;
+}
+
+.intro-text {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  text-align: justify;
+  color: #444;
+  margin-bottom: 18px;
+}
+
+/* ===== HIỆU ỨNG FADE-IN ===== */
+.fade-item {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+
+.fade-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .intro-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 25px;
+  }
+
+  .intro-right {
+    order: 2;
+  }
+
+  .intro-left {
+    order: 1;
+  }
+
+  .intro-image {
+    max-width: 280px;
+  }
+
+  .intro-title {
+    font-size: 1.6rem;
+  }
+}
