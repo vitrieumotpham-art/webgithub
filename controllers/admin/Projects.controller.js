@@ -89,27 +89,28 @@ module.exports.createduan = async (req, res) => {
 // [POST] /admin/project/create
 module.exports.createduanPost = async (req, res) => {
     try {
+        // 1. Ép kiểu dữ liệu
         req.body.so_tang = parseInt(req.body.so_tang) || 0;
         req.body.dien_tich = parseInt(req.body.dien_tich) || 0;
         req.body.nam_thuc_hien = parseInt(req.body.nam_thuc_hien) || new Date().getFullYear();
         req.body.is_noibat = (req.body.is_noibat === "true");
 
-        if (req.file) {
-    const result = await uploadToCloudinary(req.file.buffer);
-    req.body.hinh_anh = result.secure_url; 
-  }
+        // 2. KHÔNG cần uploadToCloudinary ở đây nữa 
+        // Vì middleware 'uploadCloud.upload' ở file Route đã xử lý rồi.
+        // Link ảnh đã nằm sẵn trong req.body.hinh_anh.
 
+        // 3. Lưu vào Database
         const project = new Duan(req.body);
         await project.save();
 
         req.flash("success", "Tạo dự án mới thành công!");
         res.redirect(`/${systemConfig.prefixAdmin}/project`);
     } catch (error) {
+        console.log(error); // Nên log lỗi để dễ debug
         req.flash("error", "Lỗi khi tạo dự án!");
         res.redirect("back");
     }
 };
-
 // [GET] /admin/project/edit/:id
 module.exports.edit = async (req, res) => {
     try {
@@ -136,6 +137,7 @@ module.exports.edit = async (req, res) => {
 };
 
 // [PATCH] /admin/project/edit/:id
+// [PATCH] /admin/project/edit/:id
 module.exports.editpatch = async (req, res) => {
     try {
         const id = req.params.id;
@@ -145,10 +147,10 @@ module.exports.editpatch = async (req, res) => {
         req.body.nam_thuc_hien = parseInt(req.body.nam_thuc_hien) || 0;
         req.body.is_noibat = (req.body.is_noibat === "true");
 
-        if (req.file) {
-    const result = await uploadToCloudinary(req.file.buffer);
-    req.body.hinh_anh = result.secure_url; 
-  }
+        // KHÔNG cần gọi uploadToCloudinary ở đây nữa nếu Route đã có middleware.
+        // Middleware uploadCloud đã gán link vào req.body.hinh_anh nếu có file mới.
+        // Nếu không có file mới, req.body.hinh_anh sẽ không bị ghi đè, 
+        // giúp giữ nguyên ảnh cũ trong Database.
 
         delete req.body._id;
 

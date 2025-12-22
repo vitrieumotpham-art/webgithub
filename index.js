@@ -1,6 +1,7 @@
+require("dotenv").config();
 const methodOverride = require("method-override");
 const express = require("express");
-require("dotenv").config();
+
 const flash = require('express-flash');
 const database = require("./config/database");
 const cookieParser = require('cookie-parser'); // <--- THÊM DÒNG NÀY

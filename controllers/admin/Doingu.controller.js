@@ -149,25 +149,47 @@ module.exports.edit = async (req, res) => {
 }
 // controllers/admin/Dichvu.controller.js
 
+// [PATCH] /admin/doingu/edit/:id
 module.exports.editpatch = async (req, res) => {
     const id = req.params.id;
-     if (req.file) {
-        const result = await uploadToCloudinary(req.file.buffer);
-        req.body.avatar = result.secure_url; 
-      }
 
     try {
+        // 1. Xử lý upload ảnh lên Cloudinary nếu có file mới
+        if (req.file) {
+            const result = await uploadToCloudinary(req.file.buffer);
+            req.body.avatar = result.secure_url; 
+        }
+
+        // 2. Xử lý lại object Socials (Vì form gửi lên các trường rời rạc)
+        req.body.socials = {
+            facebook: req.body.facebook || "",
+            twitter: req.body.twitter || "",
+            linkedin: req.body.linkedin || "",
+            instagram: req.body.instagram || "",
+            zalo: req.body.zalo || ""
+        };
+
+        // 3. Ép kiểu dữ liệu cho 'order'
+        if (req.body.order) {
+            req.body.order = parseInt(req.body.order);
+        }
+
+        // 4. Xóa các trường không được phép cập nhật thủ công
         delete req.body._id; 
         delete req.body.id; 
-        await dichvu.updateOne({
-            _id: id, 
+
+        // 5. Cập nhật vào Database (Sửa dichvu thành Doingu)
+        await Doingu.updateOne({
+            _id: id,
+            deleted: false
         }, req.body);
-        req.flash("success", `Cập nhật dịch vụ thành công!`);
+
+        req.flash("success", `Cập nhật nhân sự thành công!`);
+        res.redirect(`/${systemConfig.prefixAdmin}/doingu`);
 
     } catch (error) {
-        req.flash("error", `Cập nhật dịch vụ thất bại`);
-        console.error("Lỗi cập nhật dịch vụ:", error);
+        console.error("Lỗi cập nhật nhân sự:", error);
+        req.flash("error", `Cập nhật thất bại`);
+        res.redirect("back");
     } 
-    res.redirect(`/${sytemcofig.prefixAdmin}/doingu/edit/${id}`)
-
 };
