@@ -2,6 +2,7 @@ const Doingu = require("../../models/doingu.model");
 const searchHelper = require("../../helpers/search.js");
 const systemConfig = require("../../config/system.js"); // Sửa chính tả sytemcofig
 const mongoose = require("mongoose"); // PHẢI CÓ DÒNG NÀY
+const uploadToCloudinary = require("../../helpers/uploadToCloudinary");
 // [GET] /admin/doingu
 module.exports.Doingu = async (req, res) => {
     try {
@@ -66,9 +67,10 @@ module.exports.createDoinguPost = async (req, res) => {
         };
 
         // 3. Xử lý Avatar (Khớp với name="avatar" trong Pug)
-        if (req.file) {
-            req.body.avatar = `/uploads/${req.file.filename}`;
-        }
+         if (req.file) {
+            const result = await uploadToCloudinary(req.file.buffer);
+            req.body.avatar = result.secure_url; 
+          }
 
         req.body.deleted = false;
 
@@ -149,9 +151,10 @@ module.exports.edit = async (req, res) => {
 
 module.exports.editpatch = async (req, res) => {
     const id = req.params.id;
-    if (req.file) {
-        req.body.avatar = `/uploads/${req.file.filename}`; 
-    }
+     if (req.file) {
+        const result = await uploadToCloudinary(req.file.buffer);
+        req.body.avatar = result.secure_url; 
+      }
 
     try {
         delete req.body._id; 

@@ -1,10 +1,16 @@
 const express = require('express');
 const route = express.Router();
-const BaivietController = require("../../controllers/admin/Baiviet.controller");
 const multer = require("multer");
-const storageMulter = require("../../helpers/storageMuter");
-const validates = require("../../validates/admin/dichvu.validate"); // Lưu ý kiểm tra lại tên file validate này
-const upload = multer({ storage: storageMulter() });
+
+// 1. Dùng Memory Storage để tránh lỗi Read-only trên Vercel
+const upload = multer(); 
+
+// 2. Import Middleware đẩy ảnh lên Cloudinary
+const uploadCloud = require("../../middlewares/admin/uploadCloud.middleware");
+
+// 3. Import Controller & Validates
+const BaivietController = require("../../controllers/admin/Baiviet.controller");
+const validates = require("../../validates/admin/dichvu.validate"); 
 
 // [GET] Danh sách bài viết
 route.get("/", BaivietController.Baiviet);
@@ -18,17 +24,19 @@ route.get("/create", BaivietController.createBaiviet);
 // [POST] Xử lý tạo mới
 route.post(
     "/create",
-    upload.single("thumbnail"),
+    upload.single("avatar"), // Lưu ý: Trong Controller của bạn đang dùng req.body.avatar
+    uploadCloud.upload,       // Đẩy buffer lên Cloudinary
     BaivietController.createBaivietPost
 );
 
 // [GET] Trang chỉnh sửa
 route.get("/edit/:id", BaivietController.edit);
 
-// [PATCH] Xử lý cập nhật bài viết (PHẦN BỔ SUNG)
+// [PATCH] Xử lý cập nhật bài viết
 route.patch(
     "/edit/:id",
-    upload.single("thumbnail"),
+    upload.single("thumbnail"), // Lưu ý: Tên field phải khớp với file PUG và Controller
+    uploadCloud.upload,
     BaivietController.editPatch
 );
 

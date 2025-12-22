@@ -3,7 +3,7 @@ const searchHelper = require("../../helpers/search.js");
 const paginationHelper = require("../../helpers/pagination.js");
 const mongoose = require('mongoose');
 const systemConfig = require("../../config/system.js");
-
+const uploadToCloudinary = require("../../helpers/uploadToCloudinary");
 // [GET] /admin/project
 module.exports.duan = async (req, res) => {
     try {
@@ -95,8 +95,9 @@ module.exports.createduanPost = async (req, res) => {
         req.body.is_noibat = (req.body.is_noibat === "true");
 
         if (req.file) {
-            req.body.hinh_anh = `/uploads/${req.file.filename}`;
-        }
+    const result = await uploadToCloudinary(req.file.buffer);
+    req.body.hinh_anh = result.secure_url; 
+  }
 
         const project = new Duan(req.body);
         await project.save();
@@ -145,8 +146,9 @@ module.exports.editpatch = async (req, res) => {
         req.body.is_noibat = (req.body.is_noibat === "true");
 
         if (req.file) {
-            req.body.hinh_anh = `/uploads/${req.file.filename}`;
-        }
+    const result = await uploadToCloudinary(req.file.buffer);
+    req.body.hinh_anh = result.secure_url; 
+  }
 
         delete req.body._id;
 

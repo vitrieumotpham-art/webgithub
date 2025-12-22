@@ -7,6 +7,7 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
+    "cloudinary": "^2.8.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.5",
@@ -20,7 +21,8 @@
     "mongoose-slug-updater": "^3.3.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.9.7",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "streamifier": "^0.1.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"

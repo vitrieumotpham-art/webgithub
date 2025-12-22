@@ -3,6 +3,7 @@ const searchHelper = require("../../helpers/search.js");
 const paginationbaivietHelper = require("../../helpers/pagination.js");
 const mongoose = require('mongoose');
 const systemConfig = require("../../config/system.js"); // Sửa chính tả sytemcofig
+const uploadToCloudinary = require("../../helpers/uploadToCloudinary");
 //admin/Baiviet
 module.exports.Baiviet = async (req, res) => {
     try {
@@ -91,8 +92,9 @@ module.exports.createBaivietPost = async (req, res) => {
 
     // 3. Xử lý thumbnail
     if (req.file) {
-        req.body.thumbnail = `/uploads/${req.file.filename}`;
-    }
+                const result = await uploadToCloudinary(req.file.buffer);
+                req.body.avatar = result.secure_url; 
+              }
 
     // 4. Xử lý featured (Checkbox sang Boolean)
     req.body.featured = req.body.featured === "true";
@@ -196,8 +198,9 @@ module.exports.editPatch = async (req, res) => {
 
         // 2. Xử lý hình ảnh mới (nếu có upload)
         if (req.file) {
-            req.body.thumbnail = `/uploads/${req.file.filename}`;
-        }
+                    const result = await uploadToCloudinary(req.file.buffer);
+                    req.body.avatar = result.secure_url; 
+                  }
 
         // 3. Xử lý featured (Checkbox)
         req.body.featured = req.body.featured === "true";

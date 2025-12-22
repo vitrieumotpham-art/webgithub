@@ -1,10 +1,14 @@
 const express = require('express');
 const route = express.Router();
 const multer = require("multer");
-const storageMulter = require("../../helpers/storageMuter");
-const upload = multer({ storage: storageMulter() });
 
-// Import controller (Đảm bảo đường dẫn này đúng)
+// KHÔNG dùng storageMulter cũ vì Vercel không cho lưu file vào ổ đĩa
+const upload = multer(); // Sử dụng Memory Storage để có buffer đẩy lên Cloud
+
+// Import Middleware xử lý đẩy ảnh lên Cloudinary
+const uploadCloud = require("../../middlewares/admin/uploadCloud.middleware");
+
+// Import controller 
 const controller = require("../../controllers/admin/Projects.controller"); 
 
 // --- ROUTE CHI TIẾT & DANH SÁCH ---
@@ -13,16 +17,19 @@ route.get("/detail/:id", controller.detail);
 
 // --- ROUTE TẠO MỚI ---
 route.get("/create", controller.createduan);
-route.post("/create", 
-    upload.single("hinh_anh"),
-    // validates.createPost, <-- Nếu dòng này gây lỗi, hãy tạm comment lại như thế này
-    controller.createduanPost
+route.post(
+    "/create", 
+    upload.single("hinh_anh"), // Nhận file từ form
+    uploadCloud.upload,        // Đẩy lên Cloudinary và trả về link trong req.body.hinh_anh
+    controller.createduanPost  // Lưu vào Database
 );
 
 // --- ROUTE CHỈNH SỬA ---
 route.get("/edit/:id", controller.edit);
-route.patch("/edit/:id",
+route.patch(
+    "/edit/:id",
     upload.single("hinh_anh"),
+    uploadCloud.upload,        // Tự động xử lý nếu có ảnh mới, không có thì bỏ qua
     controller.editpatch
 );
 

@@ -3,6 +3,7 @@ const searchHelper = require("../../helpers/search.js");
 const paginationdichvuHelper = require("../../helpers/pagination.js");
 const sytemcofig=require("../../config/system.js");
 const mongoose = require("mongoose"); // PHẢI CÓ DÒNG NÀY
+const uploadToCloudinary = require("../../helpers/uploadToCloudinary");
 // --- 1. Hàm Xử lý Danh sách Dịch vụ (Dichvu) ---
 module.exports.Dichvu = async (req, res) => { // Đổi 'rep' thành 'req'
     try {
@@ -159,8 +160,6 @@ module.exports.createDichvu = async (req, res) => {
 
  }
 module.exports.createDichvuPost = async (req, res) => {
-
-    console.log(req.file);
     if (req.body.position === "") { 
         try {
             const countDichvu = await dichvu.countDocuments({ deleted: false }); 
@@ -172,9 +171,10 @@ module.exports.createDichvuPost = async (req, res) => {
     }else{
         req.body.position=parseInt(req.body.position);
     }
-    if(req.file){
-    req.body.thumbnail=`/uploads/${req.file.filename }`
-    }
+    if (req.file) {
+                const result = await uploadToCloudinary(req.file.buffer);
+                req.body.thumbnail = result.secure_url; 
+              }
 
     const newDichvu=new dichvu(req.body);
     await newDichvu.save(); 
@@ -214,8 +214,9 @@ module.exports.edit = async (req, res) => {
 module.exports.editpatch = async (req, res) => {
     const id = req.params.id;
     if (req.file) {
-        req.body.thumbnail = `/uploads/${req.file.filename}`; 
-    }
+                const result = await uploadToCloudinary(req.file.buffer);
+                req.body.thumbnail = result.secure_url; 
+              }
 
     try {
         delete req.body._id; 
