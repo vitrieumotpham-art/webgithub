@@ -38,7 +38,7 @@ module.exports.duan = async (req, res) => {
             .limit(ojectPagination.limitItem)
             .skip(ojectPagination.skip);
 
-        res.render("admin/pages/project/index.pug", {
+        res.render("admin/pages/Project/index.pug", {
             pageTitle: "Quản Lý Dự Án",
             duan: listDuAn,
             trang_thai: req.query.trang_thai,
