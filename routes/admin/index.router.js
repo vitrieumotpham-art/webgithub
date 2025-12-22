@@ -11,6 +11,9 @@ const Doingu=require("./doingu.router");
 
 module.exports=(app)=>{
   const path_admin = "/" + systemConfig.prefixAdmin;
+  app.get(path_admin, (req, res) => {
+    res.redirect(path_admin + "/dashboard");
+  });
 app.use(path_admin+"/dashboard",dashBoardRoute);
 app.use(path_admin+"/project",Project);
 app.use(path_admin+"/baiviet",Baiviet);
