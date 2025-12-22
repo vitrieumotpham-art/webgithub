@@ -24,7 +24,7 @@ route.get("/create", BaivietController.createBaiviet);
 // [POST] Xử lý tạo mới
 route.post(
     "/create",
-    upload.single("avatar"), // Lưu ý: Trong Controller của bạn đang dùng req.body.avatar
+    upload.single("thumbnail"), // Lưu ý: Trong Controller của bạn đang dùng req.body.avatar
     uploadCloud.upload,       // Đẩy buffer lên Cloudinary
     BaivietController.createBaivietPost
 );
