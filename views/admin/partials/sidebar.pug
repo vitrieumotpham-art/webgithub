@@ -1,24 +1,28 @@
 aside.sidebar
   .logo
-    a(href=`${PefixAdmin}/dashboard`) AdminPanel
+    //- Thêm dấu / vào trước biến
+    a(href=`/${PefixAdmin}/dashboard`) AdminPanel
   nav.sidebar-nav
     ul
       li  
-        a(href=`${PefixAdmin}/dashboard`) Trang tổng quan
+        a(href=`/${PefixAdmin}/dashboard`) Trang tổng quan
       li
-         a(href=`${PefixAdmin}/Project`) Quản lý Dự án
+        //- Sửa Project -> project (viết thường)
+        a(href=`/${PefixAdmin}/project`) Quản lý Dự án
       li
-        a(href=`${PefixAdmin}/Baiviet`) Quản lý Bài viết
+        //- Sửa Baiviet -> baiviet (viết thường)
+        a(href=`/${PefixAdmin}/baiviet`) Quản lý Bài viết
       li
-        a(href=`${PefixAdmin}/Dichvu`) Quản lý Dịch vụ
+        //- Sửa Dichvu -> dichvu (viết thường)
+        a(href=`/${PefixAdmin}/dichvu`) Quản lý Dịch vụ
       li
-        a(href=`${PefixAdmin}/Doingu`) Quản lý Đội ngũ
+        //- Sửa Doingu -> doingu (viết thường)
+        a(href=`/${PefixAdmin}/doingu`) Quản lý Đội ngũ
       li   
-        a(href=`${PefixAdmin}/Lienhe`) Quản lý Liên hệ / Khách hàng
+        a(href=`/${PefixAdmin}/lienhe`) Quản lý Liên hệ
       li
-        a(href=`${PefixAdmin}/Hinhanh`) Quản lý Ảnh & Thư viện
+        a(href=`/${PefixAdmin}/hinhanh`) Quản lý Ảnh
       li
-        a(href=`${PefixAdmin}/Account`) Quản lý Tài khoản
+        a(href=`/${PefixAdmin}/account`) Quản lý Tài khoản
       li
-        a(href=`${PefixAdmin}/Phanhoi`) (Tùy chọn) Phản hồi & Đánh giá khách hàng
-      
+        a(href=`/${PefixAdmin}/phanhoi`) Phản hồi

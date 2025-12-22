@@ -1,7 +1,13 @@
     const mongoose = require("mongoose")
+    const slug=require('mongoose-slug-updater');
+    mongoose.plugin(slug);
 const duanSchema=new mongoose.Schema({
     ten_du_an: String,
-    slug: String,
+    slug:{
+    type:String,
+    slug:"ten_du_an",   
+    unique:true
+},
     chu_dau_tu: String,
     loai_hinh: String,
     phong_cach: String,
@@ -14,7 +20,15 @@ const duanSchema=new mongoose.Schema({
     hinh_anh: [String],
     mo_ta:String, 
     chi_phi: Number ,
-    deleted:Boolean
+    deleted:{
+        type:String,
+        default:"false"
+    },
+    deletedAt:Date,
+    position:Number
+},
+{
+    timestamps:true 
 });
 const duan= mongoose.model('duan',duanSchema,"duan");
 module.exports= duan ;

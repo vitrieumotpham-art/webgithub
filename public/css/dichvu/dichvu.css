@@ -20,3 +20,10 @@
       padding-left: 5px;
       transition: all 0.2s;
     }
+    /* Đảm bảo ảnh preview không bị biến dạng và có kích thước tối đa */
+img[upload-image-preview] {
+    max-width: 200px; /* Giới hạn chiều rộng tối đa */
+    height: auto;     /* Giữ tỷ lệ ảnh */
+    margin-top: 10px;
+    display: block;   /* Hiển thị như một block để dễ căn chỉnh */
+}

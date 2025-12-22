@@ -4,22 +4,35 @@ mongoose.plugin(slug);
 
 const BaiVietSchema = new mongoose.Schema({
     title: String,
-    slug: String,
+    slug: {
+        type: String,
+        slug: "title", // Tự động tạo slug từ trường title
+        unique: true
+    },
     article_category_id: String, 
     description: String,
     content: String,
     thumbnail: String,
     status: String,
     position: Number,
-    featured:Boolean,
+    featured: Boolean,
     views: Number,
     createdBy: {
-        account_id: String,
+        account_id: {
+            type: String,
+        },
         createdAt: {
             type: Date,
             default: Date.now
         }
     }, 
-    deleted: Boolean
+    deleted: {
+        type: Boolean,
+        default: false // QUAN TRỌNG: Phải là false khi mới tạo
+    },
+    deletedAt: Date // Nên thêm trường này để biết xóa khi nào
+}, {
+    timestamps: true // Tự động thêm trường updatedAt và createdAt cấp cao nhất
 });
+
 module.exports = mongoose.model('baiviet', BaiVietSchema, "baiviet");

@@ -1,0 +1,66 @@
+extends ../../layout/defaut.pug
+
+block main
+  .container-fluid.mt-4
+    h1.h3.text-primary.fw-bold.mb-4 Thêm Tài Khoản Quản Trị
+
+    form(
+      action=`/${PefixAdmin}/account/create`
+      method="POST"
+      enctype="multipart/form-data"
+    )
+      .row
+        .col-md-8
+          .card.shadow-sm.border-0.mb-4
+            .card-body
+              .row
+                .col-md-6.mb-3
+                  label.form-label.fw-bold(for="fullName") Họ tên
+                  input#fullName.form-control(type="text" name="fullName" required)
+                .col-md-6.mb-3
+                  label.form-label.fw-bold(for="email") Email
+                  input#email.form-control(type="email" name="email" required)
+                
+                .col-md-6.mb-3
+                  label.form-label.fw-bold(for="username") Tên đăng nhập
+                  input#username.form-control(type="text" name="username" required)
+                .col-md-6.mb-3
+                  label.form-label.fw-bold(for="password") Mật khẩu
+                  input#password.form-control(type="password" name="password" required)
+
+        .col-md-4
+          .card.shadow-sm.border-0.mb-4
+            .card-header.bg-white.fw-bold Ảnh đại diện
+            .card-body(upload-image)
+              .col-12
+                  label.form-label Chọn hình ảnh
+                  input.form-control-file(
+                    type="file", 
+                    name="avatar",
+                    accept="image/*"
+                    upload-img-input-duan 
+                  )
+                  // Sửa imf -> img và thêm src trống
+                  img(
+                    src=""
+                    upload-image-preview
+                    style="width: 150px; margin-top: 15px; display: block;"
+                  )
+
+          .card.shadow-sm.border-0.mb-4
+            .card-header.bg-white.fw-bold Phân quyền
+            .card-body
+              .mb-3
+                label.form-label(for="role") Vai trò
+                select#role.form-select(name="role")
+                  option(value="admin") Quản trị viên (Admin)
+                  option(value="editor") Biên tập viên
+              
+              .mb-3
+                label.form-label Trạng thái
+                select.form-select(name="status")
+                  option(value="active") Hoạt động
+                  option(value="inactive") Khóa
+
+      .mb-5
+        button.btn.btn-primary.btn-lg(type="submit") Tạo tài khoản

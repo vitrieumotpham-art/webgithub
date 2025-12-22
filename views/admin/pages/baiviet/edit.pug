@@ -1,0 +1,108 @@
+extends ../../layout/defaut.pug 
+include ../../mixins/alert.pug
+
+block main
+  +alert-error("5000")
+  +alert-success("5000")
+
+  .container-fluid.mt-4
+    .row.justify-content-center
+      .col-12
+        .card.shadow-sm.mb-4
+          .card-header.bg-warning.text-dark.py-3
+            h4.mb-0.fw-bold Chỉnh Sửa Bài Viết
+          .card-body
+            //- Chú ý action có ?_method=PATCH để khớp với Route PATCH
+            form(
+              action=`/${PefixAdmin}/baiviet/edit/${baiviet.id}?_method=PATCH`
+              method="POST"
+              enctype="multipart/form-data"
+            )
+              .row.g-3.mb-4
+                .col-md-8
+                  label.form-label.fw-bold Tiêu đề (*)
+                  input.form-control(
+                    type="text"
+                    name="title"
+                    required
+                    value=baiviet.title
+                  )
+                
+                .col-md-4
+                  label.form-label.fw-bold Vị trí
+                  input.form-control(
+                    type="number"
+                    name="position"
+                    placeholder="Tự động tăng"
+                    min="1"
+                    value=baiviet.position
+                  )
+
+              .row.g-3.mb-4
+                .col-md-6
+                  label.form-label.fw-bold Hình ảnh
+                  input.form-control-file.d-block(
+                    type="file"
+                    name="thumbnail"
+                    accept="image/*"
+                    upload-image-input
+                  )
+                  img(
+                    src=baiviet.thumbnail
+                    upload-image-preview
+                    style="width: 150px; margin-top: 15px; border-radius: 5px;"
+                  )
+
+                .col-md-6
+                  label.form-label.fw-bold Lượt xem (Views)
+                  input.form-control(
+                    type="number"
+                    name="views"
+                    value=baiviet.views
+                  )
+
+              .row.g-3.mb-4
+                .col-md-6
+                  label.form-label.fw-bold Trạng thái
+                  .d-flex.gap-3.mt-2
+                    .form-check
+                      input#statusActive.form-check-input(
+                        type="radio"
+                        name="status"
+                        value="active"
+                        checked=(baiviet.status === "active")
+                      )
+                      label.form-check-label(for="statusActive") Hoạt động
+                    .form-check
+                      input#statusInActive.form-check-input(
+                        type="radio"
+                        name="status"
+                        value="inactive"
+                        checked=(baiviet.status === "inactive")
+                      )
+                      label.form-check-label(for="statusInActive") Dừng hoạt động
+                
+                .col-md-6.pt-4
+                  .form-check.form-switch
+                    input#featured.form-check-input(
+                      type="checkbox"
+                      name="featured"
+                      value="true"
+                      checked=baiviet.featured
+                    )
+                    label.form-check-label.fw-bold(for="featured") Bài viết nổi bật
+
+              .mb-4
+                label.form-label.fw-bold Nội dung bài viết
+                textarea.form-control.textarea-mce(
+                  name="content"
+                  rows="10"
+                ) #{baiviet.content}
+
+              .mt-4.pt-3.border-top.text-end
+                a.btn.btn-outline-secondary.me-2.px-4(href=`/${PefixAdmin}/baiviet`) Hủy
+                button.btn.btn-warning.px-5(type="submit") Cập Nhật
+
+  //- Script cho trình soạn thảo văn bản nếu bạn dùng TinyMCE
+  script(src="/tinymce/tinymce.min.js")
+  script(src="/js/tinymce-config.js")

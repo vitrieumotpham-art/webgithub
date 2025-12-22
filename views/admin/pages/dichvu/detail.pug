@@ -1,0 +1,68 @@
+extends ../../layout/defaut.pug 
+
+block main
+    .container-fluid.mt-4
+        h1.text-primary.fw-bold.mb-4 Chi Tiết Dịch Vụ: #{dichvu.title}
+
+        .card.shadow-sm
+            .card-body
+                .text-end.mb-3
+                    a.btn.btn-warning(href=`/${PefixAdmin}/dichvu/edit/${dichvu.id}`)
+                        i.fas.fa-edit.me-2
+                        | Chỉnh Sửa
+
+                .row
+                    .col-md-4.mb-4
+                        h5.text-muted Hình Ảnh Đại Diện:
+                        if dichvu.thumbnail
+                            img.img-fluid.rounded.shadow-sm(src=dichvu.thumbnail, alt=dichvu.title, style="max-height: 300px; object-fit: cover;")
+                        else
+                            p (Chưa có hình ảnh)
+
+                    .col-md-8
+                        // 1. Tiêu đề
+                        .mb-3
+                            strong Tiêu đề:
+                            p.ms-2.d-inline #{dichvu.title}
+                            
+                        // 2. Slug/Đường dẫn tĩnh
+                        .mb-3
+                            strong Slug/Đường dẫn tĩnh:
+                            p.ms-2.d-inline #{dichvu.slug}
+
+                        // 3. Mô tả ngắn
+                        .mb-3
+                            strong Mô tả ngắn:
+                            p.card-text #{dichvu.description}
+
+                        // 4. Giá Tham Khảo
+                        .mb-3
+                            strong Giá Tham Khảo:
+                            p.ms-2.d-inline.text-success.fw-bold #{dichvu.price}
+
+                        // 5. Nội Dung Chi Tiết (Sử dụng !{} để render HTML)
+                        .mb-3
+                            strong Nội Dung Chi Tiết:
+                            div.border.p-3.bg-light !{dichvu.content}
+                        
+                        // 6. Vị trí & Trạng thái
+                        .mb-3.row
+                            .col-6
+                                strong Vị trí:
+                                p.ms-2.d-inline #{dichvu.position}
+                            .col-6
+                                strong Trạng Thái:
+                                span.badge(class=`badge ${dichvu.status === 'active' ? 'bg-success' : 'bg-danger'}`)
+                                    | #{dichvu.status === 'active' ? 'Hoạt động' : 'Dừng hoạt động'}
+                                    
+                        // 7. Ngày Tạo
+                        .mb-3
+                            strong Ngày Tạo:
+                            p.ms-2.d-inline #{dichvu.createdAt}
+                            
+                hr
+                // Nút quay lại
+                a.btn.btn-success(href=`/${PefixAdmin}/dichvu/edit/${dichvu.id}`) chỉnh sửa
+                a.btn.btn-secondary(href=`/${PefixAdmin}/dichvu`)
+                    i.fas.fa-arrow-left.me-2
+                    | Quay lại danh sách

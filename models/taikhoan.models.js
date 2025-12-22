@@ -1,13 +1,42 @@
-const mongoose= require("mongoose");
-const taikhoanSchema= new mongoose.Schema({
+const mongoose = require("mongoose");
 
-username:String,
-password:String,
-email:String,
-fullName:String,
-role:String,
-status:String,
-createdAt:Date
+const taikhoanSchema = new mongoose.Schema({
+    fullName: {
+        type: String,
+        required: true
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true // Không cho phép trùng tên đăng nhập
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    avatar: String, // Thêm trường này để lưu link ảnh như trong ảnh bạn gửi
+    role: {
+        type: String,
+        default: "admin"
+    },
+    status: {
+        type: String,
+        default: "active"
+    },
+    deleted: {
+        type: Boolean,
+        default: false
+    },
+    deletedAt: Date
+}, {
+    // Tự động quản lý createdAt và updatedAt
+    timestamps: true 
 });
-const taikhoan=mongoose.model('taikhoan',taikhoanSchema,"taikhoan");
-module.exports=taikhoan;
+
+const Taikhoan = mongoose.model('taikhoan', taikhoanSchema, "taikhoan");
+module.exports = Taikhoan;

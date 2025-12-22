@@ -1,0 +1,94 @@
+extends ../../layout/defaut.pug
+
+block main
+  .container-fluid.mt-4
+    //- Hiển thị tên nhân sự đang sửa trên tiêu đề
+    h1.h3.text-primary.fw-bold.mb-4 Chỉnh Sửa Nhân Sự: #{data.fullname}
+
+    //- action dùng method PATCH (nếu bạn dùng method-override) hoặc POST tùy cấu hình backend
+    //- data.id là ID của nhân sự cần sửa truyền từ Controller
+    form(
+      action=`/${PefixAdmin}/doingu/edit/${data.id}?_method=PATCH` 
+      method="POST" 
+      enctype="multipart/form-data"
+    )
+      .row
+        .col-md-8
+          .card.shadow-sm.border-0.mb-4
+            .card-body
+              .mb-3
+                label.form-label.fw-bold(for="fullname") Họ và Tên
+                input#fullname.form-control(
+                  type="text" 
+                  name="fullname" 
+                  value=data.fullname 
+                  required
+                )
+              
+              .mb-3
+                label.form-label.fw-bold(for="position") Chức vụ / Kiến trúc sư
+                input#position.form-control(
+                  type="text" 
+                  name="position" 
+                  value=data.position 
+                  placeholder="Ví dụ: CEO & Founder / Kiến Trúc Sư Trưởng"
+                )
+
+              .mb-3
+                label.form-label.fw-bold(for="description") Tiểu sử / Kinh nghiệm
+                //- Textarea không dùng thuộc tính value, nội dung nằm giữa thẻ
+                textarea#description.form-control(name="description" rows="5") #{data.description}
+
+        .col-md-4
+          .card.shadow-sm.border-0.mb-4
+            .card-header.bg-white.fw-bold Ảnh chân dung (Avatar)
+            .card-body(upload-image)
+              .col-12
+                  label.form-label Chọn hình ảnh mới (nếu muốn thay đổi)
+                  input.form-control-file(
+                    type="file", 
+                    name="avatar", 
+                    accept="image/*"
+                    upload-img-input-baiviet 
+                  )
+                  //- Hiển thị ảnh hiện tại
+                  img(
+                    src=data.avatar
+                    upload-image-preview
+                    style="width: 150px; margin-top: 15px; display: block; border: 1px solid #ddd; padding: 5px;"
+                  )
+          
+          .card.shadow-sm.border-0.mb-4
+            .card-header.bg-white.fw-bold Thiết lập
+            .card-body
+              .mb-3
+                label.form-label(for="order") Thứ tự hiển thị
+                input#order.form-control(
+                  type="number" 
+                  name="order" 
+                  value=data.order
+                )
+              
+              .mb-3
+                label.form-label.d-block Trạng thái
+                .form-check.form-check-inline
+                  input#statusActive.form-check-input(
+                    type="radio" 
+                    name="status" 
+                    value="active" 
+                    checked=(data.status === "active")
+                  )
+                  label.form-check-label(for="statusActive") Hoạt động
+                .form-check.form-check-inline
+                  input#statusInactive.form-check-input(
+                    type="radio" 
+                    name="status" 
+                    value="inactive" 
+                    checked=(data.status === "inactive")
+                  )
+                  label.form-check-label(for="statusInactive") Dừng hoạt động
+
+      .mb-5
+        //- Đổi màu nút thành Warning (vàng) để phân biệt với Thêm mới (xanh)
+        button.btn.btn-warning.btn-lg.fw-bold(type="submit") Cập nhật thông tin
+        a.btn.btn-outline-secondary.btn-lg.ms-2(href=`/${PefixAdmin}/doingu`) Hủy bỏ

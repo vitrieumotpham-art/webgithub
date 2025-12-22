@@ -10,14 +10,14 @@ const Phanhoi=require("./phanhoi.router");
 const Doingu=require("./doingu.router");
 
 module.exports=(app)=>{
-  const path_admin=systemConfig.prefixAdmin;
+  const path_admin = "/" + systemConfig.prefixAdmin;
 app.use(path_admin+"/dashboard",dashBoardRoute);
-app.use(path_admin+"/Project",Project);
-app.use(path_admin+"/Baiviet",Baiviet);
-app.use(path_admin+"/Dichvu",Dichvu);
-app.use(path_admin+"/Account",Account);
-app.use(path_admin+"/Hinhanh",Hinhanh);
-app.use(path_admin+"/Lienhe",Lienhe);
-app.use(path_admin+"/Phanhoi",Phanhoi);
-app.use(path_admin+"/Doingu",Doingu);
+app.use(path_admin+"/project",Project);
+app.use(path_admin+"/baiviet",Baiviet);
+app.use(path_admin+"/dichvu",Dichvu);
+app.use(path_admin+"/account",Account);
+app.use(path_admin+"/hinhanh",Hinhanh);
+app.use(path_admin+"/lienhe",Lienhe);
+app.use(path_admin+"/phanhoi",Phanhoi);
+app.use(path_admin+"/doingu",Doingu);
 } 

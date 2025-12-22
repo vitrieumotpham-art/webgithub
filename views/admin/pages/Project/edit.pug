@@ -1,0 +1,87 @@
+extends ../../layout/defaut.pug
+
+block main
+  .container-fluid.mt-4
+    .row.justify-content-center
+      .col-12.col-lg-11
+        .card.shadow-sm.mb-4
+          .card-header.bg-warning.text-dark.py-3
+            h4.mb-0.fw-bold Chỉnh Sửa Dự Án: #{duan.ten_du_an}
+          .card-body
+            //- Sửa action thành ID của dự án và thêm ?_method=PATCH
+            form(
+              action=`/${PefixAdmin}/project/edit/${duan.id}?_method=PATCH`
+              method="POST"
+              enctype="multipart/form-data"
+            )
+              h5.text-primary.border-bottom.pb-2.mb-3 1. Thông tin chung
+              .row.g-3.mb-4
+                .col-md-8
+                  label.form-label.fw-bold Tên dự án (*)
+                  input.form-control(type="text", name="ten_du_an", required, value=duan.ten_du_an)
+
+                .col-md-4
+                  label.form-label Chủ đầu tư
+                  input.form-control(type="text", name="chu_dau_tu", value=duan.chu_dau_tu)
+                .col-md-4
+                  label.form-label Địa điểm
+                  input.form-control(type="text", name="dia_diem", value=duan.dia_diem)
+                .col-md-4
+                  label.form-label Chi phí
+                  input.form-control(type="text", name="chi_phi", value=duan.chi_phi)
+
+              h5.text-primary.border-bottom.pb-2.mb-3 2. Chi tiết kỹ thuật
+              .row.g-3.mb-4
+                .col-md-3
+                  label.form-label Loại hình
+                  input.form-control(type="text", name="loai_hinh", value=duan.loai_hinh)
+                .col-md-3
+                  label.form-label Phong cách
+                  input.form-control(type="text", name="phong_cach", value=duan.phong_cach)
+                .col-md-2
+                  label.form-label Số tầng
+                  input.form-control(type="number", name="so_tang", value=duan.so_tang)
+                .col-md-2
+                  label.form-label Diện tích (m²)
+                  input.form-control(type="number", name="dien_tich", value=duan.dien_tich)
+                .col-md-2
+                  label.form-label Năm thực hiện
+                  input.form-control(type="number", name="nam_thuc_hien", value=duan.nam_thuc_hien)
+
+                .col-md-4
+                  label.form-label Trạng thái
+                  select.form-select(name="trang_thai")
+                    option(value="Hoàn Thiện", selected=(duan.trang_thai == "Hoàn Thiện")) Hoàn Thiện
+                    option(value="Đang Thi Công", selected=(duan.trang_thai == "Đang Thi Công")) Đang Thi Công
+                    option(value="Đang Thiết Kế", selected=(duan.trang_thai == "Đang Thiết Kế")) Đang Thiết Kế
+                
+                .col-md-4.d-flex.align-items-center.pt-4
+                  .form-check.form-switch
+                    input#isNoibat.form-check-input(
+                      type="checkbox", 
+                      name="is_noibat", 
+                      value="true", 
+                      checked=duan.is_noibat
+                    )
+                    label.form-check-label.fw-bold(for="isNoibat") Dự án nổi bật
+
+              h5.text-primary.border-bottom.pb-2.mb-3 3. Nội dung & Hình ảnh
+              .upload-image.row.g-3.mb-4(upload-image)
+                .col-12
+                  label.form-label Thay đổi hình ảnh (Nếu muốn)
+                  input.form-control-file(
+                    type="file", 
+                    name="hinh_anh",
+                    accept="image/*"
+                    upload-img-input-duan 
+                  )
+                  //- Hiển thị ảnh cũ nếu đã có
+                  img(
+                    src=duan.hinh_anh
+                    upload-image-preview
+                    style="width: 150px; margin-top: 15px; display: block;"
+                  )
+
+              .mt-4.pt-3.border-top.text-end
+                a.btn.btn-outline-secondary.me-2.px-4(href=`/${PefixAdmin}/project`) Hủy
+                button.btn.btn-warning.px-5(type="submit") Cập Nhật Dự Án

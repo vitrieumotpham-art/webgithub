@@ -1,0 +1,25 @@
+mixin changeAll(urll) 
+    form(
+        action=`${urll}?_method=PATCH`
+        method="POST"
+        form-change-multi
+        )
+        .d-flex.align-items-start
+            .form-group
+                select(name="type" class="form-control")
+                    option(disabled selected) --chon hanh dong--
+                    option(value="active") Hoạt động
+                    option(value="inactive") Dừng hoạt động
+                    // THÊM: Có thể thêm tùy chọn XÓA ở đây nếu cần
+                    option(value="delete-all") Xóa tất cả
+                    option(value="position-all") thay đổi vị trí
+            .form-group
+                input(
+                    type="text"
+                    name="ids"
+                    value=""
+                    class="form-control d-none"
+                )
+            input(type="hidden", name="_method", value="PATCH") 
+            input(type="hidden", name="returnUrl", value="")
+            button(type="submit" class="btn btn-primary") Áp dụng

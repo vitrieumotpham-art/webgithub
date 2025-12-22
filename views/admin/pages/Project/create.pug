@@ -1,0 +1,85 @@
+extends ../../layout/defaut.pug
+
+block main
+  .container-fluid.mt-4
+    .row.justify-content-center
+      .col-12.col-lg-11
+        .card.shadow-sm.mb-4
+          .card-header.bg-primary.text-white.py-3
+            h4.mb-0.fw-bold Thêm Mới Dự Án Thiết Kế
+          .card-body
+            //- Action và method gửi dữ liệu
+            form(
+              action=`/${PefixAdmin}/project/create`
+              method="POST"
+              enctype="multipart/form-data"
+            )
+              //- NHÓM 1: THÔNG TIN CƠ BẢN
+              h5.text-primary.border-bottom.pb-2.mb-3 1. Thông tin chung
+              .row.g-3.mb-4
+                .col-md-8
+                  label.form-label.fw-bold Tên dự án (*)
+                  input.form-control(type="text", name="ten_du_an", required, placeholder="Nhà Phố Mặt Tiền Nguyễn Văn Linh")
+
+                .col-md-4
+                  label.form-label Chủ đầu tư
+                  input.form-control(type="text", name="chu_dau_tu", placeholder="Anh Duy")
+                .col-md-4
+                  label.form-label Địa điểm
+                  input.form-control(type="text", name="dia_diem", placeholder="Hải Châu, Đà Nẵng")
+                .col-md-4
+                  label.form-label Chi phí
+                  input.form-control(type="text", name="chi_phi", placeholder="3.2 Tỷ")
+
+              //- NHÓM 2: THÔNG SỐ KỸ THUẬT
+              h5.text-primary.border-bottom.pb-2.mb-3 2. Chi tiết kỹ thuật
+              .row.g-3.mb-4
+                .col-md-3
+                  label.form-label Loại hình
+                  input.form-control(type="text", name="loai_hinh", placeholder="Nhà Phố")
+                .col-md-3
+                  label.form-label Phong cách
+                  input.form-control(type="text", name="phong_cach", placeholder="Hiện Đại")
+                .col-md-2
+                  label.form-label Số tầng
+                  input.form-control(type="number", name="so_tang", placeholder="5")
+                .col-md-2
+                  label.form-label Diện tích (m²)
+                  input.form-control(type="number", name="dien_tich", placeholder="150")
+                .col-md-2
+                  label.form-label Năm thực hiện
+                  input.form-control(type="number", name="nam_thuc_hien", placeholder="2023")
+
+                .col-md-4
+                  label.form-label Trạng thái
+                  select.form-select(name="trang_thai")
+                    option(value="Hoàn Thiện") Hoàn Thiện
+                    option(value="Đang Thi Công") Đang Thi Công
+                    option(value="Đang Thiết Kế") Đang Thiết Kế
+                
+                .col-md-4.d-flex.align-items-center.pt-4
+                  .form-check.form-switch
+                    input#isNoibat.form-check-input(type="checkbox", name="is_noibat", value="true")
+                    label.form-check-label.fw-bold(for="isNoibat") Dự án nổi bật
+              h5.text-primary.border-bottom.pb-2.mb-3 3. Nội dung & Hình ảnh
+              // Phải có [upload-image] ở đây
+              .upload-image.row.g-3.mb-4(upload-image)
+                .col-12
+                  label.form-label Chọn hình ảnh
+                  input.form-control-file(
+                    type="file", 
+                    name="hinh_anh",
+                    accept="image/*"
+                    upload-img-input-duan 
+                  )
+                  // Sửa imf -> img và thêm src trống
+                  img(
+                    src=""
+                    upload-image-preview
+                    style="width: 150px; margin-top: 15px; display: block;"
+                  )
+
+              //- NÚT BẤM XỬ LÝ
+              .mt-4.pt-3.border-top.text-end
+                a.btn.btn-outline-secondary.me-2.px-4(href=`${PefixAdmin}/Project`) Hủy
+                button.btn.btn-success.px-5(type="submit") Lưu Dự Án

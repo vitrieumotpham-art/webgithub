@@ -1,0 +1,66 @@
+extends ../../layout/defaut.pug
+
+block main
+  .container-fluid.mt-4
+    h1.h3.text-primary.fw-bold.mb-4 Thêm Nhân Sự Mới
+
+    //- QUAN TRỌNG: Viết hoa Doingu cho đúng Router tổng
+    form(
+      action=`/${PefixAdmin}/doingu/create` 
+      method="POST" 
+      enctype="multipart/form-data"
+    )
+      .row
+        .col-md-8
+          .card.shadow-sm.border-0.mb-4
+            .card-body
+              .mb-3
+                label.form-label.fw-bold(for="fullname") Họ và Tên
+                input#fullname.form-control(type="text" name="fullname" required)
+              
+              .mb-3
+                label.form-label.fw-bold(for="position") Chức vụ / Kiến trúc sư
+                input#position.form-control(
+                  type="text" 
+                  name="position" 
+                  placeholder="Ví dụ: CEO & Founder / Kiến Trúc Sư Trưởng"
+                )
+
+              .mb-3
+                label.form-label.fw-bold(for="description") Tiểu sử / Kinh nghiệm
+                textarea#description.form-control(name="description" rows="5")
+
+        .col-md-4
+          .card.shadow-sm.border-0.mb-4
+            .card-header.bg-white.fw-bold Ảnh chân dung (Avatar)
+            .card-body(upload-image)
+              .col-12
+                  label.form-label Chọn hình ảnh
+                  input.form-control-file(
+                    type="file", 
+                    name="avatar", 
+                    accept="image/*"
+                    upload-img-input-baiviet 
+                  )
+                  img(
+                    src=""
+                    upload-image-preview
+                    style="width: 150px; margin-top: 15px; display: block;"
+                  )
+          .card.shadow-sm.border-0.mb-4
+            .card-header.bg-white.fw-bold Thiết lập
+            .card-body
+              .mb-3
+                label.form-label(for="order") Thứ tự hiển thị
+                input#order.form-control(type="number" name="order" value="1")
+              
+              .mb-3
+                label.form-label.d-block Trạng thái
+                select.form-select(name="status")
+                  option(value="active" selected) Active
+                  option(value="inactive") Inactive
+
+      .mb-5
+        button.btn.btn-success.btn-lg(type="submit") Tạo nhân sự
+        //- Link quay lại cũng phải viết hoa Doingu
+        a.btn.btn-outline-secondary.btn-lg.ms-2(href=`${PefixAdmin}/Doingu`) Hủy bỏ

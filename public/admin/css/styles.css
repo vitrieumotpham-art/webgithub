@@ -161,3 +161,17 @@
     flex: 1;
   }
 }
+/* Trạng thái mặc định của Alert */
+.alert[show-alert] {
+    opacity: 1;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out; /* Thiết lập chuyển động */
+}
+
+/* Trạng thái ẩn đi sau khi JavaScript thêm class */
+.alert[show-alert].alert-hidden {
+    opacity: 0;          /* Làm mờ */
+    visibility: hidden;  /* Ẩn hoàn toàn khỏi bố cục để không click được */
+    height: 0;           /* Tùy chọn: Đảm bảo phần tử không chiếm không gian */
+    padding: 0;          /* Tùy chọn: Loại bỏ padding/margin */
+    margin: 0;
+}

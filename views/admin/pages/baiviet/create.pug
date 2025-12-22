@@ -1,0 +1,106 @@
+extends ../../layout/defaut.pug
+
+block main
+  .container-fluid.mt-4
+    h1.h3.text-primary.fw-bold.mb-4 Thêm Bài Viết Mới
+
+    form(
+      action=`/${PefixAdmin}/baiviet/create`
+      method="POST"
+      enctype="multipart/form-data"
+    )
+      .row
+        //--- CỘT TRÁI: NỘI DUNG CHÍNH ---
+        .col-md-8
+          .card.shadow-sm.border-0.mb-4
+            .card-body
+              .mb-3
+                label.form-label.fw-bold(for="title") Tiêu đề bài viết
+                input#title.form-control(
+                  type="text" 
+                  name="title" 
+                  placeholder="Ví dụ: 5 Nguyên Tắc Vàng Trong Phong Thủy..." 
+                  required
+                )
+              
+              .mb-3
+                label.form-label.fw-bold(for="description") Mô tả ngắn
+                textarea#description.form-control(
+                  name="description" 
+                  rows="3" 
+                  placeholder="Nhập đoạn mô tả ngắn về bài viết..."
+                )
+
+              .mb-3
+                label.form-label.fw-bold(for="content") Nội dung bài viết
+                textarea#content.form-control.textarea-tinymce(
+                  name="content" 
+                  rows="15"
+                )
+
+        //--- CỘT PHẢI: HÌNH ẢNH & THIẾT LẬP ---
+        .col-md-4
+          // Thẻ card này phải nằm thụt vào trong .col-md-4
+          .card.shadow-sm.border-0.mb-4
+            .card-header.bg-white.fw-bold Ảnh đại diện (Thumbnail)
+            .upload-image.row.g-3.mb-4(upload-image)
+                .col-12
+                  label.form-label Chọn hình ảnh
+                  input.form-control-file(
+                    type="file", 
+                    name="thumbnail",
+                    accept="image/*"
+                    upload-img-input-duan 
+                  )
+                  // Sửa imf -> img và thêm src trống
+                  img(
+                    src=""
+                    upload-image-preview
+                    style="width: 150px; margin-top: 15px; display: block;"
+                  )
+
+          .card.shadow-sm.border-0.mb-4
+            .card-header.bg-white.fw-bold Cấu hình bài viết
+            .card-body
+              .mb-3
+                label.form-label(for="article_category_id") Danh mục
+                select#article_category_id.form-select(name="article_category_id")
+                  option(value="") -- Chọn danh mục --
+                  if categories
+                    each item in categories
+                      option(value=item.id) #{item.title}
+
+              .mb-3
+                label.form-label(for="position") Vị trí hiển thị
+                input#position.form-control(
+                  type="number" 
+                  name="position" 
+                  value="1" 
+                  min="1"
+                )
+              .mb-3
+                label.form-label(for="views") views
+                input#views.form-control(
+                  type="number" 
+                  name="views" 
+                  value="1" 
+                  min="1"
+                )
+
+              .mb-3
+                label.form-label.d-block Trạng thái
+                .form-check.form-check-inline
+                  input#active.form-check-input(type="radio" name="status" value="active" checked)
+                  label.form-check-label(for="active") Hoạt động
+                .form-check.form-check-inline
+                  input#inactive.form-check-input(type="radio" name="status" value="inactive")
+                  label.form-check-label(for="inactive") Dừng hoạt động
+
+              .form-check.form-switch.mb-3
+                input#featured.form-check-input(type="checkbox" name="featured" value="true")
+                label.form-check-label.fw-bold(for="featured") Tin nổi bật
+
+      // Hàng nút bấm nằm ngoài .row nhưng vẫn trong form
+      .mb-5.pb-5
+        button.btn.btn-primary.btn-lg.px-5(type="submit") Tạo bài viết
+        a.btn.btn-outline-secondary.btn-lg.ms-2(href=`${PefixAdmin}/baiviet`) Hủy bỏ

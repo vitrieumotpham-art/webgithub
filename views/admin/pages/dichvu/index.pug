@@ -1,12 +1,18 @@
 extends ../../layout/defaut.pug 
 include ../../mixins/search.pug
 include ../../mixins/pagination.pug 
+include ../../mixins/changeall.pug
+include ../../mixins/alert.pug
 block main
+    +alert-success("5000")
     .container-fluid.mt-4
         //- 1. Tiêu đề và Nút Thêm Mới
         .d-flex.justify-content-between.align-items-center.mb-4
             h1.text-primary.fw-bold Quản Lý Dịch Vụ
-            a.btn.btn-primary.shadow-sm(href="/admin/dichvu/create")
+            a.btn.btn-primary.shadow-sm(
+                href=`/${PefixAdmin}/dichvu/create`
+                
+                )
                 i.fas.fa-plus-circle.me-2
                 | Thêm Dịch Vụ Mới
 
@@ -24,25 +30,7 @@ block main
                             option(value="", selected=(!status)) -- Tất cả --
                             option(value="active", selected=(status === "active")) Đang hoạt động
                             option(value="inactive", selected=(status === "inactive")) Dừng hoạt động
-                form(
-                    action=`${PrefixAdmin}/dichvu/change-multi?_method=PATCH`
-                    method="POST"
-                    form-change-multi
-                    )
-                    .d-flex.align-items-start
-                        .form-group
-                            select(name="type" class="form-control")
-                                option(value="active") Hoạt động
-                                option(value="inactive") Dừng hoạt động
-                        .form-group
-                            input(
-                                type="text"
-                                name="ids"
-                                value=""
-                                class="form-control d-none"
-                            )
-                        input(type="hidden", name="returnUrl", value="")
-                        button(type="submit" class="btn btn-primary") Áp dụng
+                +changeAll(`/${PefixAdmin}/dichvu/change-multi`)
         //- 3. Bảng Danh Sách Dịch Vụ
         .card.shadow-sm
             .card-body.p-0
@@ -94,7 +82,12 @@ block main
 
                                         //- Vị trí (position)
                                         td.text-center
-                                            input.form-control.form-control-sm.text-center(name="inn" type="number", value=item.position, style="width: 60px; margin: 0 auto;", min="1")
+                                            input.form-control.form-control-sm.text-center(
+                                                name="position" 
+                                                type="number", 
+                                                value=item.position, 
+                                                style="width: 60px; margin: 0 auto;", 
+                                                min="1")
 
                                         //- Trạng thái (status)
                                         td.text-center
@@ -118,12 +111,23 @@ block main
                                         //- Thao tác (Sửa/Xóa/Chi tiết)
                                         td.text-center
                                             .btn-group.btn-group-sm(role="group")
-                                                a.btn.btn-outline-info(href=`/admin/dichvu/detail/${item.id}`, title="Chi tiết")
-                                                    i.fas.fa-eye
-                                                a.btn.btn-outline-warning(href=`/admin/dichvu/edit/${item.id}`, title="Chỉnh sửa")
-                                                    i.fas.fa-edit
-                                                button.btn.btn-outline-danger(data-id=item.id, button-delete, title="Xóa")
-                                                    i.fas.fa-trash-alt
+                                                a.btn.btn-outline-info(
+                                                    href=`/admin/dichvu/detail/${item.id}`, 
+                                                    title="Chi tiết"
+                                                    
+                                                    )
+                                                    i.fas.fa-eye Chi tiết
+                                                a.btn.btn-outline-warning(
+                                                    href=`/admin/dichvu/edit/${item.id}`, 
+                                                    title="Chỉnh sửa"
+                                                    )
+                                                    i.fas.fa-edit Sửa
+                                                button.btn.btn-outline-danger.btn-sm(
+                                                        data-id=item.id
+                                                        button-delete
+                                                    )
+                                                        i.fas.fa-trash
+                                                        | Xoá
                             else 
                                 tr
                                     td.text-center(colspan="7") Chưa có dịch vụ nào được tạo.
@@ -149,7 +153,13 @@ block main
     form#form-change-hoatdong(
         action="" 
         method="POST" 
-        data-path=`${PrefixAdmin}/dichvu/change-hoatdong`
+        data-path=`/${PefixAdmin}/dichvu/change-hoatdong`
         )
         input(type="hidden", name="returnUrl", value="")
         input(type="hidden", name="_method", value="PATCH")
+    form#form-delete-item(
+        action="" 
+        method="POST" 
+        data-path=`/${PefixAdmin}/dichvu/delete`
+    )
+        input(type="hidden", name="_method", value="DELETE")

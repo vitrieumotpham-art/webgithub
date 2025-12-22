@@ -1,0 +1,60 @@
+extends ../../layout/defaut.pug
+
+block main
+  .container-fluid.mt-4
+    .row.justify-content-center
+      .col-lg-10
+        .card.shadow-sm.border-0
+          .card-header.bg-white.py-3.d-flex.justify-content-between.align-items-center
+            h4.mb-0.text-primary.fw-bold Thông Tin Chi Tiết Dự Án
+            div
+              a.btn.btn-warning.btn-sm.me-2(href=`/${PefixAdmin}/project/edit/${project.id}`)
+                i.fas.fa-edit.me-1
+                | Sửa dự án
+              a.btn.btn-outline-secondary.btn-sm(href=`/${PefixAdmin}/project`)
+                i.fas.fa-arrow-left.me-1
+                | Quay lại danh sách
+
+          .card-body.p-4
+            .row
+              .col-md-5.mb-4
+                if project.hinh_anh
+                  img.img-fluid.rounded.shadow-sm(src=project.hinh_anh, style="width: 100%; border: 1px solid #eee")
+                
+              .col-md-7
+                h2.fw-bold.mb-3 #{project.ten_du_an}
+                
+                if project.is_noibat
+                  span.badge.bg-danger.mb-4.px-3.py-2 Hot / Nổi bật
+                
+                .row.g-4
+                  .col-6
+                    label.text-muted.small.d-block Chủ đầu tư
+                    span.fw-bold #{project.chu_dau_tu || "Chưa cập nhật"}
+                  .col-6
+                    label.text-muted.small.d-block Địa điểm
+                    span.fw-bold #{project.dia_diem || "Chưa cập nhật"}
+                  .col-6
+                    label.text-muted.small.d-block Loại hình
+                    span.fw-bold #{project.loai_hinh}
+                  .col-6
+                    label.text-muted.small.d-block Trạng thái
+                    span.badge.bg-success #{project.trang_thai}
+            
+            hr.my-4
+            
+            .row.text-center.bg-light.py-3.rounded
+              .col-4
+                small.text-muted.d-block Số tầng
+                span.h5.fw-bold #{project.so_tang}
+              .col-4.border-start
+                small.text-muted.d-block Diện tích
+                span.h5.fw-bold #{project.dien_tich} m²
+              .col-4.border-start
+                small.text-muted.d-block Năm thực hiện
+                span.h5.fw-bold #{project.nam_thuc_hien}
+
+            if project.noi_dung
+              .mt-5
+                h5.fw-bold.border-bottom.pb-2 Mô tả dự án
+                .mt-3 !{project.noi_dung}

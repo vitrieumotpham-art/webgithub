@@ -1,0 +1,109 @@
+extends ../../layout/defaut.pug 
+include ../../mixins/alert.pug
+block main
+    +alert-error(5000)
+    .container-fluid.mt-4
+        h1.text-primary.fw-bold.mb-4 Thêm Mới Dịch Vụ
+
+        .card.shadow-sm
+            .card-body
+                form(
+                    action=`/${PefixAdmin}/dichvu/create` 
+                    method="POST"
+                    enctype="multipart/form-data"
+                    )
+                    
+                    // 1. Tiêu đề (title)   
+                    .mb-3
+                        label.form-label(for="title") Tiêu đề dịch vụ (*):
+                        input.form-control(
+                            type="text",
+                            id="title", 
+                            name="title", 
+                            )
+                    
+                    // 3. Mô tả (description)
+                    .mb-3
+                        label.form-label(for="description") Mô tả ngắn:
+                        textarea.form-control(
+                            id="description", 
+                            name="description", 
+                            rows="3"
+                            )
+
+                    // 4. Giá tham khảo (price)
+                    .mb-3
+                        label.form-label(for="price") Giá tham khảo:
+                        input.form-control(
+                            type="text", 
+                            id="price", 
+                            name="price", 
+                            placeholder="Ví dụ: 3.500.000 hoặc Liên hệ"
+                            )
+                    
+                    // 5. Nội dung chi tiết (content)
+                    .mb-3
+                        label.form-label(for="content") Nội dung chi tiết:
+                        textarea.form-control(
+                            id="content", 
+                            name="content", 
+                            rows="5"
+                            )
+
+                    // 6. Thumbnail (Hình ảnh đại diện)
+                    .mb-3
+                        label.form-label(for="thumbnail") Hình ảnh đại diện:
+                        input.form-control(
+                            type="file", 
+                            id="thumbnail", 
+                            name="thumbnail", 
+                            accept="image/*",
+                            upload-image-input
+                            )
+                        img(
+                            src=""
+                            upload-image-preview 
+                            style="max-width: 200px; margin-top: 10px;"
+                            )    
+
+                    // 7. Vị trí (position)
+                    .mb-3
+                        label.form-label(for="position") Vị trí/Thứ tự:
+                        input.form-control(
+                            type="number", 
+                            id="position", 
+                            name="position", 
+                            value="", 
+                            min="0", 
+                            style="width: 100px;"
+                            )
+
+                    // 8. Trạng thái (status)
+                    .mb-3
+                        label.form-label Trạng thái:
+                        .form-check
+                            input.form-check-input(
+                                type="radio", 
+                                name="status", 
+                                id="statusActive", 
+                                value="active", 
+                                checked
+                                )
+                            label.form-check-label(for="statusActive") Hoạt động
+                        .form-check
+                            input.form-check-input(
+                                type="radio", 
+                                name="status", 
+                                id="statusInactive", 
+                                value="inactive"
+                                )
+                            label.form-check-label(for="statusInactive") Dừng hoạt động
+
+                    // 9. Nút Submit
+                    .mt-4
+                        button.btn.btn-success.shadow-sm(type="submit")
+                            i.fas.fa-save.me-2
+                            | Lưu & Thêm mới
+                        a.btn.btn-secondary.ms-2(href=`/${PefixAdmin}/dichvu`)
+                            i.fas.fa-arrow-left.me-2
+                            | Quay lại

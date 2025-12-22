@@ -1,4 +1,4 @@
-  const path_admin="/admin";
+  const path_admin="admin";
 
   module.exports={
     prefixAdmin:path_admin
