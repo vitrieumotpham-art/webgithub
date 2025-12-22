@@ -1,7 +1,7 @@
 const express = require("express");
 const route=express.Router();
 
-const controller=require("../../../management_products/controllers/admin/dashboard.controller");
+const controller = require("../../controllers/admin/dashboard.controller");
 
 route.get("/",controller.dashboard);
 
