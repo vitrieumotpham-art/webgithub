@@ -1,0 +1,75 @@
+extends ../../layout/defaut.pug
+include ../../mixins/moment.pug 
+block main
+  .container.my-5
+    .row.justify-content-center
+      .col-md-8
+        .card.shadow.border-0.rounded-lg
+          //- Header với Avatar và Tên
+          .card-header.bg-primary.text-white.py-4
+            .d-flex.align-items-center
+              if (user.avatar)
+                img(
+                  src=user.avatar 
+                  width="120" 
+                  height="120" 
+                  class="rounded-circle border border-4 border-white shadow-sm object-fit-cover"
+                  alt=user.fullName
+                )
+              else
+                img(
+                  src="/img/avatar-default.png" 
+                  width="120" 
+                  height="120" 
+                  class="rounded-circle border border-4 border-white shadow-sm"
+                  alt="Default Avatar"
+                )
+              .ms-4
+                h2.mb-1.fw-bold #{user.fullName}
+                span.badge.bg-light.text-primary.px-3.py-2.rounded-pill
+                  i.fas.fa-user-tag.me-2
+                  //- role ở đây là ID, nếu bạn đã populate thì dùng role.title
+                  | #{role && role.title ? role.title : "Quản trị viên"}
+          
+          .card-body.p-4
+            h5.mb-4.text-uppercase.fw-bold.text-muted.border-bottom.pb-2
+              i.fas.fa-info-circle.me-2
+              | Thông tin tài khoản
+            
+            .row.g-3
+              //- Username
+              .col-sm-6
+                .p-3.bg-light.rounded
+                  label.small.text-muted.d-block Username
+                  span.fw-bold.text-dark #{user.username}
+              
+              //- Email
+              .col-sm-6
+                .p-3.bg-light.rounded
+                  label.small.text-muted.d-block Email
+                  span.fw-bold.text-dark #{user.email}
+
+              //- Trạng thái
+              .col-sm-6
+                .p-3.bg-light.rounded
+                  label.small.text-muted.d-block Trạng thái
+                  if (user.status === "active")
+                    span.badge.bg-success Hoạt động
+                  else
+                    span.badge.bg-danger Bị khóa
+
+              //- Ngày tạo
+              .col-sm-6
+                .p-3.bg-light.rounded
+                  label.small.text-muted.d-block Ngày tham gia
+                  span.fw-bold.text-dark 
+                    if (user.createdAt)
+                      +formatDateTime(user.createdAt)
+
+          //- Nút hành động
+          .card-footer.bg-white.p-3.text-end
+            a.btn.btn-warning.me-2(href=`/${PefixAdmin}/my-account/edit`)
+                i.fas.fa-edit.me-1
+                | Chỉnh sửa Profile
+            a.btn.btn-outline-secondary(href=`/${PefixAdmin}/dashboard`) 
+                | Quay lại Dashboard

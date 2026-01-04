@@ -2,173 +2,174 @@ extends ../../layout/defaut.pug
 include ../../mixins/search.pug 
 
 block main
-    //- -------------------------------------------
-    //- [KHU VỰC GIẢ LẬP DỮ LIỆU & LOGIC]
-    //- -------------------------------------------
-    -
-        // Giả lập tham số từ URL (Ví dụ: ?folder=image). 
-        // Trong Controller thực tế: const currentFolder = req.query.folder || '';
-        
-        const keyword = "";
-
-    style.
-        /* Style cho Folder Card */
-        .folder-card { cursor: pointer; transition: all 0.2s; border: 1px solid #eee; }
-        .folder-card:hover { background-color: #f8f9fa; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-color: #0d6efd; }
-        .folder-icon { font-size: 3rem; color: #ffc107; } /* Màu vàng đặc trưng của folder */
-        
-        /* Style cho File Card (Giữ nguyên từ trước) */
-        .media-card { transition: transform 0.2s, box-shadow 0.2s; }
-        .media-card:hover { transform: translateY(-3px); box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15)!important; }
-        .media-preview { height: 160px; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa; position: relative; overflow: hidden; }
-        .media-preview img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
-        .media-card:hover .media-preview img { transform: scale(1.05); }
-        .media-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; gap: 10px; opacity: 0; transition: opacity 0.2s; }
-        .media-card:hover .media-overlay { opacity: 1; }
-        .file-icon { font-size: 3rem; }
-
-    .container-fluid.mt-4
-        //- 1. HEADER & BREADCRUMB
-        .d-flex.justify-content-between.align-items-center.mb-4
-            div
-                h1.text-primary.fw-bold #{folderTitle}
-                nav(aria-label="breadcrumb")
-                    ol.breadcrumb.mb-0
-                        if currentFolder
-                            li.breadcrumb-item: a.text-decoration-none(href="/admin/gallery") Thư viện
-                            if currentFolder === 'image'
-                                li.breadcrumb-item.active Hình ảnh
-                            else if currentFolder === 'video'
-                                li.breadcrumb-item.active Video
-                            else 
-                                li.breadcrumb-item.active Tài liệu
-                        else
-                            li.breadcrumb-item.active Trang chủ thư viện
-
-            //- Nút Upload (Luôn hiện)
-            button.btn.btn-primary.shadow-sm(onclick="document.getElementById('fileInput').click()")
-                i.fas.fa-cloud-upload-alt.me-2
-                | Tải File Lên
-                input#fileInput(type="file", multiple, style="display: none;")
-
-        //- 2. GIAO DIỆN THƯ MỤC (Chỉ hiện khi không có currentFolder)
-
-        if !currentFolder
-            .row.g-4.mb-4
-                //- Folder Hình Ảnh
-                .col-md-4
-                    a.hinhanh.text-decoration-none(href="?type=image", id="hinhanh")
-                        .card.folder-card.h-100.p-4.text-center
-                            i.fas.fa-folder.folder-icon.mb-3
-                            h5.fw-bold.text-dark Hình Ảnh & Phối Cảnh
-                            //- SỬA: Lấy đúng số lượng ảnh
-                            p.text-muted.small.mb-0 #{thongke.image} files
-                
-                //- Folder Video
-                .col-md-4
-                    a.text-decoration-none(href="?type=video")
-                        .card.folder-card.h-100.p-4.text-center
-                            i.fas.fa-folder.folder-icon.mb-3
-                            h5.fw-bold.text-dark Video & Clip
-                            //- SỬA: Lấy đúng số lượng video
-                            p.text-muted.small.mb-0 #{thongke.video} files
-                
-                //- Folder Tài Liệu
-                .col-md-4
-                    a.text-decoration-none(href="?type=document")
-                        .card.folder-card.h-100.p-4.text-center
-                            i.fas.fa-folder.folder-icon.mb-3
-                            h5.fw-bold.text-dark Tài Liệu & Bản Vẽ
-                            //- SỬA: Lấy đúng số lượng tài liệu
-                            p.text-muted.small.mb-0 #{thongke.document} files
+    if(role.permissions.includes("anh_view"))
+        //- -------------------------------------------
+        //- [KHU VỰC GIẢ LẬP DỮ LIỆU & LOGIC]
+        //- -------------------------------------------
+        -
+            // Giả lập tham số từ URL (Ví dụ: ?folder=image). 
+            // Trong Controller thực tế: const currentFolder = req.query.folder || '';
             
-            hr.my-5
+            const keyword = "";
 
-            //- Phần hiển thị file gần đây (Option)
-            h5.text-muted.mb-3 <i class="far fa-clock me-2"></i> Tải lên gần đây
-            .row.g-3
-                each file in thuvien.slice(0, 8)
-                     .col-6.col-md-3
-                        .card.media-card.border-0.shadow-sm
-                             .media-preview.rounded(style="height: 100px;")
-                                if file.type === 'image'
-                                    img(src=file.url)
-                                else
-                                    i.fas.fa-file.text-secondary.fs-2
-                             .card-body.p-2
-                                p.small.text-truncate.mb-0 #{file.filename}
+        style.
+            /* Style cho Folder Card */
+            .folder-card { cursor: pointer; transition: all 0.2s; border: 1px solid #eee; }
+            .folder-card:hover { background-color: #f8f9fa; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-color: #0d6efd; }
+            .folder-icon { font-size: 3rem; color: #ffc107; } /* Màu vàng đặc trưng của folder */
+            
+            /* Style cho File Card (Giữ nguyên từ trước) */
+            .media-card { transition: transform 0.2s, box-shadow 0.2s; }
+            .media-card:hover { transform: translateY(-3px); box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15)!important; }
+            .media-preview { height: 160px; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa; position: relative; overflow: hidden; }
+            .media-preview img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+            .media-card:hover .media-preview img { transform: scale(1.05); }
+            .media-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; gap: 10px; opacity: 0; transition: opacity 0.2s; }
+            .media-card:hover .media-overlay { opacity: 1; }
+            .file-icon { font-size: 3rem; }
 
+        .container-fluid.mt-4
+            //- 1. HEADER & BREADCRUMB
+            .d-flex.justify-content-between.align-items-center.mb-4
+                div
+                    h1.text-primary.fw-bold #{folderTitle}
+                    nav(aria-label="breadcrumb")
+                        ol.breadcrumb.mb-0
+                            if currentFolder
+                                li.breadcrumb-item: a.text-decoration-none(href="/admin/gallery") Thư viện
+                                if currentFolder === 'image'
+                                    li.breadcrumb-item.active Hình ảnh
+                                else if currentFolder === 'video'
+                                    li.breadcrumb-item.active Video
+                                else 
+                                    li.breadcrumb-item.active Tài liệu
+                            else
+                                li.breadcrumb-item.active Trang chủ thư viện
 
-        //- 3. GIAO DIỆN DANH SÁCH FILE (Chỉ hiện khi ĐANG TRONG folder)
-        else
-            //- Nút quay lại
-            .mb-3
-                a.btn.btn-light.border(href="/admin/gallery") 
-                    i.fas.fa-arrow-left.me-2
-                    | Quay lại thư mục gốc
+                //- Nút Upload (Luôn hiện)
+                button.btn.btn-primary.shadow-sm(onclick="document.getElementById('fileInput').click()")
+                    i.fas.fa-cloud-upload-alt.me-2
+                    | Tải File Lên
+                    input#fileInput(type="file", multiple, style="display: none;")
 
-            //- Công cụ lọc trong folder
-            .card.shadow-sm.mb-4.border-0
-                .card-body
-                    .row.g-3
-                        .col-md-6
-                            +search(keyword)
-                        .col-md-6.text-end
-                            span.text-muted Đang hiển thị #{displayFiles.length} kết quả
+            //- 2. GIAO DIỆN THƯ MỤC (Chỉ hiện khi không có currentFolder)
 
-            //- Grid hiển thị file
-            if displayFiles.length > 0
+            if !currentFolder
+                .row.g-4.mb-4
+                    //- Folder Hình Ảnh
+                    .col-md-4
+                        a.hinhanh.text-decoration-none(href="?type=image", id="hinhanh")
+                            .card.folder-card.h-100.p-4.text-center
+                                i.fas.fa-folder.folder-icon.mb-3
+                                h5.fw-bold.text-dark Hình Ảnh & Phối Cảnh
+                                //- SỬA: Lấy đúng số lượng ảnh
+                                p.text-muted.small.mb-0 #{thongke.image} files
+                    
+                    //- Folder Video
+                    .col-md-4
+                        a.text-decoration-none(href="?type=video")
+                            .card.folder-card.h-100.p-4.text-center
+                                i.fas.fa-folder.folder-icon.mb-3
+                                h5.fw-bold.text-dark Video & Clip
+                                //- SỬA: Lấy đúng số lượng video
+                                p.text-muted.small.mb-0 #{thongke.video} files
+                    
+                    //- Folder Tài Liệu
+                    .col-md-4
+                        a.text-decoration-none(href="?type=document")
+                            .card.folder-card.h-100.p-4.text-center
+                                i.fas.fa-folder.folder-icon.mb-3
+                                h5.fw-bold.text-dark Tài Liệu & Bản Vẽ
+                                //- SỬA: Lấy đúng số lượng tài liệu
+                                p.text-muted.small.mb-0 #{thongke.document} files
+                
+                hr.my-5
+
+                //- Phần hiển thị file gần đây (Option)
+                h5.text-muted.mb-3 <i class="far fa-clock me-2"></i> Tải lên gần đây
                 .row.g-3
-                    each file in displayFiles
-                        .col-6.col-md-4.col-lg-3.col-xl-2
-                            .card.h-100.media-card.border-0.shadow-sm
-                                //- PREVIEW
-                                .media-preview.rounded-top
+                    each file in thuvien.slice(0, 8)
+                        .col-6.col-md-3
+                            .card.media-card.border-0.shadow-sm
+                                .media-preview.rounded(style="height: 100px;")
                                     if file.type === 'image'
-                                        img(src=file.url, alt=file.filename)
-                                    else if file.type === 'video'
-                                        i.fas.fa-file-video.file-icon.text-danger
-                                    else if file.type === 'document'
-                                        i.fas.fa-file-pdf.file-icon.text-warning
+                                        img(src=file.url)
                                     else
-                                        i.fas.fa-file-alt.file-icon.text-secondary
-                                    
-                                    //- Overlay Actions
-                                    .media-overlay
-                                        a.btn.btn-light.btn-sm.rounded-circle(href=file.url, target="_blank", title="Xem")
-                                            i.fas.fa-eye
-                                        button.btn.btn-light.btn-sm.rounded-circle(onclick=`copyLink('${file.url}')`, title="Copy Link")
-                                            i.fas.fa-link
-                                        button.btn.btn-danger.btn-sm.rounded-circle(onclick=`deleteFile(${file.id})`, title="Xóa")
-                                            i.fas.fa-trash
-
-                                //- INFO
+                                        i.fas.fa-file.text-secondary.fs-2
                                 .card-body.p-2
-                                    h6.card-title.text-truncate.mb-1.small(title=file.filename) #{file.filename}
-                                    .d-flex.justify-content-between.align-items-center
-                                        small.text-muted(style="font-size: 0.75rem") #{file.size}
-                                        small.text-muted(style="font-size: 0.75rem") #{file.uploadedAt}
+                                    p.small.text-truncate.mb-0 #{file.filename}
 
+
+            //- 3. GIAO DIỆN DANH SÁCH FILE (Chỉ hiện khi ĐANG TRONG folder)
             else
-                .text-center.py-5
-                    i.fas.fa-folder-open.fa-3x.text-muted.mb-3
-                    p.text-muted Thư mục này chưa có file nào.
+                //- Nút quay lại
+                .mb-3
+                    a.btn.btn-light.border(href="/admin/gallery") 
+                        i.fas.fa-arrow-left.me-2
+                        | Quay lại thư mục gốc
 
-    //- Form ẩn xóa
-    form#form-delete-item(method="POST", action="", data-path="/admin/gallery/delete")
+                //- Công cụ lọc trong folder
+                .card.shadow-sm.mb-4.border-0
+                    .card-body
+                        .row.g-3
+                            .col-md-6
+                                +search(keyword)
+                            .col-md-6.text-end
+                                span.text-muted Đang hiển thị #{displayFiles.length} kết quả
 
-    //- SCRIPT
-    script.
-        function copyLink(url) {
-            if(!url) url = "Link demo";
-            navigator.clipboard.writeText(url);
-            alert("Đã copy: " + url);
-        }
-        function deleteFile(id) {
-            if(confirm("Xóa file này?")) {
-                const form = document.getElementById('form-delete-item');
-                const path = form.getAttribute('data-path');
-                form.action = `${path}/${id}?_method=DELETE`;
-                alert("Đã gửi lệnh xóa ID: " + id);
+                //- Grid hiển thị file
+                if displayFiles.length > 0
+                    .row.g-3
+                        each file in displayFiles
+                            .col-6.col-md-4.col-lg-3.col-xl-2
+                                .card.h-100.media-card.border-0.shadow-sm
+                                    //- PREVIEW
+                                    .media-preview.rounded-top
+                                        if file.type === 'image'
+                                            img(src=file.url, alt=file.filename)
+                                        else if file.type === 'video'
+                                            i.fas.fa-file-video.file-icon.text-danger
+                                        else if file.type === 'document'
+                                            i.fas.fa-file-pdf.file-icon.text-warning
+                                        else
+                                            i.fas.fa-file-alt.file-icon.text-secondary
+                                        
+                                        //- Overlay Actions
+                                        .media-overlay
+                                            a.btn.btn-light.btn-sm.rounded-circle(href=file.url, target="_blank", title="Xem")
+                                                i.fas.fa-eye
+                                            button.btn.btn-light.btn-sm.rounded-circle(onclick=`copyLink('${file.url}')`, title="Copy Link")
+                                                i.fas.fa-link
+                                            button.btn.btn-danger.btn-sm.rounded-circle(onclick=`deleteFile(${file.id})`, title="Xóa")
+                                                i.fas.fa-trash
+
+                                    //- INFO
+                                    .card-body.p-2
+                                        h6.card-title.text-truncate.mb-1.small(title=file.filename) #{file.filename}
+                                        .d-flex.justify-content-between.align-items-center
+                                            small.text-muted(style="font-size: 0.75rem") #{file.size}
+                                            small.text-muted(style="font-size: 0.75rem") #{file.uploadedAt}
+
+                else
+                    .text-center.py-5
+                        i.fas.fa-folder-open.fa-3x.text-muted.mb-3
+                        p.text-muted Thư mục này chưa có file nào.
+
+        //- Form ẩn xóa
+        form#form-delete-item(method="POST", action="", data-path="/admin/gallery/delete")
+
+        //- SCRIPT
+        script.
+            function copyLink(url) {
+                if(!url) url = "Link demo";
+                navigator.clipboard.writeText(url);
+                alert("Đã copy: " + url);
             }
-        }
+            function deleteFile(id) {
+                if(confirm("Xóa file này?")) {
+                    const form = document.getElementById('form-delete-item');
+                    const path = form.getAttribute('data-path');
+                    form.action = `${path}/${id}?_method=DELETE`;
+                    alert("Đã gửi lệnh xóa ID: " + id);
+                }
+            }

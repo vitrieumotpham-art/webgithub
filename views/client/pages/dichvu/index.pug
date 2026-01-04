@@ -2,50 +2,6 @@ extends ../../layouts/defaut.pug
 include ../../mixins/box.head.pug
 
 block main
-  //- ========================================================================
-  //- PHẦN 0: DỮ LIỆU GIẢ (MOCK DATA) ĐỂ TEST GIAO DIỆN
-  //- (Khi nào ghép Logic thì xóa đoạn này đi)
-  //- ========================================================================
-  -
-    var dichvus = [
-      {
-        title: "Thiết kế kiến trúc nhà phố",
-        slug: "thiet-ke-kien-truc",
-        thumbnail: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&auto=format&fit=crop&q=60",
-        description: "Giải pháp thiết kế tối ưu công năng, đón nắng gió tự nhiên."
-      },
-      {
-        title: "Thi công xây dựng trọn gói",
-        slug: "thi-cong-xay-dung",
-        thumbnail: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600&auto=format&fit=crop&q=60",
-        description: "Cam kết không phát sinh chi phí, vật tư chính hãng 100%."
-      },
-      {
-        title: "Thiết kế nội thất chung cư",
-        slug: "thiet-ke-noi-that",
-        thumbnail: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&auto=format&fit=crop&q=60",
-        description: "Biến căn hộ thành không gian sống tiện nghi và thẩm mỹ."
-      },
-      {
-        title: "Cải tạo nhà cũ xuống cấp",
-        slug: "cai-tao-nha",
-        thumbnail: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&auto=format&fit=crop&q=60",
-        description: "Hô biến nhà nát thành nhà lầu với chi phí tiết kiệm nhất."
-      },
-      {
-        title: "Thiết kế cảnh quan sân vườn",
-        slug: "san-vuon",
-        thumbnail: "https://images.unsplash.com/photo-1558905544-3e5906938aa0?w=600&auto=format&fit=crop&q=60",
-        description: "Mang thiên nhiên xanh mát vào từng ngóc ngách ngôi nhà."
-      },
-      {
-        title: "Tư vấn phong thủy xây dựng",
-        slug: "phong-thuy",
-        thumbnail: "https://images.unsplash.com/photo-1528581823589-298952000e02?w=600&auto=format&fit=crop&q=60",
-        description: "Kích hoạt tài lộc, bình an cho gia chủ theo mệnh."
-      }
-    ];
-
   // ==================== 1. HERO BANNER ====================
   section.service-hero.position-relative
     .hero-overlay
@@ -83,7 +39,7 @@ block main
                   h3.h5.card-title.fw-bold.mb-3
                     a.text-decoration-none.text-dark(href=`/dich-vu/detail/${item.slug}`)= item.title
                   
-                  p.card-text.text-muted.mb-4.small= item.description
+                  p.card-text.text-muted.mb-4.small !{item.description}
                   
                   a.read-more.text-primary.fw-bold.text-decoration-none.d-inline-flex.align-items-center(href=`/dich-vu/detail/${item.slug}`) 
                     | Xem chi tiết 

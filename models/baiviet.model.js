@@ -18,9 +18,7 @@ const BaiVietSchema = new mongoose.Schema({
     featured: Boolean,
     views: Number,
     createdBy: {
-        account_id: {
-            type: String,
-        },
+        account_id: String,
         createdAt: {
             type: Date,
             default: Date.now
@@ -30,7 +28,10 @@ const BaiVietSchema = new mongoose.Schema({
         type: Boolean,
         default: false // QUAN TRỌNG: Phải là false khi mới tạo
     },
-    deletedAt: Date // Nên thêm trường này để biết xóa khi nào
+    deletedAt: {
+        account_id: String,
+        deletedAt: Date
+    }, 
 }, {
     timestamps: true // Tự động thêm trường updatedAt và createdAt cấp cao nhất
 });

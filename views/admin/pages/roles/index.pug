@@ -1,0 +1,59 @@
+extends ../../layout/defaut.pug
+
+block main
+  if(role.permissions.includes("roles_view"))
+    .container-fluid.mt-4
+      .d-flex.justify-content-between.align-items-center.mb-4
+        h1.text-primary.fw-bold Danh Sách Nhóm Quyền
+        if(role.permissions.includes("roles_add"))
+          a.btn.btn-outline-primary(href="/admin/roles/create")
+            i.fas.fa-plus.me-2
+            | Thêm mới
+
+      .card.shadow-sm.border-0
+        .card-body
+          if(roles.length > 0)
+            table.table.table-hover.align-middle
+              thead.table-light
+                tr
+                  th STT
+                  th Nhóm quyền
+                  th Mô tả ngắn
+                  th Ngày tạo
+                  th Hành động
+              tbody
+                each item, index in roles
+                  tr
+                    td #{index + 1}
+                    td 
+                      b.text-dark #{item.title}
+                    td 
+                      //- Sử dụng !{...} để render HTML từ TinyMCE nếu có
+                      div.small.text-muted !{item.mo_ta}
+                    td 
+                      span.badge.bg-light.text-dark
+                        i.far.fa-calendar-alt.me-1
+                        | #{new Date(item.createdAt).toLocaleDateString('vi-VN')}
+                    td
+                      .d-flex.gap-2
+                        //- Thêm dấu / trước admin để URL luôn là http://localhost:3000/admin/...
+                        if(role.permissions.includes("roles_edit"))
+                          a.btn.btn-sm.btn-warning(href=`/admin/roles/edit/${item.id}`) 
+                            i.fas.fa-edit.me-1
+                            | sửa
+                          
+                        //- Nút xóa cần có data-id chính xác và script JS đi kèm
+                        if(role.permissions.includes("roles_delete"))
+                          button.btn.btn-sm.btn-danger(
+                            button-delete 
+                            data-id=item.id
+                          ) 
+                            i.fas.fa-trash.me-1
+                            | xóa
+                        if(role.permissions.includes("roles_chitiet"))
+                          a.btn.btn-sm.btn-secondary(href=`/admin/roles/detail/${item.id}`) 
+                              i.fas.fa-info-circle.me-1
+                              | chi tiết
+          else
+            .text-center.py-5
+              p.text-muted Chưa có nhóm quyền nào được tạo.

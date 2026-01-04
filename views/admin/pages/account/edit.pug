@@ -1,0 +1,82 @@
+extends ../../layout/defaut.pug
+
+block main
+  h1(class="mb-4") Chỉnh sửa tài khoản
+
+  form(
+    action=`/admin/account/edit/${data.id}?_method=PATCH`
+    method="POST"
+    enctype="multipart/form-data"
+  )
+    .mb-3
+      label.form-label.fw-bold(for="fullName") Họ tên *
+      input#fullName.form-control(
+        type="text"
+        name="fullName"
+        required
+        value=data.fullName
+      )
+    
+    .mb-3
+      label.form-label.fw-bold(for="email") Email *
+      input#email.form-control(
+        type="email"
+        name="email"
+        required
+        value=data.email
+      )
+    
+    .mb-3
+      label.form-label.fw-bold(for="password") Mật khẩu
+      input#password.form-control(
+        type="password"
+        name="password"
+        placeholder="Để trống nếu muốn giữ nguyên mật khẩu cũ"
+      )
+
+    .mb-3(upload-image)
+      label.form-label.fw-bold(for="avatar") Ảnh đại diện
+      input#avatar.form-control-file.d-block(
+        type="file"
+        name="avatar"
+        accept="image/*"
+        upload-image-input
+      )
+      img(
+        src=data.avatar
+        class="img-thumbnail mt-2"
+        width="150px"
+        upload-image-preview
+      )
+
+    .mb-3
+      label.form-label.fw-bold(for="role_id") Nhóm quyền
+      select#role_id.form-select(name="role_id")
+        option(value="" disabled) -- Chọn nhóm quyền --
+        each item in roles
+          option(
+            value=item.id
+            selected=(item.id == data.role_id ? true : false)
+          ) #{item.title}
+
+    .mb-3
+      label.form-label.fw-bold.d-block Trạng thái
+      .form-check.form-check-inline
+        input#statusActive.form-check-input(
+          type="radio"
+          name="status"
+          value="active"
+          checked=(data.status === "active" ? true : false)
+        )
+        label.form-check-label(for="statusActive") Hoạt động
+      .form-check.form-check-inline
+        input#statusInActive.form-check-input(
+          type="radio"
+          name="status"
+          value="inactive"
+          checked=(data.status === "inactive" ? true : false)
+        )
+        label.form-check-label(for="statusInActive") Dừng hoạt động
+
+    .mb-3
+      button.btn.btn-primary(type="submit") Cập nhật

@@ -1,0 +1,106 @@
+extends ../../layout/defaut.pug
+include ../../mixins/search.pug
+
+block main
+  if(role.permissions.includes("doanhmuc_view"))
+    style.
+      .bg-success-soft { background-color: #e6fffa; color: #38a169; }
+      .bg-danger-soft { background-color: #fff5f5; color: #e53e3e; }
+      .table-hover tbody tr:hover { background-color: #f8fafc; transition: 0.2s; }
+      [role="button"]:hover { opacity: 0.8; }
+
+    .container-fluid.mt-4
+      //- Tiêu đề & Nút thêm mới
+      .row.mb-4.align-items-center
+        .col-md-6
+          h1.h3.text-dark.fw-bolder.m-0 
+            i.fas.fa-list-ul.me-3.text-primary
+            | Danh mục dự án
+          p.text-muted.small.m-0 Quản lý phân loại và thứ tự hiển thị danh mục.
+        
+        .col-md-6.text-md-end
+          if(role.permissions.includes("doanhmuc_add"))
+            a.btn.btn-primary.px-4.shadow-sm.rounded-pill(href=`/${PefixAdmin}/doanhmuc/create`)
+              i.fas.fa-plus.me-2
+              | Tạo danh mục mới
+
+      //- Bộ lọc
+      .card.border-0.shadow-sm.mb-4
+        .card-body.p-4
+          form(action=`/${PefixAdmin}/doanhmuc`, method="GET")
+            .row.g-3
+              .col-lg-7
+                +search(keyword)
+              .col-lg-3
+                select#statusDoanhmuc.form-select.border-light(name="status")
+                  option(value="", selected=(!status)) -- Trạng thái --
+                  option(value="active", selected=(status === "active")) Hoạt động
+                  option(value="inactive", selected=(status === "inactive")) Tạm dừng
+              .col-lg-2
+                button.btn.btn-dark.w-100(type="submit") Lọc
+
+      //- Bảng dữ liệu (Đã bỏ cột hình ảnh)
+      .card.border-0.shadow-sm.overflow-hidden
+        .table-responsive
+          table.table.table-hover.align-middle.mb-0
+            thead.bg-light
+              tr.text-uppercase.small.fw-bolder
+                th.text-center(style="width: 80px") STT
+                th Tiêu đề danh mục
+                th.text-center(style="width: 150px") Vị trí
+                th.text-center(style="width: 200px") Trạng thái
+                th.text-center(style="width: 150px") Thao tác
+            tbody
+              if (records && records.length > 0)
+                each item, index in records
+                  tr
+                    td.text-center.fw-bold.text-secondary #{index + 1}
+                    td
+                      span.fw-bold.text-dark #{item.title}
+                    td.text-center
+                      input.form-control.text-center.mx-auto(
+                        type="number"
+                        value=item.position
+                        style="width: 80px"
+                        input-position
+                        data-id=item.id
+                      )
+                    td.text-center
+                      if (item.status === "active")
+                        span.badge.bg-success-soft.text-success.px-3.py-2.rounded-pill(
+                          role="button"
+                          button-change-status
+                          data-status="active"
+                          data-id=item.id
+                        )
+                          i.fas.fa-check.me-1
+                          | Hoạt động
+                      else
+                        span.badge.bg-danger-soft.text-danger.px-3.py-2.rounded-pill(
+                          role="button"
+                          button-change-status
+                          data-status="inactive"
+                          data-id=item.id
+                        )
+                          i.fas.fa-times.me-1
+                          | Tạm dừng
+                    td.text-center
+                      if(role.permissions.includes("doanhmuc_edit"))
+                        a.btn.btn-outline-warning.btn-sm.me-1(
+                          href=`/${PefixAdmin}/doanhmuc/edit/${item.id}`
+                        )
+                          i.fas.fa-edit
+                      if(role.permissions.includes("doanhmuc_delete"))
+                        button.btn.btn-outline-danger.btn-sm(
+                          button-delete
+                          data-id=item.id
+                        )
+                          i.fas.fa-trash
+              else
+                tr
+                  td.text-center.py-5(colspan="5")
+                    p.text-muted.m-0 Hiện chưa có danh mục nào được tạo.
+
+    //- Forms ẩn
+    form#form-delete-item(method="POST" action="" data-path=`/${PefixAdmin}/doanhmuc/delete?_method=DELETE`)
+    form#form-change-status(method="POST" action="" data-path=`/${PefixAdmin}/doanhmuc/change-status?_method=PATCH`)

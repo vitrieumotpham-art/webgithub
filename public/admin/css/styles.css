@@ -175,3 +175,40 @@
     padding: 0;          /* Tùy chọn: Loại bỏ padding/margin */
     margin: 0;
 }
+
+/* 1. Ẩn thanh cuộn mặc định của trình duyệt (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Ẩn cho Firefox */
+html {
+    scrollbar-width: none;
+}
+
+/* 2. Xử lý bảng để không bị tràn ngang (Bỏ thanh trượt ngang) */
+.table-responsive {
+    overflow-x: hidden; /* Ép bảng không được xuất hiện thanh trượt ngang */
+}
+
+.table {
+    table-layout: fixed; /* Ép các cột phải nằm trong chiều rộng 100% của card */
+    width: 100%;
+    margin-bottom: 0;
+}
+
+/* Đảm bảo nội dung dài không làm vỡ khung (tự động xuống dòng hoặc cắt bớt) */
+.table td {
+    white-space: normal; /* Cho phép xuống dòng ở các ô tiêu đề dài */
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Tùy chỉnh độ rộng các cột quan trọng để không bị co quá mức */
+.col-stt { width: 50px; }
+.col-img { width: 100px; }
+.col-title { width: auto; } /* Cột này sẽ tự co giãn */
+.col-price { width: 150px; }
+.col-status { width: 130px; }
+.col-action { width: 160px; }

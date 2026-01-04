@@ -2,7 +2,10 @@ extends ../../layout/defaut.pug
 
 block main
   .container-fluid.mt-4
-    h1.h3.text-primary.fw-bold.mb-4 Thêm Tài Khoản Quản Trị
+    .d-flex.justify-content-between.align-items-center.mb-4
+      h1.h3.text-primary.fw-bold 
+        i.fas.fa-user-plus.me-2
+        | Thêm Tài Khoản Quản Trị
 
     form(
       action=`/${PefixAdmin}/account/create`
@@ -10,57 +13,98 @@ block main
       enctype="multipart/form-data"
     )
       .row
+        //- Cột trái: Thông tin cơ bản
         .col-md-8
           .card.shadow-sm.border-0.mb-4
+            .card-header.bg-white.py-3
+              h5.mb-0.fw-bold Thông tin cá nhân
             .card-body
               .row
                 .col-md-6.mb-3
                   label.form-label.fw-bold(for="fullName") Họ tên
-                  input#fullName.form-control(type="text" name="fullName" required)
+                  input#fullName.form-control(
+                    type="text" 
+                    name="fullName" 
+                    placeholder="VD: Nguyễn Văn A"
+                    required
+                  )
                 .col-md-6.mb-3
                   label.form-label.fw-bold(for="email") Email
-                  input#email.form-control(type="email" name="email" required)
+                  input#email.form-control(
+                    type="email" 
+                    name="email" 
+                    placeholder="example@gmail.com"
+                    required
+                  )
                 
                 .col-md-6.mb-3
                   label.form-label.fw-bold(for="username") Tên đăng nhập
-                  input#username.form-control(type="text" name="username" required)
+                  input#username.form-control(
+                    type="text" 
+                    name="username" 
+                    required
+                  )
                 .col-md-6.mb-3
                   label.form-label.fw-bold(for="password") Mật khẩu
-                  input#password.form-control(type="password" name="password" required)
+                  input#password.form-control(
+                    type="password" 
+                    name="password" 
+                    required
+                  )
 
+        //- Cột phải: Ảnh & Quyền
         .col-md-4
+          //- Upload Ảnh
           .card.shadow-sm.border-0.mb-4
-            .card-header.bg-white.fw-bold Ảnh đại diện
+            .card-header.bg-white.fw-bold 
+              i.fas.fa-image.me-2
+              | Ảnh đại diện
             .card-body(upload-image)
-              .col-12
-                  label.form-label Chọn hình ảnh
-                  input.form-control-file(
-                    type="file", 
-                    name="avatar",
-                    accept="image/*"
-                    upload-img-input-duan 
-                  )
-                  // Sửa imf -> img và thêm src trống
-                  img(
-                    src=""
-                    upload-image-preview
-                    style="width: 150px; margin-top: 15px; display: block;"
-                  )
+              .mb-3
+                label.btn.btn-outline-secondary.w-100(for="avatar")
+                  i.fas.fa-cloud-upload-alt.me-2
+                  | Chọn hình ảnh
+                input#avatar.d-none(
+                  type="file", 
+                  name="avatar",
+                  accept="image/*"
+                  upload-image-input 
+                )
+              .text-center
+                img.img-thumbnail(
+                  src="/admin/images/default-avatar.png"
+                  upload-image-preview
+                  style="width: 150px; height: 150px; object-fit: cover; display: block; margin: 0 auto;"
+                )
 
+          //- Nhóm quyền & Trạng thái
           .card.shadow-sm.border-0.mb-4
-            .card-header.bg-white.fw-bold Phân quyền
+            .card-header.bg-white.fw-bold 
+              i.fas.fa-user-tag.me-2
+              | Phân quyền & Trạng thái
             .card-body
               .mb-3
-                label.form-label(for="role") Vai trò
-                select#role.form-select(name="role")
-                  option(value="admin") Quản trị viên (Admin)
-                  option(value="editor") Biên tập viên
+                label.form-label.fw-bold(for="role_id") Nhóm quyền
+                select#role_id.form-select(name="role" required)
+                  option(value="" disabled selected) -- Chọn nhóm quyền --
+                  if(roles)
+                    each item in roles
+                      option(value=item.id) #{item.title}
               
               .mb-3
-                label.form-label Trạng thái
-                select.form-select(name="status")
-                  option(value="active") Hoạt động
-                  option(value="inactive") Khóa
+                label.form-label.fw-bold Trạng thái
+                .d-flex.gap-3
+                  .form-check
+                    input#active.form-check-input(type="radio" name="status" value="active" checked)
+                    label.form-check-label(for="active") Hoạt động
+                  .form-check
+                    input#inactive.form-check-input(type="radio" name="status" value="inactive")
+                    label.form-check-label(for="inactive") Dừng hoạt động
 
-      .mb-5
-        button.btn.btn-primary.btn-lg(type="submit") Tạo tài khoản
+      .row.mb-5
+        .col-12
+          hr
+          button.btn.btn-primary.btn-lg.px-5(type="submit")
+            i.fas.fa-save.me-2
+            | Tạo tài khoản
+          a.btn.btn-light.btn-lg.ms-2(href=`/${PefixAdmin}/account`) Hủy bỏ

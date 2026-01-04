@@ -1,0 +1,40 @@
+extends ../../layouts/defaut.pug
+include ../../mixins/box.head.pug
+
+block main
+    .container.py-5
+        +box-head("KẾT QUẢ TÌM KIẾM")
+        
+        if keyword
+            p.mb-5 Kết quả tìm kiếm cho từ khóa: #[strong #{keyword}]
+
+        //- PHẦN 1: DỰ ÁN TÌM THẤY
+        section.results-section.mb-5
+            h3.h4.border-bottom.pb-2 #[i.fas.fa-home.me-2] DỰ ÁN KIẾN TRÚC (#{duan.length})
+            .row.mt-4
+                if duan.length > 0
+                    each item in duan
+                        .col-md-4.mb-4
+                            //- Card dự án của bạn ở đây
+                            .project-card
+                                a(href=`/duan/detail/${item.slug}`)
+                                    img(src=item.thumbnail class="w-100" style="height: 200px; object-fit: cover")
+                                    h4.mt-2.h6 #{item.title}
+                else
+                    .col-12: p.text-muted Không tìm thấy dự án nào.
+
+        //- PHẦN 2: BÀI VIẾT TÌM THẤY
+        section.results-section
+            h3.h4.border-bottom.pb-2 #[i.fas.fa-newspaper.me-2] TIN TỨC & BÀI VIẾT (#{articles.length})
+            .row.mt-4
+                if articles.length > 0
+                    each item in articles
+                        .col-md-6.mb-4
+                            //- Sử dụng phong cách cổ điển bạn đã thích
+                            .classic-search-item.d-flex.gap-3
+                                img(src=item.thumbnail style="width: 120px; height: 80px; object-fit: cover")
+                                .content
+                                    h4.h6: a(href=`/tintuc/${item.slugLink}`) #{item.title}
+                                    p.small.text-muted.line-clamp-1 #{item.description}
+                else
+                    .col-12: p.text-muted Không tìm thấy bài viết nào.

@@ -1,0 +1,61 @@
+:root {
+      --primary-color: #1a1a1a;    /* Đen than */
+      --accent-color: #b8860b;     /* Vàng đồng */
+      --bg-light: #f4f7f6;
+    }
+    
+    .login-wrapper {
+      background-color: var(--bg-light) !important;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .card {
+      border: none;
+      border-top: 5px solid var(--accent-color); /* Vạch vàng đồng đặc trưng kiến trúc */
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .form-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      padding: 10px 15px;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 0.25rem rgba(184, 134, 11, 0.1);
+    }
+
+    .btn-dark {
+      background-color: var(--primary-color);
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-dark:hover {
+      background-color: var(--accent-color);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(184, 134, 11, 0.3);
+    }
+
+    .text-accent {
+      color: var(--accent-color) !important;
+      font-weight: 500;
+    }
+
+    .form-check-input:checked {
+      background-color: var(--accent-color);
+      border-color: var(--accent-color);
+    }

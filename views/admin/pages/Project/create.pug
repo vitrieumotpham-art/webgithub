@@ -36,10 +36,19 @@ block main
               .row.g-3.mb-4
                 .col-md-3
                   label.form-label Loại hình
-                  input.form-control(type="text", name="loai_hinh", placeholder="Nhà Phố")
+                  select.form-select(name="loai_hinh")
+                    option(value="VanPhong", selected=(loai_hinh == "VanPhong")) Văn Phòng  
+                    option(value="BietThu", selected=(loai_hinh == "BietThu")) Biệt Thự
+                    option(value="NoiThat", selected=(loai_hinhh == "NoiThat")) Nội Thất
+                    option(value="NhaPho", selected=(loai_hinh == "NhaPho")) Nhà Phố
                 .col-md-3
-                  label.form-label Phong cách
-                  input.form-control(type="text", name="phong_cach", placeholder="Hiện Đại")
+                  .mb-3
+                    label.form-label.fw-bold(for="product_category_id") Danh mục phong cách 
+                    select#product_category_id.form-select(name="phong_cach")
+                      option(value="") -- Chọn danh mục  --
+                      if(catelory)
+                        each item in catelory
+                          option(value=item.id) #{item.title}
                 .col-md-2
                   label.form-label Số tầng
                   input.form-control(type="number", name="so_tang", placeholder="5")
@@ -81,5 +90,5 @@ block main
 
               //- NÚT BẤM XỬ LÝ
               .mt-4.pt-3.border-top.text-end
-                a.btn.btn-outline-secondary.me-2.px-4(href=`${PefixAdmin}/Project`) Hủy
+                a.btn.btn-outline-secondary.me-2.px-4(href=`/${PefixAdmin}/Project`) Hủy
                 button.btn.btn-success.px-5(type="submit") Lưu Dự Án

@@ -262,3 +262,143 @@
     display: flex; 
     justify-content: space-between;
 }
+
+
+/* chi tiết sản phẩm */
+/* --- TRANG CHI TIẾT DỰ ÁN --- */
+.project-detail-page {
+    background-color: #fcfcfc;
+    color: #333;
+}
+
+/* 1. Header & Breadcrumb */
+.breadcrumb-item a {
+    transition: color 0.3s ease;
+}
+.breadcrumb-item a:hover {
+    color: #0d6efd !important;
+}
+
+/* 2. Gallery & Images */
+.main-img-wrapper, .sub-img-wrapper {
+    position: relative;
+    cursor: pointer;
+    background-color: #eee;
+}
+
+.main-img-wrapper img, .sub-img-wrapper img {
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.main-img-wrapper:hover img, .sub-img-wrapper:hover img {
+    transform: scale(1.05);
+}
+
+/* Lớp phủ khi hover vào ảnh */
+.main-img-wrapper::after {
+    content: "🔍 Xem ảnh lớn";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    opacity: 0;
+    transition: 0.3s;
+    font-size: 0.9rem;
+}
+
+.main-img-wrapper:hover::after {
+    opacity: 1;
+}
+
+/* 3. Tabs Nội dung */
+.nav-tabs .nav-link {
+    color: #6c757d;
+    background: none;
+    border-bottom: 2px solid transparent !important;
+    padding-bottom: 12px;
+}
+
+.nav-tabs .nav-link.active {
+    color: #0d6efd !important;
+    border-bottom: 2px solid #0d6efd !important;
+    background: none !important;
+}
+
+.description-text {
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: #555;
+    text-align: justify;
+}
+
+/* 4. Timeline Quy trình */
+.timeline-item {
+    position: relative;
+}
+
+.timeline-item .icon span {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border: 3px solid #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* 5. Sidebar Thông số (Sticky) */
+.sticky-top {
+    z-index: 10;
+}
+
+.project-spec-card, .card {
+    border: 1px solid rgba(0,0,0,0.05) !important;
+}
+
+.spec-list .border-bottom:last-child {
+    border-bottom: none !important;
+}
+
+/* 6. Nút bấm & Tiện ích */
+.btn-primary {
+    background-color: #0d6efd;
+    border: none;
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+}
+
+/* 7. Hiệu ứng In ấn */
+@media print {
+    .project-header nav, 
+    .btn, 
+    .related-projects, 
+    footer, 
+    header {
+        display: none !important;
+    }
+    .container {
+        width: 100% !important;
+        max-width: none !important;
+    }
+}
+
+/* 8. Responsive */
+@media (max-width: 768px) {
+    .main-img-wrapper img {
+        height: 300px !important;
+    }
+    .display-4 {
+        font-size: 2rem;
+    }
+}

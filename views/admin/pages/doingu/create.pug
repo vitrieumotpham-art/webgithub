@@ -28,7 +28,7 @@ block main
 
               .mb-3
                 label.form-label.fw-bold(for="description") Tiểu sử / Kinh nghiệm
-                textarea#description.form-control(name="description" rows="5")
+                textarea.form-control(name="description" rows="5" id="my-expressjs-tinymce-app")
 
         .col-md-4
           .card.shadow-sm.border-0.mb-4
@@ -63,4 +63,4 @@ block main
       .mb-5
         button.btn.btn-success.btn-lg(type="submit") Tạo nhân sự
         //- Link quay lại cũng phải viết hoa Doingu
-        a.btn.btn-outline-secondary.btn-lg.ms-2(href=`${PefixAdmin}/Doingu`) Hủy bỏ
+        a.btn.btn-outline-secondary.btn-lg.ms-2(href=`/${PefixAdmin}/Doingu`) Hủy bỏ

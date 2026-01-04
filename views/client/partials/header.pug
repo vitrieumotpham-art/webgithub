@@ -1,33 +1,59 @@
 header.header
-  //- 1. LOGO (Bên trái)
+  //- 1. LOGO
   a.logo(href="/")
-    img(src="/img/pngtree-salon-logo-png-image_4004444.png" alt="Logo PNT DECOR")
+    img(src="/img/pnt-letter-logo-design-inspiration-260nw-2361378981.jpg" alt="Logo PNT DECOR")
   
-  //- 2. MENU (Ở giữa)
+  //- 2. MENU
   nav.list-menu
     a(href="/") Trang chủ
     a(href="/about_us") Về Chúng Tôi
-    a(href="/dichvu") dịch vụ
+    a(href="/dichvu") Dịch vụ
     a(href="/duan") Dự án
     a(href="/khach") Khách hàng
     a(href="/tintuc") Tin tức
     a(href="/lienhe") Liên Hệ 
   
-  //- 3. KHU VỰC BÊN PHẢI (Thông tin + Social + Search)
-  .header-right
-    //- Thông tin liên hệ (Ẩn trên mobile cho gọn)
-    .thongtin
-      p +84 914 761 150
-      p info@apes.com.vn
+  //- 3. KHU VỰC BÊN PHẢI
+  .header-right.d-flex.align-items-center
+    .thongtin.d-none.d-xl-block
+      p.mb-0 +84 914 761 150
+      p.mb-0 info@apes.com.vn
     
-    //- Mạng xã hội
-    .social
-      a(href="https://www.facebook.com/profile.php?id=100068020086155&locale=vi_VN"): img(src="/img/sosial/icons8-facebook-30.png" alt="FB" target="_blank")
-      a(href="https://www.instagram.com/bin__258/"): img(src="/img/sosial/icons8-instagram-30.png" alt="Insta" target="_blank")
+    .social.mx-3.d-flex.gap-2
+      a(href="#" target="_blank"): img(src="/img/icons8-facebook-36.png" alt="FB" width="24")
+      a(href="#" target="_blank"): img(src="/img/icons8-instagram-logo-36.png" alt="Insta" width="24")
+
+    //- NÚT YÊU THÍCH
+    .cart-icon.mx-2
+      a.position-relative(href="/cart" title="Danh sách yêu thích")
+        i.fa-solid.fa-heart.text-danger(style="font-size: 1.4rem;")
+        span.position-absolute.top-0.start-100.translate-middle.badge.rounded-pill.bg-dark.text-white(
+          style="font-size: 0.65rem; padding: 0.3em 0.5em; border: 1.5px solid #fff;"
+        )
+          | #{miniCart ? miniCart.totalQuantity : 0}
+
+    //- PHẦN ĐĂNG NHẬP / ĐĂNG KÝ (MỚI)
+    .auth-area.mx-2
+      if user
+        //- Trạng thái đã đăng nhập
+        .dropdown
+          a.nav-link.dropdown-toggle.d-flex.align-items-center(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false")
+            i.fa-solid.fa-user-circle.me-1(style="font-size: 1.4rem;")
+            span.small.fw-bold #{user.fullName}
+          ul.dropdown-menu.dropdown-menu-end.shadow.border-0
+            li: a.dropdown-item(href="/user/profile") #[i.fa-solid.fa-address-card.me-2] Trang cá nhân
+            li: a.dropdown-item(href="/user/settings") #[i.fa-solid.fa-gear.me-2] Cài đặt
+            li: hr.dropdown-divider
+            li: a.dropdown-item.text-danger(href="/user/logout") #[i.fa-solid.fa-right-from-bracket.me-2] Đăng xuất
+      else
+        //- Trạng thái chưa đăng nhập
+        .auth-buttons.d-flex.gap-2
+          a.btn.btn-sm.btn-outline-dark.rounded-pill.px-3(href="/user/login") Đăng nhập
+          a.btn.btn-sm.btn-primary.rounded-pill.px-3.d-none.d-md-inline-block(href="/user/register") Đăng ký
     
-    //- Ô tìm kiếm (Mới thêm)
-    .search-box
-      form(action="/search" method="GET")
-        input.search-input(type="text" name="keyword" placeholder="Tìm kiếm...")
+    //- Ô tìm kiếm
+    .search-box.ms-2
+      form(action="/search" method="GET").d-flex.align-items-center
+        input.search-input(type="text" name="keyword" placeholder="Tìm dự án..." value=keyword)
         button.search-btn(type="submit")
           i.fa-solid.fa-magnifying-glass

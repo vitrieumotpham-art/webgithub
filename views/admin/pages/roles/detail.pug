@@ -1,0 +1,28 @@
+extends ../../layout/defaut.pug
+
+block main
+  if(role.permissions.includes("roles_chitiet"))
+    .container-fluid.mt-4
+      h1.text-primary.fw-bold.mb-4 Chi tiết nhóm quyền
+
+      .card.shadow-sm.border-0
+        .card-body.p-4
+          if (role.title)
+            .mb-4
+              label.text-muted.small.text-uppercase.fw-bold Tên nhóm quyền
+              h4.text-dark.fw-bold #{role.title}
+          
+          if (role.mo_ta)
+            .mb-4
+              label.text-muted.small.text-uppercase.fw-bold Mô tả chức năng
+              .p-3.bg-light.rounded-3.border-start.border-4.border-primary
+                div !{role.mo_ta}
+
+          .mt-4.pt-3.border-top
+            if(role.permissions.includes("roles_edit"))
+              a.btn.btn-warning.me-2(href=`/admin/roles/edit/${role.id}`) 
+                i.fas.fa-edit.me-1
+                | Chỉnh sửa
+            a.btn.btn-outline-secondary(href="/admin/roles") 
+              i.fas.fa-arrow-left.me-1
+              | Quay lại danh sách

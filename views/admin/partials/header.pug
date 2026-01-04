@@ -1,12 +1,20 @@
 header.admin-header.py-3.border-bottom
     .container-fluid.d-flex.align-items-center.justify-content-between
         .header-left.d-flex.align-items-center
-            img.header-logo(src="/img/pngtree-salon-logo-png-image_4004444.png" alt="Logo PNT DECOR")
-            h2.h5.mb-0.font-weight-bold.ml-3 Admin Dashboard
+            img.header-logo(src="/img/pngtree-salon-logo-png-image_4004444.png" alt="Logo PNT DECOR" style="height: 40px;")
+            h2.h5.mb-0.font-weight-bold.ms-3 Admin Dashboard
         .header-right
             .user-info.d-flex.align-items-center
-                i.fas.fa-user-circle.fa-lg.text-muted.mr-2
-                span.welcome-message.mr-3.text-dark Chào mừng, Admin
-                a.btn.btn-sm.btn-outline-danger(href="#") 
-                    i.fas.fa-sign-out-alt.mr-1
+                //- Hiển thị tên Admin (nên dùng biến động nếu có, ví dụ: user.fullName)
+                i.fas.fa-user-circle.fa-lg.text-muted.me-2
+                span.welcome-message.me-3.text-dark.fw-bold Chào mừng, #{user.fullName}
+
+                //- Nút Thông tin cá nhân
+                a.btn.btn-sm.btn-outline-primary.me-2(href=`/${PefixAdmin}/my-account`)
+                    i.fas.fa-id-card.me-1
+                    span Cá nhân
+
+                //- Nút Đăng xuất
+                a.btn.btn-sm.btn-outline-danger(href=`/${PefixAdmin}/auth/logout`) 
+                    i.fas.fa-sign-out-alt.me-1
                     span Đăng xuất

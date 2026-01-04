@@ -3,163 +3,153 @@ include ../../mixins/search.pug
 include ../../mixins/pagination.pug 
 include ../../mixins/changeall.pug
 include ../../mixins/alert.pug
+
 block main
+  if(role.permissions.includes("dichvu_view"))
     +alert-success("5000")
-    .container-fluid.mt-4
-        //- 1. Tiêu đề và Nút Thêm Mới
-        .d-flex.justify-content-between.align-items-center.mb-4
-            h1.text-primary.fw-bold Quản Lý Dịch Vụ
-            a.btn.btn-primary.shadow-sm(
-                href=`/${PefixAdmin}/dichvu/create`
-                
-                )
-                i.fas.fa-plus-circle.me-2
-                | Thêm Dịch Vụ Mới
+    
+    .container-fluid.py-4
+      //- Header Section
+      .row.mb-4.align-items-center
+        .col-md-6
+          h1.h3.mb-0.text-gray-800.fw-bold 
+            i.fas.fa-concierge-bell.me-2.text-primary
+            | Quản Lý Dịch Vụ
+          p.text-muted.small Danh sách các gói dịch vụ kiến trúc và nội thất hiện có.
+        .col-md-6.text-md-end
+          if(role.permissions.includes("duan_edit"))
+            a.btn.btn-primary.px-4.py-2.shadow-sm.rounded-pill(href=`/${PefixAdmin}/dichvu/create`)
+              i.fas.fa-plus.me-2
+              | Thêm Dịch Vụ Mới
 
-        //- 2. Khối Bộ Lọc và Tìm Kiếm
-        .card.shadow-sm.mb-4
-            .card-body
-                form.row.g-3.align-items-end(action="/admin/dichvu", method="GET")
-                    //- Tìm kiếm theo tên
-                    .col-md-8
-                        +search(keyword)
-                    //- Lọc theo trạng thái
-                    .col-md-4
-                        label.form-label(for="statusDichvu") Trạng thái:
-                        select.form-select(name="status", id="statusDichvu")
-                            option(value="", selected=(!status)) -- Tất cả --
-                            option(value="active", selected=(status === "active")) Đang hoạt động
-                            option(value="inactive", selected=(status === "inactive")) Dừng hoạt động
-                +changeAll(`/${PefixAdmin}/dichvu/change-multi`)
-        //- 3. Bảng Danh Sách Dịch Vụ
-        .card.shadow-sm
-            .card-body.p-0
-                .table-responsive
-                    table(
-                        class="table table-hover mb-0 align-middle"
-                        checkbox-multi 
+      //- Filters Section
+      .card.border-0.shadow-sm.mb-4
+        .card-header.bg-white.py-3
+          h6.m-0.fw-bold.text-primary 
+            i.fas.fa-filter.me-2
+            | Bộ lọc và Tìm kiếm
+        .card-body
+          .row.g-3
+            .col-lg-6
+              +search(keyword)
+            .col-lg-3.col-md-6
+              .input-group
+                label.input-group-text.bg-light(for="statusDichvu") Trạng thái
+                select.form-select#statusDichvu(name="status" form-filter)
+                  option(value="", selected=(!status)) -- Tất cả --
+                  option(value="active", selected=(status === "active")) Đang hoạt động
+                  option(value="inactive", selected=(status === "inactive")) Dừng hoạt động
+            .col-lg-3.col-md-6
+              +changeAll(`/${PefixAdmin}/dichvu/change-multi`)
+
+      //- Table Section
+      .card.border-0.shadow-sm
+        .card-body.p-0
+          .table-responsive
+            table.table.table-hover.align-middle.mb-0(checkbox-multi)
+              thead.bg-light.text-dark
+                tr
+                  th.text-center(style="width: 40px")
+                    input.form-check-input(type="checkbox" name="checkall")
+                  th.text-center(style="width: 60px") STT
+                  th(style="width: 100px") Hình ảnh
+                  th Tiêu đề & Thông tin
+                  th.text-end Giá tham khảo
+                  th.text-center Vị trí
+                  th.text-center Trạng thái
+                  th.text-center(style="width: 180px") Thao tác
+
+              tbody
+                if (dichvu && dichvu.length > 0)
+                  each item, index in dichvu
+                    tr
+                      td.text-center
+                        input.form-check-input(type="checkbox" name="id" value=item.id)
+                      td.text-center.fw-bold.text-muted #{index + 1}
+                      td
+                        if item.thumbnail
+                          img.rounded.shadow-sm(
+                            src=item.thumbnail 
+                            alt=item.title 
+                            style="width: 70px; height: 50px; object-fit: cover; border: 1px solid #eee"
+                          )
+                        else
+                          .bg-light.rounded.text-center.py-3
+                            i.fas.fa-image.text-muted
+                      td
+                        div.fw-bold.text-dark.mb-1= item.title
+                        div.small.text-muted
+                          i.fas.fa-link.me-1.x-small
+                          | #{item.slug}
+                      td.text-end
+                        if item.price
+                          span.badge.bg-soft-success.text-success.fs-6
+                            | #{item.price.toLocaleString()} đ
+                        else 
+                          span.text-muted.small Liên hệ
+                      td.text-center
+                        input.form-control.form-control-sm.mx-auto.text-center(
+                          name="position" 
+                          type="number" 
+                          value=item.position 
+                          style="width: 60px; border-radius: 5px;"
+                          min="1"
                         )
-                        thead
-                            tr.text-uppercase.text-secondary.bg-light
-                                th 
-                                     input(type="checkbox" name="checkall")
-                                th.text-center(style="width: 50px") STT
-                                th.text-center(style="width: 100px") Hình ảnh
-                                th Tiêu đề
-                                th Giá tham khảo
-                                th.text-center(style="width: 100px") Vị trí
-                                th.text-center Trạng thái
-                                th.text-center(style="width: 150px") Thao tác
-                        tbody
-                            //- Kiểm tra xem có dữ liệu không
-                            if (dichvu && dichvu.length > 0)
-                                each item, index in dichvu
-                                    tr
-                                        td 
-                                           input(type="checkbox" name="id" value=item.id )
-                                        //- STT (Tính toán dựa trên phân trang nếu có, ở đây để index + 1 cơ bản)
-                                        td.text-center #{index + 1}
-                                        
-                                        //- Hình ảnh (thumbnail)
-                                        td.text-center
-                                            if item.thumbnail
-                                                img.rounded(src=item.thumbnail, alt=item.title, style="width: 80px; height: auto; object-fit: cover;")
-                                            else
-                                                span.text-muted (No Image)
+                      td.text-center
+                        if item.status == "active"
+                          button.btn.btn-sm.rounded-pill.btn-success(
+                            href="javascript:;"
+                            data-hoatdong=item.status 
+                            data-idhoatdong=item.id
+                            button-change-hoatdong
+                            data-return-url=url
+                            style="font-size: 0.75rem; min-width: 90px"
+                          ) Hoạt động
+                        else
+                          button.btn.btn-sm.rounded-pill.btn-danger(
+                            href="javascript:;" 
+                            data-hoatdong=item.status 
+                            data-idhoatdong=item.id
+                            button-change-hoatdong
+                            data-return-url=url
+                            style="font-size: 0.75rem; min-width: 90px"
+                          ) Dừng HĐ
+                      td.text-center
+                        .d-flex.justify-content-center.gap-2
+                          if(role.permissions.includes("duan_edit"))
+                            a.btn.btn-sm.btn-outline-primary(
+                              href=`/admin/dichvu/detail/${item.id}`
+                              title="Chi tiết"
+                            )
+                              i.fas.fa-eye
+                              | chi tiết
+                            a.btn.btn-sm.btn-outline-warning(
+                              href=`/admin/dichvu/edit/${item.id}`
+                              title="Sửa"
+                            )
+                              i.fas.fa-pencil-alt
+                              | sửa
+                            button.btn.btn-sm.btn-outline-danger(
+                              data-id=item.id
+                              button-delete
+                              title="Xóa"
+                            )
+                              i.fas.fa-trash-alt 
+                              | xóa
+                else 
+                  tr
+                    td.text-center.py-5(colspan="8")
+                      img(src="/admin/images/empty-data.png" style="width: 100px; opacity: 0.5")
+                      p.text-muted.mt-3 Chưa có dịch vụ nào được tạo.
 
-                                        //- Tiêu đề (title)
-                                        td
-                                            h6.mb-0.text-primary= item.title
-                                            //- Hiển thị slug hoặc mô tả ngắn nếu cần
-                                            small.text-muted ID: #{item.slug}
+      //- Pagination Section
+      .mt-4.pb-5
+        +pagination(pagination)
 
-                                        //- Giá (price) - Format số
-                                        td
-                                            if item.price
-                                                strong.text-success #{item.price.toLocaleString()} đ
-                                            else 
-                                                span.text-muted Liên hệ
+    //- Hidden Forms
+    form#form-change-hoatdong(action="" method="POST" data-path=`/${PefixAdmin}/dichvu/change-hoatdong`)
+      input(type="hidden", name="returnUrl", value="")
+      input(type="hidden", name="_method", value="PATCH")
+    form#form-delete-item(action="" method="POST" data-path=`/${PefixAdmin}/dichvu/delete`)
+      input(type="hidden", name="_method", value="DELETE")
 
-                                        //- Vị trí (position)
-                                        td.text-center
-                                            input.form-control.form-control-sm.text-center(
-                                                name="position" 
-                                                type="number", 
-                                                value=item.position, 
-                                                style="width: 60px; margin: 0 auto;", 
-                                                min="1")
-
-                                        //- Trạng thái (status)
-                                        td.text-center
-                                            if item.status == "active"
-                                                a.badge.bg-success.text-decoration-none(
-                                                 href="javascript:;"
-                                                 data-hoatdong=item.status 
-                                                 data-idhoatdong=item.id
-                                                 button-change-hoatdong
-                                                 data-return-url=url
-                                                 ) Hoạt động
-                                            else
-                                                a.badge.bg-danger.text-decoration-none(
-                                                href="javascript:;" 
-                                                data-hoatdong=item.status 
-                                                data-idhoatdong=item.id
-                                                button-change-hoatdong
-                                                data-return-url=url
-                                                ) Dừng HĐ
-
-                                        //- Thao tác (Sửa/Xóa/Chi tiết)
-                                        td.text-center
-                                            .btn-group.btn-group-sm(role="group")
-                                                a.btn.btn-outline-info(
-                                                    href=`/admin/dichvu/detail/${item.id}`, 
-                                                    title="Chi tiết"
-                                                    
-                                                    )
-                                                    i.fas.fa-eye Chi tiết
-                                                a.btn.btn-outline-warning(
-                                                    href=`/admin/dichvu/edit/${item.id}`, 
-                                                    title="Chỉnh sửa"
-                                                    )
-                                                    i.fas.fa-edit Sửa
-                                                button.btn.btn-outline-danger.btn-sm(
-                                                        data-id=item.id
-                                                        button-delete
-                                                    )
-                                                        i.fas.fa-trash
-                                                        | Xoá
-                            else 
-                                tr
-                                    td.text-center(colspan="7") Chưa có dịch vụ nào được tạo.
-
-        //- 4. Phân trang (Pagination)
-        //- Cần biến pagination từ server gửi về để render dynamic
-        if (pagination && pagination.totalPage > 1)
-            .d-flex.justify-content-center.mt-4
-                nav(aria-label="Phân trang")
-                    ul.pagination
-                        li.page-item(class=(pagination.currentPage == 1 ? "disabled" : ""))
-                            button.page-link(button-pagination=pagination.currentPage-1) &laquo;
-                        
-                        - for (var i = 1; i <= pagination.totalPage; i++)
-                            li.page-item(class=(pagination.currentPage == i ? "active" : ""))
-                                button.page-link(button-pagination=i) #{i}
-                        
-                        li.page-item(class=(pagination.currentPage == pagination.totalPage ? "disabled" : ""))
-                            button.page-link(button-pagination=pagination.currentPage+1) &raquo;
-    .mt-4.d-flex.justify-content-center
-        +pagination(pagination) 
-    //- Form ẩn để xử lý xóa (nếu dùng method DELETE override)
-    form#form-change-hoatdong(
-        action="" 
-        method="POST" 
-        data-path=`/${PefixAdmin}/dichvu/change-hoatdong`
-        )
-        input(type="hidden", name="returnUrl", value="")
-        input(type="hidden", name="_method", value="PATCH")
-    form#form-delete-item(
-        action="" 
-        method="POST" 
-        data-path=`/${PefixAdmin}/dichvu/delete`
-    )
-        input(type="hidden", name="_method", value="DELETE")

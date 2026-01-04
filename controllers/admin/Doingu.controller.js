@@ -1,4 +1,4 @@
-const Doingu = require("../../models/doingu.model"); 
+const Doingu = require("../../models/doingu.model");
 const searchHelper = require("../../helpers/search.js");
 const systemConfig = require("../../config/system.js"); // Sửa chính tả sytemcofig
 const mongoose = require("mongoose"); // PHẢI CÓ DÒNG NÀY
@@ -7,7 +7,7 @@ const uploadToCloudinary = require("../../helpers/uploadToCloudinary");
 module.exports.Doingu = async (req, res) => {
     try {
         let find = {
-            deleted: false 
+            deleted: false
         };
 
         const trangthai = req.query.status;
@@ -17,14 +17,31 @@ module.exports.Doingu = async (req, res) => {
 
         const objectSearch = searchHelper(req.query);
         if (objectSearch.regex) {
-            find.$or = [
-                { fullname: objectSearch.regex },
-                { position: objectSearch.regex }
+            find.$or = [{
+                    fullname: objectSearch.regex
+                },
+                {
+                    position: objectSearch.regex
+                }
             ];
         }
 
-        const listDoingu = await Doingu.find(find).sort({ order: "asc" });
+        const listDoingu = await Doingu.find(find).sort({
+            order: "asc"
+        });
+        for (const duan of listDoingu) {
+            // Kiểm tra xem duan.createdBy và accountID có tồn tại không để tránh lỗi crash
+            if (duan.createdBy && duan.createdBy.accountID) {
+                const user = await account.findOne({
+                    _id: duan.createdBy.accountID
+                });
 
+                if (user) {
+                    // Sửa 'product' thành 'duan'
+                    duan.accountFullname = user.fullName;
+                }
+            }
+        }
         res.render("admin/pages/doingu/index.pug", {
             pageTitle: "Trang quản lý đội ngũ",
             PrefixAdmin: `/${systemConfig.prefixAdmin}`, // Thêm / để tránh lỗi nối chuỗi
@@ -51,7 +68,9 @@ module.exports.createDoinguPost = async (req, res) => {
     try {
         // 1. Xử lý trường 'order'
         if (req.body.order === "" || !req.body.order) {
-            const count = await Doingu.countDocuments({ deleted: false });
+            const count = await Doingu.countDocuments({
+                deleted: false
+            });
             req.body.order = count + 1;
         } else {
             req.body.order = parseInt(req.body.order);
@@ -67,10 +86,10 @@ module.exports.createDoinguPost = async (req, res) => {
         };
 
         // 3. Xử lý Avatar (Khớp với name="avatar" trong Pug)
-         if (req.file) {
+        if (req.file) {
             const result = await uploadToCloudinary(req.file.buffer);
-            req.body.avatar = result.secure_url; 
-          }
+            req.body.avatar = result.secure_url;
+        }
 
         req.body.deleted = false;
 
@@ -90,28 +109,33 @@ module.exports.deleteItem = async (req, res) => {
     // Chuẩn hóa đường dẫn quay về
     const prefix = systemConfig.prefixAdmin;
     const returnUrl = decodeURIComponent(req.query.returnUrl || `/${prefix}/doingu`);
-    
+
     try {
         // 1. Kiểm tra ID có đúng định dạng MongoDB không
         if (!mongoose.Types.ObjectId.isValid(id)) {
             req.flash("error", "ID không hợp lệ.");
             return res.redirect(returnUrl);
         }
-        
+
         // 2. Thực hiện xóa mềm (soft delete)
-        const result = await Doingu.updateOne({ _id: id }, { 
+        const result = await Doingu.updateOne({
+            _id: id
+        }, {
             deleted: true,
-            deletedAt: new Date()
+            deletedBy:{
+                accountID:res.locals.user.id ,
+                deletedAt: new Date() 
+            }
         });
 
         if (result.matchedCount === 0) {
-             req.flash("error", "Không tìm thấy bản ghi để xóa.");
-             return res.redirect(returnUrl);
+            req.flash("error", "Không tìm thấy bản ghi để xóa.");
+            return res.redirect(returnUrl);
         }
-        
+
         req.flash("success", "Xóa thành công!");
         res.redirect(returnUrl);
-        
+
     } catch (error) {
         console.error("Lỗi xóa:", error);
         req.flash("error", "Xóa thất bại. Vui lòng thử lại.");
@@ -122,12 +146,12 @@ module.exports.deleteItem = async (req, res) => {
 module.exports.edit = async (req, res) => {
     try {
         const id = req.params.id; // Lấy ID từ URL
-        
+
         // 1. Tìm bản ghi trong database
         const record = await Doingu.findOne({
             _id: id,
             deleted: false
-        }); 
+        });
 
         if (!record) {
             req.flash("error", "Không tìm thấy dữ liệu!");
@@ -157,7 +181,7 @@ module.exports.editpatch = async (req, res) => {
         // 1. Xử lý upload ảnh lên Cloudinary nếu có file mới
         if (req.file) {
             const result = await uploadToCloudinary(req.file.buffer);
-            req.body.avatar = result.secure_url; 
+            req.body.avatar = result.secure_url;
         }
 
         // 2. Xử lý lại object Socials (Vì form gửi lên các trường rời rạc)
@@ -175,8 +199,8 @@ module.exports.editpatch = async (req, res) => {
         }
 
         // 4. Xóa các trường không được phép cập nhật thủ công
-        delete req.body._id; 
-        delete req.body.id; 
+        delete req.body._id;
+        delete req.body.id;
 
         // 5. Cập nhật vào Database (Sửa dichvu thành Doingu)
         await Doingu.updateOne({
@@ -191,5 +215,5 @@ module.exports.editpatch = async (req, res) => {
         console.error("Lỗi cập nhật nhân sự:", error);
         req.flash("error", `Cập nhật thất bại`);
         res.redirect("back");
-    } 
+    }
 };

@@ -1,7 +1,7 @@
 const dichvu = require("../../models/dichvu.model");
 const searchHelper = require("../../helpers/search.js");
 const paginationdichvuHelper = require("../../helpers/pagination.js");
-const sytemcofig=require("../../config/system.js");
+const sytemcofig = require("../../config/system.js");
 const mongoose = require("mongoose"); // PHẢI CÓ DÒNG NÀY
 const uploadToCloudinary = require("../../helpers/uploadToCloudinary");
 // --- 1. Hàm Xử lý Danh sách Dịch vụ (Dichvu) ---
@@ -110,7 +110,7 @@ module.exports.changeMulti = async (req, res) => {
                         $in: ids
                     }
                 }, {
-                    
+
                     status: "inactive"
                 });
                 req.flash("success", `cập nhật trạng thái thành công của ${ids.length} sản phẩm `);
@@ -128,12 +128,15 @@ module.exports.changeMulti = async (req, res) => {
                 message = `Đã xóa ${ids.length} dịch vụ!`;
                 break;
             case "position-all":
-                for( const item of ids){
-                    let [id, position]=item.split("-");
-                    position=parseInt(position);
-                    await dichvu.updateOne({_id:id},{
-                        position:position
-                    });req.flash("success", `thay đổi vị thành công ${ids.length} sản phẩm`);
+                for (const item of ids) {
+                    let [id, position] = item.split("-");
+                    position = parseInt(position);
+                    await dichvu.updateOne({
+                        _id: id
+                    }, {
+                        position: position
+                    });
+                    req.flash("success", `thay đổi vị thành công ${ids.length} sản phẩm`);
 
                 }
 
@@ -154,31 +157,33 @@ module.exports.changeMulti = async (req, res) => {
     }
 }
 module.exports.createDichvu = async (req, res) => {
- res.render("admin/pages/dichvu/create.pug",{
-    pageTitle:"thêm mới sản phẩm"
-});
+    res.render("admin/pages/dichvu/create.pug", {
+        pageTitle: "thêm mới sản phẩm"
+    });
 
- }
+}
 module.exports.createDichvuPost = async (req, res) => {
-    if (req.body.position === "") { 
+    if (req.body.position === "") {
         try {
-            const countDichvu = await dichvu.countDocuments({ deleted: false }); 
-            console.log(countDichvu); 
+            const countDichvu = await dichvu.countDocuments({
+                deleted: false
+            });
+            console.log(countDichvu);
             req.body.position = countDichvu + 1;
         } catch (error) {
             console.error("Lỗi đếm tài liệu:", error);
         }
-    }else{
-        req.body.position=parseInt(req.body.position);
+    } else {
+        req.body.position = parseInt(req.body.position);
     }
     if (req.file) {
-                const result = await uploadToCloudinary(req.file.buffer);
-                req.body.thumbnail = result.secure_url; 
-              }
+        const result = await uploadToCloudinary(req.file.buffer);
+        req.body.thumbnail = result.secure_url;
+    }
 
-    const newDichvu=new dichvu(req.body);
-    await newDichvu.save(); 
-    console.log(req.body); 
+    const newDichvu = new dichvu(req.body);
+    await newDichvu.save();
+    console.log(req.body);
     res.redirect(`/${sytemcofig.prefixAdmin}/dichvu`);
 };
 // controllers/admin/Dichvu.controller.js
@@ -186,14 +191,14 @@ module.exports.createDichvuPost = async (req, res) => {
 module.exports.edit = async (req, res) => {
     try {
         const id = req.params.id; // Lấy ID từ URL
-        
+
         // 🚨 PHẢI SỬ DỤNG findById HOẶC findOne
-        const record = await dichvu.findById(id); 
+        const record = await dichvu.findById(id);
 
         if (!record) {
-             // Xử lý nếu không tìm thấy ID (tùy chọn)
-             req.flash("error", "Không tìm thấy dịch vụ này!");
-             return res.redirect("/admin/dichvu");
+            // Xử lý nếu không tìm thấy ID (tùy chọn)
+            req.flash("error", "Không tìm thấy dịch vụ này!");
+            return res.redirect("/admin/dichvu");
         }
 
         // 2. Đảm bảo truyền đối tượng vào res.render()
@@ -214,34 +219,34 @@ module.exports.edit = async (req, res) => {
 module.exports.editpatch = async (req, res) => {
     const id = req.params.id;
     if (req.file) {
-                const result = await uploadToCloudinary(req.file.buffer);
-                req.body.thumbnail = result.secure_url; 
-              }
+        const result = await uploadToCloudinary(req.file.buffer);
+        req.body.thumbnail = result.secure_url;
+    }
 
     try {
-        delete req.body._id; 
-        delete req.body.id; 
+        delete req.body._id;
+        delete req.body.id;
         await dichvu.updateOne({
-            _id: id, 
+            _id: id,
         }, req.body);
         req.flash("success", `Cập nhật dịch vụ thành công!`);
 
     } catch (error) {
         req.flash("error", `Cập nhật dịch vụ thất bại`);
         console.error("Lỗi cập nhật dịch vụ:", error);
-    } 
-    res.redirect(`/${sytemcofig.prefixAdmin}/dichvu/edit/${id}`)
+    }
+    res.redirect(`/${sytemcofig.prefixAdmin}/dichvu`)
 
 };
 module.exports.detail = async (req, res) => {
-try {
+    try {
         const id = req.params.id; // Lấy ID từ URL
-        
+
         // 🚨 PHẢI SỬ DỤNG findById HOẶC findOne
-        const record = await dichvu.findById(id); 
+        const record = await dichvu.findById(id);
         res.render("admin/pages/dichvu/detail.pug", {
             pageTitle: record.dichvu,
-            dichvu: record, 
+            dichvu: record,
         });
 
     } catch (error) {
@@ -256,28 +261,33 @@ module.exports.deleteItem = async (req, res) => {
     // Chuẩn hóa đường dẫn quay về
     const prefix = sytemcofig.prefixAdmin;
     const returnUrl = decodeURIComponent(req.query.returnUrl || `/${prefix}/dichvu`);
-    
+
     try {
         // 1. Kiểm tra ID có đúng định dạng MongoDB không
         if (!mongoose.Types.ObjectId.isValid(id)) {
             req.flash("error", "ID không hợp lệ.");
             return res.redirect(returnUrl);
         }
-        
+
         // 2. Thực hiện xóa mềm (soft delete)
-        const result = await dichvu.updateOne({ _id: id }, { 
+        const result = await dichvu.updateOne({
+            _id: id
+        }, {
             deleted: true,
-            deletedAt: new Date()
+            deletedBy:{
+                accountID:res.locals.user.id ,
+                deletedAt: new Date() 
+            }
         });
 
         if (result.matchedCount === 0) {
-             req.flash("error", "Không tìm thấy bản ghi để xóa.");
-             return res.redirect(returnUrl);
+            req.flash("error", "Không tìm thấy bản ghi để xóa.");
+            return res.redirect(returnUrl);
         }
-        
+
         req.flash("success", "Xóa thành công!");
         res.redirect(returnUrl);
-        
+
     } catch (error) {
         console.error("Lỗi xóa:", error);
         req.flash("error", "Xóa thất bại. Vui lòng thử lại.");

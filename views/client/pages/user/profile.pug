@@ -1,0 +1,55 @@
+extends ../../layouts/defaut.pug
+
+block main
+  
+  .container.my-5
+
+    .row.justify-content-center
+      .col-md-8
+        .card.shadow.border-0.rounded-lg
+          .card-header.bg-primary.text-white.py-3
+            h4.mb-0.text-center Thông tin tài khoản
+          .card-body.p-4
+            .row.align-items-center.mb-4
+              .col-md-4.text-center
+                if user.avatar
+                  img(src=user.avatar, alt=user.fullName, class="rounded-circle img-thumbnail shadow-sm", style="width: 150px; height: 150px; object-fit: cover;")
+                else
+                  img(src="/images/avatar-default.png", alt="Default Avatar", class="rounded-circle img-thumbnail shadow-sm", style="width: 150px; height: 150px;")
+              
+              .col-md-8
+                h2.fw-bold.text-dark #{user.fullName}
+                p.text-muted.mb-1
+                  i.fa-solid.fa-envelope.me-2
+                  | #{user.email}
+                p.text-muted
+                  i.fa-solid.fa-phone.me-2
+                  | #{user.phone || "Chưa cập nhật số điện thoại"}
+            
+            hr.my-4
+            
+            .row
+              .col-md-6.mb-3
+                label.small.text-uppercase.text-muted.fw-bold Trạng thái
+                div
+                  if user.status === "active"
+                    span.badge.bg-success Đang hoạt động
+                  else
+                    span.badge.bg-danger Bị khóa
+              
+              .col-md-6.mb-3
+                label.small.text-uppercase.text-muted.fw-bold Ngày tham gia
+                div.text-dark #{user.createdAt ? user.createdAt.toLocaleDateString('vi-VN') : "---"}
+            
+            .d-flex.gap-2.mt-4
+              a.btn.btn-warning.px-4(href="/user/profile/edit") 
+                i.fa-solid.fa-user-pen.me-2
+                | Chỉnh sửa thông tin
+              a.btn.btn-outline-secondary.px-4(href="/user/password/change")
+                i.fa-solid.fa-key.me-2
+                | Đổi mật khẩu
+                #{user.fullName}
+
+                #{user.email}
+
+                #{user.phone}

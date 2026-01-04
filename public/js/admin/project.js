@@ -237,33 +237,6 @@ if (chontatca && checkboxnho.length > 0) {
 // ... (các đoạn code Lọc, Tìm kiếm, Phân trang, Xóa đơn lẻ, Thay đổi trạng thái đơn lẻ đã có)
 
 // ====== CHỨC NĂNG THAY ĐỔI HÀNG LOẠT (MULTI-CHANGE) ======
-const formthaydoiduan = document.querySelector("[form-change-multi]");
-
-if (formthaydoiduan) {
-    formthaydoiduan.addEventListener("submit", function(e) {
-        e.preventDefault(); 
-        const inputschecked = document.querySelectorAll(".item-checkbox:checked");
-        const idsInput = this.querySelector('input[name="ids"]');
-        const typeSelect = this.querySelector('select[name="type"]').value;
-        if (inputschecked.length === 0) {
-            alert("Vui lòng chọn ít nhất một dự án để thực hiện hành động!");
-            return; 
-        }
-        if (typeSelect === "--chon hanh dong--" || !typeSelect) {
-             alert("Vui lòng chọn một hành động để áp dụng!");
-             return; 
-        }
-        let ids = [];
-        inputschecked.forEach(input => {
-            ids.push(input.value); 
-        });
-        idsInput.value = ids.join(","); 
-        this.querySelector('input[name="returnUrl"]').value = window.location.href;
-        this.submit();
-    });
-}
-//end sukien thay doi all
-//preview hinh anh
 
 const updateImage = document.querySelector("[upload-image]");
 
@@ -280,3 +253,57 @@ if (updateImage) {
     });
 }
 //end hinh anh
+const sortElement = document.querySelector("[sort]");
+if (sortElement) {
+  let url = new URL(window.location.href); // Lấy URL hiện tại
+  const sortSelect = sortElement.querySelector("[sort-select]");
+  const sortClear = sortElement.querySelector("[sort-clear]");
+
+  // 1. Xử lý khi người dùng thay đổi lựa chọn trong Select
+  sortSelect.addEventListener("change", (e) => {
+    const value = e.target.value; // Ví dụ: "dien_tich-desc"
+    const [sortKey, sortValue] = value.split("-");
+
+    // Cập nhật tham số lên URL
+    url.searchParams.set("sortKey", sortKey);
+    url.searchParams.set("sortValue", sortValue);
+
+    // Chuyển hướng trang
+    window.location.href = url.href;
+  });
+
+  // 2. Xử lý khi nhấn nút "Làm mới bộ lọc" (Clear)
+  sortClear.addEventListener("click", () => {
+    url.searchParams.delete("sortKey");
+    url.searchParams.delete("sortValue");
+
+    window.location.href = url.href;
+  });
+
+  // 3. Hiển thị lựa chọn hiện tại lên Select sau khi load lại trang
+  // (Giúp người dùng biết mình đang sắp xếp theo cái gì)
+  const currentSortKey = url.searchParams.get("sortKey");
+  const currentSortValue = url.searchParams.get("sortValue");
+
+  if (currentSortKey && currentSortValue) {
+    const stringSort = `${currentSortKey}-${currentSortValue}`;
+    const optionSelected = sortSelect.querySelector(`option[value='${stringSort}']`);
+    if (optionSelected) {
+      optionSelected.selected = true;
+    }
+  }
+}
+// Upload Image Preview
+const uploadImage = document.querySelector("[upload-image]");
+if (uploadImage) {
+  const uploadImageInput = uploadImage.querySelector("[upload-image-input]");
+  const uploadImagePreview = uploadImage.querySelector("[upload-image-preview]");
+
+  uploadImageInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      uploadImagePreview.src = URL.createObjectURL(file);
+      uploadImagePreview.style.display = "block"; // Hiện ảnh lên
+    }
+  });
+}

@@ -1,0 +1,35 @@
+extends ../../layout/defaut.pug
+
+block main
+  if(role.permissions.includes("roles_add"))
+    .container-fluid.mt-4
+      h1.text-primary.fw-bold.mb-4 Thêm mới nhóm quyền
+
+      .card.shadow-sm.border-0
+        .card-body
+          form(
+            action=`/${PefixAdmin}/roles/create`
+            method="POST"
+          )
+            //- 1. TIÊU ĐỀ (ten_du_an)
+            .mb-3
+              label.form-label.fw-bold(for="title") Tiêu đề
+              input#title.form-control(
+                type="text"
+                name="title"
+                placeholder="Nhập tên nhóm quyền (vd: Kiến trúc sư chủ trì)"
+                required
+              )
+
+            //- 2. MÔ TẢ (mo_ta)
+            .mb-3
+              label.form-label.fw-bold(for="mo_ta") Mô tả
+              textarea#my-expressjs-tinymce-app.form-control(
+                name="mo_ta"
+                rows="5"
+                placeholder="Nhập mô tả ngắn gọn về vai trò này"
+              )
+
+            //- NÚT XÁC NHẬN
+            .mt-4
+              button.btn.btn-primary.px-5(type="submit") Tạo mới

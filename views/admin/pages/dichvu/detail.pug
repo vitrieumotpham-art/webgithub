@@ -33,7 +33,7 @@ block main
                         // 3. Mô tả ngắn
                         .mb-3
                             strong Mô tả ngắn:
-                            p.card-text #{dichvu.description}
+                            p.card-text !{dichvu.description}
 
                         // 4. Giá Tham Khảo
                         .mb-3
@@ -62,7 +62,6 @@ block main
                             
                 hr
                 // Nút quay lại
-                a.btn.btn-success(href=`/${PefixAdmin}/dichvu/edit/${dichvu.id}`) chỉnh sửa
                 a.btn.btn-secondary(href=`/${PefixAdmin}/dichvu`)
                     i.fas.fa-arrow-left.me-2
                     | Quay lại danh sách

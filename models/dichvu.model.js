@@ -18,7 +18,21 @@ deleted:{
     type:Boolean,
     default:false 
 },
-deleteAt:Date },
+
+createdBy:{
+        accountID:String,
+        createAt:{
+            type:Date,
+            default:Date.now
+        }
+    },
+    deletedBy:{
+        accountID:String,
+        deletedAt:Date
+    },
+
+},
+
 {
     timestamps:true 
 });

@@ -1,0 +1,19 @@
+mixin sort()
+    div(sort)
+                            select(
+                                class="form-control"
+                                name="sort"
+                                sort-select
+                            )
+                                option(value="dien_tich-desc") Diện tích giảm dần
+                                option(value="dien_tich-asc") Diện tích tăng dần
+                                option(value="nam_thuc_hien-desc") Mới nhất (Năm hoàn thành)
+                                option(value="ten_du_an-asc") Tên dự án A - Z
+                                option(value="ten_du_an-desc") Tên dự án Z - A
+
+                            button(
+                                class="btn btn-outline-secondary mt-2"
+                                sort-clear
+                            ) 
+                                i.fas.fa-sync-alt.mr-1
+                                | Làm mới bộ lọc

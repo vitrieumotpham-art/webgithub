@@ -7,21 +7,11 @@ const upload = multer();
 
 // 2. Import Middleware đẩy ảnh lên Cloudinary
 const uploadCloud = require("../../middlewares/admin/uploadCloud.middleware");
-
-// 3. Import Controller & Validates
 const BaivietController = require("../../controllers/admin/Baiviet.controller");
 const validates = require("../../validates/admin/dichvu.validate"); 
-
-// [GET] Danh sách bài viết
 route.get("/", BaivietController.Baiviet);
-
-// [PATCH] Thay đổi trạng thái
 route.patch("/change-status/:status/:id", BaivietController.changStatus);
-
-// [GET] Trang tạo mới
 route.get("/create", BaivietController.createBaiviet);
-
-// [POST] Xử lý tạo mới
 route.post(
     "/create",
     upload.single("thumbnail"), // Lưu ý: Trong Controller của bạn đang dùng req.body.avatar

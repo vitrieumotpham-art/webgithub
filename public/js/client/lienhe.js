@@ -1,71 +1,88 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Khai báo các phần tử cần thiết
+    // --- 1. LOGIC KANBAN BOARD (PHẦN BỊ THIẾU) ---
+    const modalElement = document.getElementById('modalChangeStatus');
+    
+    // Sử dụng Event Delegation để bắt sự kiện click trên toàn trang
+    document.addEventListener("click", function(e) {
+        // Kiểm tra nếu click vào nút "Cập nhật"
+        const updateBtn = e.target.closest(".js-btn-update") || e.target.closest(".btn-change-status");
+        
+        if (updateBtn && modalElement) {
+            const id = updateBtn.getAttribute("data-id");
+            const status = updateBtn.getAttribute("data-status");
+            const note = updateBtn.getAttribute("data-note") || "";
+
+            // Đổ dữ liệu vào Modal
+            document.getElementById("inputContactId").value = id;
+            document.getElementById("selectStatus").value = status;
+            document.getElementById("inputNote").value = note;
+
+            // Bật Modal
+            if (typeof bootstrap !== 'undefined') {
+                const myModal = new bootstrap.Modal(modalElement);
+                myModal.show();
+            }
+        }
+
+        // Kiểm tra nếu click vào nút "Xóa"
+        const deleteBtn = e.target.closest(".js-delete-btn") || e.target.closest("[button-delete]");
+        if (deleteBtn) {
+            if (confirm("Bạn có chắc chắn muốn xóa yêu cầu này?")) {
+                const id = deleteBtn.getAttribute("data-id");
+                const formDelete = document.getElementById("form-delete-item");
+                if (formDelete) {
+                    const path = formDelete.getAttribute("data-path");
+                    formDelete.action = `${path}/${id}`;
+                    formDelete.submit();
+                }
+            }
+        }
+    });
+
+    // --- 2. LOGIC GỬI FORM (GIỮ NGUYÊN CỦA BẠN) ---
     const form = document.getElementById('contactForm');
     const statusDiv = document.getElementById('form-status');
-    const faders = document.querySelectorAll('.fade-in');
-
-    // 1. Logic Form Submission (Gửi Form Liên hệ bằng AJAX/Fetch)
     if (form) {
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            // Xóa trạng thái cũ và hiển thị trạng thái "Đang gửi"
             if (statusDiv) {
                 statusDiv.classList.remove('success', 'error', 'hidden');
                 statusDiv.textContent = 'Đang gửi...';
             }
-
             try {
-                // Lấy dữ liệu từ form
                 const formData = new FormData(form);
-                
-                // Chuyển FormData sang URLSearchParams để gửi dưới dạng x-www-form-urlencoded
-                // (thường dùng cho các backend truyền thống hoặc dễ xử lý hơn JSON)
                 const response = await fetch(form.action, {
                     method: form.method,
                     body: new URLSearchParams(formData) 
-                    // Nếu gửi dưới dạng JSON, cần: JSON.stringify(Object.fromEntries(formData)) 
-                    // và thêm 'Content-Type': 'application/json'
                 });
-
                 if (response.ok) {
                     if (statusDiv) {
-                        statusDiv.textContent = 'Gửi thành công! Chúng tôi sẽ liên hệ lại với bạn sớm.';
+                        statusDiv.textContent = 'Gửi thành công!';
                         statusDiv.classList.add('success');
                     }
                     form.reset(); 
                 } else {
                     if (statusDiv) {
-                        statusDiv.textContent = 'Có lỗi xảy ra khi gửi. Vui lòng thử lại.';
+                        statusDiv.textContent = 'Có lỗi xảy ra.';
                         statusDiv.classList.add('error');
                     }
                 }
             } catch (error) {
-                console.error('Lỗi kết nối:', error);
-                if (statusDiv) {
-                    statusDiv.textContent = 'Lỗi kết nối. Vui lòng kiểm tra mạng và thử lại.';
-                    statusDiv.classList.add('error');
-                }
+                console.error('Lỗi:', error);
             }
         });
     }
 
-    // 2. Logic Hiệu ứng Fade In (Intersection Observer)
+    // --- 3. HIỆU ỨNG FADE IN (GIỮ NGUYÊN CỦA BẠN) ---
+    const faders = document.querySelectorAll('.fade-in');
     const appearOptions = { threshold: 0.1 };
-    
     const appearOnScroll = new IntersectionObserver(function(entries, observer) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Kích hoạt animation
                 entry.target.classList.add('appear');
-                // Ngừng quan sát
                 observer.unobserve(entry.target);
             }
         });
     }, appearOptions);
-
-    // Bắt đầu quan sát các phần tử
-    faders.forEach(fader => {
-        appearOnScroll.observe(fader);
-    });
+    faders.forEach(fader => { appearOnScroll.observe(fader); });
 });

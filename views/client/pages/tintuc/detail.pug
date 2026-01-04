@@ -1,0 +1,57 @@
+extends ../../layouts/defaut.pug
+
+block main
+    title #{article.title} | PNT DECOR
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
+    link(rel="stylesheet", href="/css/client/news-detail.css")
+
+    main.news-detail-classic
+        //- Progress bar khi cuộn trang
+        .scroll-progress
+
+        article.container
+            .row.justify-content-center
+                .col-lg-8
+                    //- 1. Header bài viết
+                    header.post-header.text-center.py-5
+                        .post-category KIẾN THỨC & NỘI THẤT
+                        h1.post-title #{article.title}
+                        .post-meta
+                            span.date 
+                                i.far.fa-calendar-alt.me-2
+                                | #{article.dateFormat}
+                            span.separator •
+                            span.views 
+                                i.far.fa-eye.me-2
+                                | #{article.views || 0} lượt xem
+
+                    //- 2. Hình ảnh đại diện (Hero Image)
+                    .post-thumbnail.mb-5
+                        img.img-fluid.rounded-1(src=article.thumbnail alt=article.title)
+
+                    //- 3. Nội dung bài viết
+                    section.post-content
+                        if article.description
+                            p.post-description.lead.italic.mb-4 #{article.description}
+                        
+                        //- Sử dụng ! để render mã HTML từ trình soạn thảo
+                        .content-body !{article.content}
+
+                    //- 4. Footer bài viết (Tags & Chia sẻ)
+                    footer.post-footer.mt-5.pt-4.border-top
+                        .row.align-items-center
+                            .col-md-6
+                                .post-tags
+                                    span.badge.bg-light.text-dark #PNT_Decor
+                                    span.badge.bg-light.text-dark #Architecture
+                            .col-md-6.text-md-end
+                                .post-share
+                                    span Chia sẻ: 
+                                    a(href="#") #[i.fab.fa-facebook-f.ms-2]
+                                    a(href="#") #[i.fab.fa-pinterest.ms-3]
+
+        //- 5. Bài viết liên quan (Tùy chọn thêm sau)
+        section.related-posts.bg-light.py-5.mt-5
+            .container
+                h3.text-center.classic-title.mb-4 BÀI VIẾT KHÁC
+                .classic-divider

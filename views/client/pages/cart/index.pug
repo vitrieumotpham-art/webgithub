@@ -1,0 +1,63 @@
+extends ../../layouts/defaut.pug
+
+block main
+    section.section-cart.py-5.bg-light
+        .container
+            .row
+                .col-12
+                    h1.mb-4.fw-bold DANH SÁCH QUAN TÂM
+                    
+            //- Kiểm tra giỏ hàng và mảng sản phẩm có tồn tại không
+            if cart && cart.products && cart.products.length > 0
+                .row
+                    .col-lg-8
+                        .card.border-0.shadow-sm.rounded-4
+                            .card-body.p-0
+                                .table-responsive
+                                    table.table.table-hover.align-middle.mb-0
+                                        thead.bg-dark.text-white
+                                            tr
+                                                th.ps-4.py-3(scope='col') Dự án
+                                                th(scope='col') Loại hình
+                                                th(scope='col') Hành động
+                                        tbody
+                                            each item in cart.products
+                                                //- Sau khi populate, thông tin dự án nằm ở item.product_id
+                                                if item.product_id
+                                                    tr
+                                                        td.ps-4.py-3
+                                                            .d-flex.align-items-center
+                                                                img.rounded-3(
+                                                                    src=(item.product_id.hinh_anh && item.product_id.hinh_anh.length > 0 ? item.product_id.hinh_anh[0] : "/img/default.jpg") 
+                                                                    alt=item.product_id.ten_du_an 
+                                                                    style="width: 80px; height: 60px; object-fit: cover;"
+                                                                )
+                                                                .ms-3
+                                                                    a.text-decoration-none.text-dark.fw-bold(href=`/duan/${item.product_id.slug}`) #{item.product_id.ten_du_an}
+                                                                    p.small.text-muted.mb-0 #{item.product_id.dia_diem}
+                                                        td
+                                                            span.badge.bg-light.text-dark.border #{item.product_id.loai_hinh}
+                                                        td
+                                                            //- Gửi ID của dự án để xóa
+                                                            a.btn.btn-outline-danger.btn-sm.rounded-pill(href=`/cart/delete/${item.product_id._id}`)
+                                                                i.fas.fa-trash-alt.me-1
+                                                                | Xóa
+                    
+                    .col-lg-4
+                        .card.border-0.shadow-sm.rounded-4.sticky-top(style="top: 100px;")
+                            .card-body.p-4
+                                h5.fw-bold.mb-4 TỔNG KẾT
+                                .d-flex.justify-content-between.mb-3
+                                    span.text-muted Số lượng dự án:
+                                    span.fw-bold #{cart.products.length}
+                                hr
+                                p.small.text-muted.mb-4 Bạn có thể gửi danh sách này cho PNT DECOR để nhận báo giá chi tiết cho từng công trình.
+                                a.btn.btn-primary.w-100.py-3.rounded-pill.fw-bold(href="/lienhe")
+                                    i.fas.fa-paper-plane.me-2
+                                    | GỬI YÊU CẦU BÁO GIÁ
+            else
+                .text-center.py-5.bg-white.rounded-4.shadow-sm
+                    i.fas.fa-heart-broken.fa-4x.text-muted.mb-3
+                    h3 Danh sách trống
+                    p Bạn chưa lưu dự án nào vào danh sách yêu thích.
+                    a.btn.btn-primary.rounded-pill.px-5.mt-3(href="/duan") Khám phá dự án ngay

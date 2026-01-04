@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const generate = require("../helpers/generate");
 const taikhoanSchema = new mongoose.Schema({
     fullName: {
         type: String,
@@ -19,6 +19,9 @@ const taikhoanSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+     token: {
+        type: String,
+    },
     avatar: String, // Thêm trường này để lưu link ảnh như trong ảnh bạn gửi
     role: {
         type: String,
@@ -32,7 +35,17 @@ const taikhoanSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    deletedAt: Date
+    createdBy:{
+        accountID:String,
+        createAt:{
+            type:Date,
+            default:Date.now
+        }
+    },
+    deletedBy:{
+        accountID:String,
+        deletedAt:Date
+    },
 }, {
     // Tự động quản lý createdAt và updatedAt
     timestamps: true 

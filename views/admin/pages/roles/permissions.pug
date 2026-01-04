@@ -1,0 +1,312 @@
+extends ../../layout/defaut.pug
+
+block main
+  .container-fluid.mt-4
+    .d-flex.justify-content-between.align-items-center.mb-4
+      div
+        h1.text-primary.fw-bold 
+          i.fas.fa-user-shield.me-2
+          | Phân Quyền Hệ Thống
+        p.text-muted Thiết lập quyền hạn thao tác cho từng bộ phận trong công ty kiến trúc.
+      
+      if(records.length > 0)
+        button.btn.btn-success.btn-lg.shadow-sm(type="submit" button-submit)
+          i.fas.fa-save.me-2
+          | Lưu thiết lập
+
+    if(records.length > 0)
+      .card.shadow-sm.border-0
+        .card-body
+          .table-responsive
+            table.table.table-bordered.table-hover.align-middle(table-permissions)
+              thead
+                tr.table-dark.text-center
+                  th(style="width: 250px").text-start Tính năng / Chức năng
+                  each item in records
+                    th(data-id=item.id) #{item.title}
+               
+              tbody
+                tr.d-none(data-name="id")
+                  td
+                  each item in records
+                    td.text-center
+                      input(type="text" value=item.id)
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1)
+                    i.fas.fa-user-tie.me-2
+                    | Quản lý tổng quan
+                tr(data-name="tongquan_view")
+                  td Xem tổng quan
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("tongquan_view")))
+                    
+                //- 1. Quản lý dự án 
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1)
+                    i.fas.fa-user-tie.me-2
+                    | Quản lý dự án 
+                tr(data-name="duan_view")
+                  td Xem dự án
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("duan_view")))
+                tr(data-name="duan_edit")
+                  td sửa dự án
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("duan_edit")))
+                tr(data-name="duan_delete")
+                  td xóa dự án
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("duan_delete")))
+                tr(data-name="duan_add")
+                  td thêm dự án
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("duan_add")))
+               
+                //- 2. Quản lý bài viết
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1)
+                    i.fas.fa-user-tie.me-2
+                    | Quản lý bài viết
+                tr(data-name="baiviet_view")
+                  td Xem bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("baiviet_view")))
+                tr(data-name="baiviet_edit")
+                  td sửa bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("baiviet_edit")))
+                tr(data-name="baiviet_delete")
+                  td xóa bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("baiviet_delete")))
+                tr(data-name="baiviet_add")
+                  td thêm bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("baiviet_add")))
+
+                //- 3. NHÓM QUẢN LÝ dịch vụ
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1)
+                    i.fas.fa-user-tie.me-2
+                    | Quản lý dịch vụ
+                
+                tr(data-name="dichvu_view")
+                  td Xem dịch vụ
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("dichvu_view")))
+                tr(data-name="dichvu_sua")  
+                  td sửa bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("dichvu_sua")))
+                tr(data-name="dichvu_xoa")
+                  td xóa bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("dichvu_xoa")))
+                tr(data-name="dichvu_them")
+                  td thêm bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("dichvu_them")))
+                //- 4. NHÓM QUẢN LÝ ĐỘI NGŨ
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1)
+                    i.fas.fa-user-tie.me-2
+                    | QUẢN LÝ ĐỘI NGŨ
+                
+                tr(data-name="doingu_view")
+                  td Xem đội ngũ
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("doingu_view")))
+                tr(data-name="doingu_sua")
+                  td sửa bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("doingu_sua")))
+                tr(data-name="doingu_xoa")
+                  td xóa bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("doingu_xoa")))
+                tr(data-name="doingu_them")
+                  td thêm bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("doingu_them")))
+                //- 5. NHÓM QUẢN LÝ Liên hệ
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1)
+                    i.fas.fa-user-tie.me-2
+                    | QUẢN LÝ Liên hệ
+                
+                tr(data-name="lienhe_view")
+                  td Xem Liên hệ
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("lienhe_view")))
+                tr(data-name="lienhe_sua")
+                  td sửa bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("lienhe_sua")))
+                tr(data-name="lienhe_xoa")
+                  td xóa bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("lienhe_xoa")))
+                tr(data-name="lienhe_them")
+                  td thêm bài viết
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("lienhe_them")))
+                //- 7. NHÓM QUẢN LÝ TÀI KHOẢN
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1)
+                    i.fas.fa-users-cog.me-2
+                    | QUẢN LÝ TÀI KHOẢN
+                tr(data-name="taikhoan_view")
+                  td Xem tài khoản
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("taikhoan_view")))
+                tr(data-name="taikhoan_edit")
+                  td Sửa tài khoản
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("taikhoan_edit")))
+                tr(data-name="taikhoan_delete")
+                  td Xóa tài khoản
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("taikhoan_delete")))
+                tr(data-name="taikhoan_add")
+                  td Thêm tài khoản
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("taikhoan_add")))
+
+                //- 8. NHÓM QUẢN LÝ PHẢN HỒI 
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1)
+                    i.fas.fa-comment-dots.me-2
+                    | QUẢN LÝ PHẢN HỒI 
+                tr(data-name="phanhoi_view")
+                  td Xem phản hồi
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("phanhoi_view")))
+                tr(data-name="phanhoi_edit")
+                  td Sửa phản hồi
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("phanhoi_edit")))
+                tr(data-name="phanhoi_delete")
+                  td Xóa phản hồi
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("phanhoi_delete")))
+                tr(data-name="phanhoi_add")
+                  td Thêm phản hồi
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("phanhoi_add")))
+
+                //- 9. NHÓM QUẢN LÝ DANH MỤC
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1) 
+                    i.fas.fa-list.me-2
+                    | QUẢN LÝ DANH MỤC
+                tr(data-name="doanhmuc_view")
+                  td Xem danh sách danh mục
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("doanhmuc_view")))
+                tr(data-name="doanhmuc_edit")
+                  td Sửa danh mục
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("doanhmuc_edit")))
+                tr(data-name="doanhmuc_delete")
+                  td Xóa danh mục
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("doanhmuc_delete")))
+                tr(data-name="doanhmuc_add")
+                  td Thêm danh mục
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("doanhmuc_add")))
+
+                //- 10. NHÓM QUẢN LÝ NHÓM QUYỀN
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1)
+                    i.fas.fa-user-shield.me-2
+                    | QUẢN LÝ NHÓM QUYỀN
+                tr(data-name="roles_view")
+                  td Xem nhóm quyền
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("roles_view")))
+                tr(data-name="roles_edit")
+                  td Sửa nhóm quyền
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("roles_edit")))
+                tr(data-name="roles_delete")
+                  td Xóa nhóm quyền
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("roles_delete")))
+                tr(data-name="roles_add")
+                  td Thêm nhóm quyền
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("roles_add")))
+                tr(data-name="roles_chitiet")
+                  td chi tiết nhóm quyền
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("roles_chitiet")))
+                //- 11. NHÓM QUẢN LÝ PHÂN QUYỀN
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1)
+                    i.fas.fa-key.me-2
+                    | QUẢN LÝ PHÂN QUYỀN
+                tr(data-name="phanquyen_view")
+                  td Xem phân quyền
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("phanquyen_view")))
+                tr(data-name="phanquyen_edit")
+                  td Sửa phân quyền
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("phanquyen_edit")))
+    else
+      .text-center.py-5
+        .mb-3
+          i.fas.fa-folder-open.fa-3x.text-muted
+        p.text-muted Hệ thống chưa có dữ liệu nhóm quyền.
+        a.btn.btn-primary(href="/admin/roles/create") Tạo mới nhóm quyền
+
+  //- Form ẩn dùng để PATCH dữ liệu về Backend
+  form#form-change-permissions.d-none(
+    method="POST" 
+    action=`/admin/roles/permissions?_method=PATCH`
+  )
+    input(type="text" name="permissions")
+
+  //- Script xử lý gom dữ liệu từ checkbox thành JSON
+  script(src="/js/admin/roles.js")

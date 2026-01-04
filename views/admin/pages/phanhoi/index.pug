@@ -3,151 +3,152 @@ include ../../mixins/search.pug
 include ../../mixins/pagination.pug 
 
 block main
+    if(role.permissions.includes("phanhoi_view"))
 
-    .container-fluid.mt-4
-        //- 1. HEADER & THỐNG KÊ NHANH
-        .d-flex.justify-content-between.align-items-center.mb-4
-            div
-                h1.text-primary.fw-bold Quản Lý Đánh Giá
-                p.text-muted.mb-0 Lắng nghe phản hồi từ khách hàng
-            
-            //- Nút Cấu hình
-            a.btn.btn-light.shadow-sm.border(href="/admin/phanhoi/settings")
-                i.fas.fa-cog.me-2
-                | Cấu hình hiển thị
+        .container-fluid.mt-4
+            //- 1. HEADER & THỐNG KÊ NHANH
+            .d-flex.justify-content-between.align-items-center.mb-4
+                div
+                    h1.text-primary.fw-bold Quản Lý Đánh Giá
+                    p.text-muted.mb-0 Lắng nghe phản hồi từ khách hàng
+                
+                //- Nút Cấu hình
+                a.btn.btn-light.shadow-sm.border(href="/admin/phanhoi/settings")
+                    i.fas.fa-cog.me-2
+                    | Cấu hình hiển thị
 
-        //- Thống kê nhanh (Optional)
-        .row.g-3.mb-4
-            .col-md-4
-                .card.border-start.border-4.border-primary.shadow-sm.h-100
-                    .card-body.d-flex.align-items-center.justify-content-between
-                        div
-                            div.text-xs.fw-bold.text-primary.text-uppercase.mb-1 Tổng đánh giá
-                            div.h5.mb-0.fw-bold.text-gray-800 128
-                        i.fas.fa-comments.fa-2x.text-gray-300
-            .col-md-4
-                .card.border-start.border-4.border-success.shadow-sm.h-100
-                    .card-body.d-flex.align-items-center.justify-content-between
-                        div
-                            div.text-xs.fw-bold.text-success.text-uppercase.mb-1 Điểm trung bình
-                            div.h5.mb-0.fw-bold.text-gray-800 4.8 / 5.0
-                        i.fas.fa-star.fa-2x.text-gray-300
-            .col-md-4
-                .card.border-start.border-4.border-warning.shadow-sm.h-100
-                    .card-body.d-flex.align-items-center.justify-content-between
-                        div
-                            div.text-xs.fw-bold.text-warning.text-uppercase.mb-1 Chờ duyệt
-                            div.h5.mb-0.fw-bold.text-gray-800 5
-                        i.fas.fa-clock.fa-2x.text-gray-300
+            //- Thống kê nhanh (Optional)
+            .row.g-3.mb-4
+                .col-md-4
+                    .card.border-start.border-4.border-primary.shadow-sm.h-100
+                        .card-body.d-flex.align-items-center.justify-content-between
+                            div
+                                div.text-xs.fw-bold.text-primary.text-uppercase.mb-1 Tổng đánh giá
+                                div.h5.mb-0.fw-bold.text-gray-800 128
+                            i.fas.fa-comments.fa-2x.text-gray-300
+                .col-md-4
+                    .card.border-start.border-4.border-success.shadow-sm.h-100
+                        .card-body.d-flex.align-items-center.justify-content-between
+                            div
+                                div.text-xs.fw-bold.text-success.text-uppercase.mb-1 Điểm trung bình
+                                div.h5.mb-0.fw-bold.text-gray-800 4.8 / 5.0
+                            i.fas.fa-star.fa-2x.text-gray-300
+                .col-md-4
+                    .card.border-start.border-4.border-warning.shadow-sm.h-100
+                        .card-body.d-flex.align-items-center.justify-content-between
+                            div
+                                div.text-xs.fw-bold.text-warning.text-uppercase.mb-1 Chờ duyệt
+                                div.h5.mb-0.fw-bold.text-gray-800 5
+                            i.fas.fa-clock.fa-2x.text-gray-300
 
-        //- 2. BỘ LỌC
-        .card.shadow-sm.mb-4.border-0
-            .card-body
-                form(action="", method="GET")
-                    .row.g-3
-                        .col-md-12
-                            +search(keyword)
-                        
-                        .col-md-6
-                            select.form-select(name="status",id="trangthaiDanhgia")
-                                option(value="" selected=(!status)) -- Tất cả trạng thái --
-                                option(value="pending" selected=(status === "pending")) Chờ duyệt
-                                option(value="approved" selected=(status === "approved")) Đã duyệt
-                                option(value="rejected" selected=(status === "rejected")) Đã ẩn
-                        
-                        .col-md-6
-                             select.form-select(name="rating", id="ratingDanhgia")
-                                option(value="" selected=(!rating)) -- Tất cả sao --
-                                option(value="5" selected=(rating === "5")) 5 Sao
-                                option(value="4" selected=(rating === "4")) 4 Sao
-                                option(value="3" selected=(rating === "3")) 3 Sao
-                                option(value="2" selected=(rating === "2")) 2 Sao
-                                option(value="1" selected=(rating === "1")) 1 Sao
-        if danhgia && danhgia.length > 0
-            .row.g-4
-                each item, index in danhgia
-                    .col-md-6.col-xl-4
-                        .card.h-100.review-card.rounded-3(class=(item.status === 'pending' ? 'border-warning border-2' : 'border-0 shadow-sm'))
-                            .card-body.p-4.d-flex.flex-column
-                                //- Icon trang trí
-                                i.fas.fa-quote-right.quote-icon
+            //- 2. BỘ LỌC
+            .card.shadow-sm.mb-4.border-0
+                .card-body
+                    form(action="", method="GET")
+                        .row.g-3
+                            .col-md-12
+                                +search(keyword)
+                            
+                            .col-md-6
+                                select.form-select(name="status",id="trangthaiDanhgia")
+                                    option(value="" selected=(!status)) -- Tất cả trạng thái --
+                                    option(value="pending" selected=(status === "pending")) Chờ duyệt
+                                    option(value="approved" selected=(status === "approved")) Đã duyệt
+                                    option(value="rejected" selected=(status === "rejected")) Đã ẩn
+                            
+                            .col-md-6
+                                select.form-select(name="rating", id="ratingDanhgia")
+                                    option(value="" selected=(!rating)) -- Tất cả sao --
+                                    option(value="5" selected=(rating === "5")) 5 Sao
+                                    option(value="4" selected=(rating === "4")) 4 Sao
+                                    option(value="3" selected=(rating === "3")) 3 Sao
+                                    option(value="2" selected=(rating === "2")) 2 Sao
+                                    option(value="1" selected=(rating === "1")) 1 Sao
+            if danhgia && danhgia.length > 0
+                .row.g-4
+                    each item, index in danhgia
+                        .col-md-6.col-xl-4
+                            .card.h-100.review-card.rounded-3(class=(item.status === 'pending' ? 'border-warning border-2' : 'border-0 shadow-sm'))
+                                .card-body.p-4.d-flex.flex-column
+                                    //- Icon trang trí
+                                    i.fas.fa-quote-right.quote-icon
 
-                                //- Header Card: Avatar + Tên
-                                .d-flex.align-items-center.mb-3
-                                    //- Tạo màu nền ngẫu nhiên cho avatar
-                                    - const bgClass = `avatar-bg-${(index % 5) + 1}`
-                                    //- Lấy chữ cái đầu của tên khách
-                                    .avatar-circle.me-3(class=bgClass) #{item.clientName.charAt(0)}
+                                    //- Header Card: Avatar + Tên
+                                    .d-flex.align-items-center.mb-3
+                                        //- Tạo màu nền ngẫu nhiên cho avatar
+                                        - const bgClass = `avatar-bg-${(index % 5) + 1}`
+                                        //- Lấy chữ cái đầu của tên khách
+                                        .avatar-circle.me-3(class=bgClass) #{item.clientName.charAt(0)}
+                                        
+                                        div
+                                            //- Tên khách hàng (Đúng field DB)
+                                            h6.fw-bold.mb-0.text-dark #{item.clientName}
+                                            small.text-muted 
+                                                i.far.fa-clock.me-1
+                                                //- SỬA QUAN TRỌNG: Dùng createdAt và format ngày VN
+                                                | #{item.createdAt ? new Date(item.createdAt).toLocaleDateString('vi-VN') : 'Vừa xong'}
                                     
-                                    div
-                                        //- Tên khách hàng (Đúng field DB)
-                                        h6.fw-bold.mb-0.text-dark #{item.clientName}
-                                        small.text-muted 
-                                            i.far.fa-clock.me-1
-                                            //- SỬA QUAN TRỌNG: Dùng createdAt và format ngày VN
-                                            | #{item.createdAt ? new Date(item.createdAt).toLocaleDateString('vi-VN') : 'Vừa xong'}
-                                
-                                //- Phần đánh giá sao (Đúng field rating)
-                                .mb-3
-                                    - for (var i = 1; i <= 5; i++)
-                                        if i <= item.rating
-                                            i.fas.fa-star.star-filled.me-1
+                                    //- Phần đánh giá sao (Đúng field rating)
+                                    .mb-3
+                                        - for (var i = 1; i <= 5; i++)
+                                            if i <= item.rating
+                                                i.fas.fa-star.star-filled.me-1
+                                            else
+                                                i.fas.fa-star.star-empty.me-1
+                                        
+                                        //- Badge trạng thái (Đúng field status)
+                                        if item.status === 'approved'
+                                            span.badge.bg-success.rounded-pill.ms-2 Đã duyệt
+                                        else if item.status === 'pending'
+                                            span.badge.bg-warning.text-dark.rounded-pill.ms-2 Chờ duyệt
                                         else
-                                            i.fas.fa-star.star-empty.me-1
+                                            span.badge.bg-secondary.rounded-pill.ms-2 Đã ẩn
+
+                                    //- Nội dung review (Đúng field content)
+                                    .bg-light.rounded.p-3.mb-3.flex-grow-1
+                                        p.card-text.text-secondary.fst-italic.mb-0 "#{item.content}"
                                     
-                                    //- Badge trạng thái (Đúng field status)
-                                    if item.status === 'approved'
-                                        span.badge.bg-success.rounded-pill.ms-2 Đã duyệt
-                                    else if item.status === 'pending'
-                                        span.badge.bg-warning.text-dark.rounded-pill.ms-2 Chờ duyệt
-                                    else
-                                        span.badge.bg-secondary.rounded-pill.ms-2 Đã ẩn
+                                    //- Thông tin dự án (Đúng field project)
+                                    .mb-3.small
+                                        span.text-muted Dự án: 
+                                        strong.text-primary #{item.project || 'Chung'}
 
-                                //- Nội dung review (Đúng field content)
-                                .bg-light.rounded.p-3.mb-3.flex-grow-1
-                                    p.card-text.text-secondary.fst-italic.mb-0 "#{item.content}"
-                                
-                                //- Thông tin dự án (Đúng field project)
-                                .mb-3.small
-                                    span.text-muted Dự án: 
-                                    strong.text-primary #{item.project || 'Chung'}
-
-                                //- Footer Actions
-                                .d-flex.justify-content-between.align-items-center.pt-3.border-top
-                                    //- Nút Duyệt
-                                    if item.status !== 'approved'
-                                        button.btn.btn-sm.btn-success.flex-grow-1.me-2(
-                                            onclick=`changeStatus('${item.id}', 'approved')`
-                                            title="Duyệt hiển thị lên web"
+                                    //- Footer Actions
+                                    .d-flex.justify-content-between.align-items-center.pt-3.border-top
+                                        //- Nút Duyệt
+                                        if item.status !== 'approved'
+                                            button.btn.btn-sm.btn-success.flex-grow-1.me-2(
+                                                onclick=`changeStatus('${item.id}', 'approved')`
+                                                title="Duyệt hiển thị lên web"
+                                            )
+                                                i.fas.fa-check.me-1
+                                                | Duyệt
+                                        
+                                        //- Nút Ẩn
+                                        if item.status === 'approved'
+                                            button.btn.btn-sm.btn-warning.flex-grow-1.me-2(
+                                                onclick=`changeStatus('${item.id}', 'rejected')`
+                                                title="Ẩn khỏi web"
+                                            )
+                                                i.fas.fa-eye-slash.me-1
+                                                | Ẩn
+                                        
+                                        //- Nút Xóa
+                                        button.btn.btn-sm.btn-outline-danger(
+                                            data-id=item.id
+                                            button-delete
+                                            title="Xóa vĩnh viễn"
                                         )
-                                            i.fas.fa-check.me-1
-                                            | Duyệt
-                                    
-                                    //- Nút Ẩn
-                                    if item.status === 'approved'
-                                        button.btn.btn-sm.btn-warning.flex-grow-1.me-2(
-                                            onclick=`changeStatus('${item.id}', 'rejected')`
-                                            title="Ẩn khỏi web"
-                                        )
-                                            i.fas.fa-eye-slash.me-1
-                                            | Ẩn
-                                    
-                                    //- Nút Xóa
-                                    button.btn.btn-sm.btn-outline-danger(
-                                        data-id=item.id
-                                        button-delete
-                                        title="Xóa vĩnh viễn"
-                                    )
-                                        i.fas.fa-trash xóa
+                                            i.fas.fa-trash xóa
 
-        else
-            .text-center.py-5
-                i.far.fa-comment-dots.fa-3x.text-muted.mb-3
-                p.text-muted Chưa có đánh giá nào phù hợp.
-        //- 4. Pagination
-        .mt-4.d-flex.justify-content-center
-            +pagination(pagination)
+            else
+                .text-center.py-5
+                    i.far.fa-comment-dots.fa-3x.text-muted.mb-3
+                    p.text-muted Chưa có đánh giá nào phù hợp.
+            //- 4. Pagination
+            .mt-4.d-flex.justify-content-center
+                +pagination(pagination)
 
-    //- Form ẩn xử lý xóa và đổi trạng thái
-    form#form-change-status(method="POST", action="")
-    form#form-delete-item(method="POST", action="", data-path="/admin/phanhoi/delete")
+        //- Form ẩn xử lý xóa và đổi trạng thái
+        form#form-change-status(method="POST", action="")
+        form#form-delete-item(method="POST", action="", data-path="/admin/phanhoi/delete")

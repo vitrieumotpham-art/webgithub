@@ -1,0 +1,33 @@
+extends ../../layout/defaut.pug
+
+block main
+  if(role.permissions.includes("roles_edit"))
+    .container-fluid.mt-4
+      h1.text-primary.fw-bold.mb-4 Chỉnh sửa nhóm quyền
+
+      .card.shadow-sm.border-0
+        .card-body
+          //- QUAN TRỌNG: Phải có ?_method=PATCH nếu Router của bạn dùng route.patch
+          form(
+            action=`/admin/roles/edit/${data.id}?_method=PATCH`
+            method="POST"
+          )
+            .mb-3
+              label.form-label.fw-bold(for="title") Tiêu đề
+              input#title.form-control(
+                type="text"
+                name="title"
+                value=data.title
+                required
+              )
+
+            .mb-3
+              label.form-label.fw-bold(for="mo_ta") Mô tả
+              textarea#mo_ta.form-control(
+                name="mo_ta"
+                rows="5"
+              ) #{data.mo_ta}
+
+            .mt-4
+              button.btn.btn-warning.px-5(type="submit") Cập nhật
+              a.btn.btn-light.ms-2(href="/admin/roles") Quay lại

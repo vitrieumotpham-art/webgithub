@@ -25,7 +25,8 @@ block main
               
               .mb-3
                 label.form-label.fw-bold(for="description") Mô tả ngắn
-                textarea#description.form-control(
+                textarea.form-control(
+                  id="my-expressjs-tinymce-app"
                   name="description" 
                   rows="3" 
                   placeholder="Nhập đoạn mô tả ngắn về bài viết..."
@@ -33,7 +34,8 @@ block main
 
               .mb-3
                 label.form-label.fw-bold(for="content") Nội dung bài viết
-                textarea#content.form-control.textarea-tinymce(
+                textarea.form-control.textarea-tinymce(
+                  id="my-expressjs-tinymce-app"
                   name="content" 
                   rows="15"
                 )

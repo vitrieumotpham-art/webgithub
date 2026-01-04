@@ -209,3 +209,129 @@
         font-size: 1.2rem;
     }
 }
+.news-page {
+    background-color: #f8f9fa;
+}
+
+.article-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+}
+
+.article-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+
+.image-wrapper img {
+    transition: transform 0.5s ease;
+}
+
+.article-card:hover .image-wrapper img {
+    transform: scale(1.1);
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+}
+
+.section-banner {
+    position: relative;
+    height: 350px;
+    overflow: hidden;
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-title {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.news-detail-classic {
+    background: #fff;
+    padding-bottom: 100px;
+}
+
+/* Header */
+.post-category {
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    color: #b89a67;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.post-title {
+    font-family: 'Times New Roman', serif;
+    font-size: 2.8rem;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    color: #1a1a1a;
+}
+
+.post-meta {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.post-meta .separator {
+    margin: 0 15px;
+}
+
+/* Thumbnail */
+.post-thumbnail img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+/* Nội dung bài viết */
+.post-description {
+    font-size: 1.25rem;
+    color: #444;
+    font-style: italic;
+    border-left: 3px solid #b89a67;
+    padding-left: 20px;
+}
+
+.content-body {
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: #333;
+    font-family: 'Georgia', serif; /* Font Serif cho trải nghiệm đọc tốt nhất */
+}
+
+/* Style cho các phần tử bên trong CMS Content */
+.content-body p { margin-bottom: 25px; }
+.content-body h2, .content-body h3 { 
+    font-family: 'Times New Roman', serif;
+    margin-top: 40px; 
+    margin-bottom: 20px;
+}
+.content-body img { 
+    max-width: 100%; 
+    height: auto; 
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+/* Scroll Progress Bar */
+.scroll-progress {
+    position: fixed;
+    top: 0; left: 0; width: 0%; height: 3px;
+    background: #b89a67;
+    z-index: 1000;
+}

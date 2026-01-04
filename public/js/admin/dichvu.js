@@ -149,58 +149,63 @@ if (checkBoxMulti) {
 }
 // end checkbox
 // form change multi
+// --- SỬA LẠI ĐOẠN: form change multi ---
 const formchangeMulti = document.querySelector("[form-change-multi]");
+
 if (formchangeMulti) {
-    const returnUrlInput = formchangeMulti.querySelector('input[name="returnUrl"]'); // (1) Tìm input ẩn
+    const returnUrlInput = formchangeMulti.querySelector('input[name="returnUrl"]');
 
     formchangeMulti.addEventListener("submit", (e) => {
+        // 1. CHẶN mặc định ngay lập tức để kiểm soát hoàn toàn bằng JS
         e.preventDefault();
-        const inputsChecked = checkBoxMulti.querySelectorAll("input[name='id']:checked");
 
-        const typechange = e.target.elements.type.value;
-        if (typechange == "delete-all") {
-            const isconfirm = confirm("bạn có chắc chắn muốn xóa những sản phẩm này");
-            if (!isconfirm) {
-                return;
-            }
-        }
+        // 2. Kiểm tra lại sự tồn tại của bảng chứa checkbox
+        const tableDichVu = document.querySelector("[checkbox-multi]");
+        if (!tableDichVu) return;
 
-        console.log(typechange);
+        // 3. Lấy danh sách checkbox đang được chọn
+        const inputsChecked = tableDichVu.querySelectorAll("input[name='id']:checked");
 
         if (inputsChecked.length > 0) {
+            const typechange = e.target.elements.type.value;
+
+            // Xác nhận nếu là thao tác xóa
+            if (typechange == "delete-all") {
+                const isconfirm = confirm("Bạn có chắc chắn muốn xóa những dịch vụ này? Hành động này không thể hoàn tác.");
+                if (!isconfirm) return; 
+            }
+
             let ids = [];
             const inputIds = formchangeMulti.querySelector("input[name='ids']");
 
             inputsChecked.forEach(input => {
                 const id = input.value;
                 if (typechange == "position-all") {
-                    const position = input.closest("tr").querySelector("[name='position']").value;
+                    // Lấy vị trí từ input cùng dòng
+                    const row = input.closest("tr");
+                    const position = row.querySelector("input[name='position']").value;
                     ids.push(`${id}-${position}`);
                 } else {
                     ids.push(id);
                 }
-
-
             });
 
-            // (2) PHẢI DÙNG join(",") KHÔNG CÓ KHOẢNG TRẮNG
+            // Gán dữ liệu vào input ẩn
             inputIds.value = ids.join(",");
 
-            // (3) PHẢI GÁN URL ĐẦY ĐỦ VÀO INPUT ẨN
+            // Cập nhật URL trả về
             if (returnUrlInput) {
-                returnUrlInput.value = window.location.href; // Lấy URL đầy đủ
+                returnUrlInput.value = window.location.href;
             }
 
+            // 4. CHỈ GỬI FORM KHI MỌI THỨ ĐÃ SẴN SÀNG
             formchangeMulti.submit();
         } else {
-            alert("Vui lòng chọn ít nhất 1 bản ghi.");
+            // Hiển thị cảnh báo và KHÔNG làm gì thêm
+            alert("Hệ thống: Vui lòng tích chọn ít nhất 1 dịch vụ trước khi áp dụng!");
         }
     });
 }
-// end form change multi
-// xoa san pham
-// end xoa san pham
-// locgic thong baoc
 const showAlert=document.querySelector("[show-alert]");
 if(showAlert){
     const time=parseInt(showAlert.getAttribute("data-time"));

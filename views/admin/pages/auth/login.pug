@@ -1,0 +1,111 @@
+extends ../../layout/auth.pug
+
+block main
+  // Phân đoạn CSS nhúng trực tiếp
+  style.
+    :root {
+      --primary-color: #1a1a1a;    /* Đen than */
+      --accent-color: #b8860b;     /* Vàng đồng */
+      --bg-light: #f4f7f6;
+    }
+    
+    .login-wrapper {
+      background-color: var(--bg-light) !important;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .card {
+      border: none;
+      border-top: 5px solid var(--accent-color); /* Vạch vàng đồng đặc trưng kiến trúc */
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .form-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      padding: 10px 15px;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 0.25rem rgba(184, 134, 11, 0.1);
+    }
+
+    .btn-dark {
+      background-color: var(--primary-color);
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-dark:hover {
+      background-color: var(--accent-color);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(184, 134, 11, 0.3);
+    }
+
+    .text-accent {
+      color: var(--accent-color) !important;
+      font-weight: 500;
+    }
+
+    .form-check-input:checked {
+      background-color: var(--accent-color);
+      border-color: var(--accent-color);
+    }
+
+  // Cấu trúc HTML (Pug)
+  .login-wrapper.d-flex.align-items-center.justify-content-center.min-vh-100
+    .container
+      .row.justify-content-center
+        .col-11.col-sm-8.col-md-6.col-lg-4
+          .card.shadow-sm.rounded-4
+            .card-body.p-4.p-md-5
+              .text-center.mb-4
+                // Tiêu đề dạng kiến trúc
+                h2.fw-bold.text-uppercase.m-0(style="letter-spacing: 3px; color: var(--primary-color);") Admin
+                .accent-line.mx-auto.my-2(style="width: 40px; height: 2px; background: var(--accent-color);")
+                p.text-muted.small Hệ thống quản trị nội bộ
+
+              form(
+                action=`/${PefixAdmin}/auth/login`
+                method="POST"
+              )
+                .mb-3
+                  label.form-label.fw-bold(for="email") Email công việc
+                  input#email.form-control(
+                    type="email"
+                    name="email"
+                    placeholder="name@company.com"
+                    required
+                  )
+                
+                .mb-3
+                  label.form-label.fw-bold(for="password") Mật khẩu
+                  input#password.form-control(
+                    type="password"
+                    name="password"
+                    placeholder="••••••••"
+                    required
+                  )
+                
+                .mb-4.d-flex.justify-content-between.align-items-center
+                  .form-check
+                  a.small.text-decoration-none.text-accent(href="#") Quên mật khẩu?
+                
+                .d-grid
+                  button.btn.btn-dark.btn-lg.fw-bold(type="submit") Đăng nhập
+            
+            .card-footer.bg-transparent.border-0.text-center.pb-4
+              p.small.text-muted.mb-0 © 2024 Kiến Trúc & Xây Dựng

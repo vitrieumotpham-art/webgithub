@@ -8,57 +8,86 @@ block main
     main
         //- 1. BANNER
         section.section-banner
-            img.banner-image(src="/img/nha/thiet-ke-biet-thu-hien-dai-anh-hung.jpg" alt="Kiến trúc hiện đại")
+            img.banner-image(src="/img/nh_sinh_th_i_an_i_n_1.jpg" alt="Kiến trúc hiện đại")
             .banner-overlay
                 h1.banner-title.fade-in.appear DỰ ÁN ĐÃ THỰC HIỆN
 
         //- 2. BỘ LỌC (FILTER)
-        section.section-filters
+        section.section-filters.py-4
             .container
-                +box-head('CÁC DỰ ÁN NỔI BẬT CỦA PNT DECOR')
-                
-                .filter-menu
-                    //- Lưu ý: data-filter phải khớp với value trong Database (VD: BietThu, NhaPho)
+                +box-head('CÁC DỰ ÁN CỦA PNT DECOR')
+                .filter-menu.mt-3
                     a.filter-item.active(href="#", data-filter="all") TẤT CẢ
                     a.filter-item(href="#", data-filter="BietThu") BIỆT THỰ
                     a.filter-item(href="#", data-filter="NhaPho") NHÀ PHỐ
                     a.filter-item(href="#", data-filter="NoiThat") NỘI THẤT
                     a.filter-item(href="#", data-filter="VanPhong") VĂN PHÒNG
 
-        //- 3. DANH SÁCH DỰ ÁN (GRID) - PHẦN BẠN CẦN THÊM VÀO
-        section.section-project-list
+        //- 3. DANH SÁCH DỰ ÁN
+        section.section-project-list.pb-5
             .container
+                //- ==================== PHẦN 1: DỰ ÁN NỔI BẬT ====================
+                //- Lọc các dự án có is_noibat = true
+                - const featuredProjects = duan.filter(item => item.is_noibat)
+                if featuredProjects.length > 0
+                    .label-group.mb-4.d-flex.align-items-center
+                        i.fas.fa-crown.text-warning.me-2(style="font-size: 1.5rem;")
+                        h2.h4.mb-0.fw-bold DỰ ÁN TIÊU BIỂU (NỔI BẬT)
+                    
+                    .project-grid.featured-grid.mb-5
+                        each item in featuredProjects
+                            .project-card.featured-card.fade-in(data-category=item.loai_hinh)
+                                a(href=`/duan/${item.slug}`)
+                                    .project-image-wrapper
+                                        img.project-image(src=(item.hinh_anh && item.hinh_anh.length > 0 ? item.hinh_anh[0] : "/img/default.jpg"), alt=item.ten_du_an)
+                                        span.badge-featured 
+                                            i.fas.fa-star.me-1
+                                            | HOT
+                                        span.project-category #{item.loai_hinh}
+                                    
+                                    .project-info
+                                        h3.project-title #{item.ten_du_an}
+                                        p.project-desc !{item.mo_ta}
+                                        span.project-view-link 
+                                            | Khám phá ngay 
+                                            i.fas.fa-arrow-right
+
+                    hr.my-5.opacity-25
+
+                //- ==================== PHẦN 2: THƯ VIỆN DỰ ÁN (CÓ DỰ ÁN MỚI) ====================
+                .label-group.mb-4.d-flex.align-items-center
+                    i.fas.fa-layer-group.text-primary.me-2
+                    h2.h4.mb-0.fw-bold TẤT CẢ CÔNG TRÌNH
+                
                 .project-grid
-                    //- Vòng lặp lấy dữ liệu từ biến 'projects' (được gửi từ Controller)
-                    each item in duan
-                        //- Thêm data-category để JS lọc được dự án
-                        .project-card.fade-in(data-category=item.loai_hinh)
-                            a(href=`/du-an/${item.slug}`)
-                                .project-image-wrapper
-                                    //- Lấy ảnh đầu tiên trong mảng hinh_anh
-                                    if item.hinh_anh && item.hinh_anh.length > 0
-                                        img.project-image(src=item.hinh_anh[0], alt=item.ten_du_an)
-                                    else 
-                                        img.project-image(src="/img/nha/thiet-ke-biet-thu-hien-dai-anh-hung.jpg", alt="Default Image")
+                    if duan && duan.length > 0
+                        each item in duan
+                            .project-card.fade-in(data-category=item.loai_hinh)
+                                a(href=`/duan/${item.slug}`)
+                                    .project-image-wrapper
+                                        img.project-image(src=(item.hinh_anh && item.hinh_anh.length > 0 ? item.hinh_anh[0] : "/img/default.jpg"), alt=item.ten_du_an)
+                                        
+                                        //- Badge DỰ ÁN MỚI (Logic is_new từ Controller)
+                                        if item.is_new
+                                            span.badge-new NEW
+                                            
+                                        span.project-category #{item.loai_hinh}
                                     
-                                    //- Badge hiển thị loại hình
-                                    span.project-category #{item.loai_hinh}
-                                
-                                .project-info
-                                    h3.project-titl  #{item.ten_du_an}
-                                    
-                                    //- Mô tả ngắn (cắt bớt chữ nếu dài quá)
-                                    p.project-desc #{item.mo_ta}
-                                    
-                                    span.project-view-link 
-                                        | Xem chi tiết 
-                                        i.fas.fa-arrow-right
+                                    .project-info
+                                        h3.project-title #{item.ten_du_an}
+                                        p.project-desc.text-truncate-2 !{item.mo_ta}
+                                        span.project-view-link 
+                                            | Xem chi tiết 
+                                            i.fas.fa-chevron-right
+                    else 
+                        .col-12.text-center
+                            p Hiện chưa có dự án nào trong mục này.
 
         //- 4. CTA (CALL TO ACTION)
-        section.section-cta
+        section.section-cta.bg-dark.text-white.py-5.text-center
             .container.fade-in
-                h3.cta-title Bắt đầu dự án mơ ước của bạn ngay hôm nay!
-                p.cta-text Liên hệ với đội ngũ chuyên gia của PNT DECOR để nhận tư vấn miễn phí ngay hôm nay.
-                a.cta-button(href="http://localhost:3000/lienhe")
+                h3.cta-title.fw-bold Bắt đầu dự án mơ ước của bạn ngay hôm nay!
+                p.cta-text Liên hệ với đội ngũ chuyên gia của PNT DECOR để nhận tư vấn miễn phí.
+                a.btn.btn-outline-light.btn-lg.rounded-pill.mt-3(href="/lienhe")
                     | Yêu Cầu Tư Vấn 
-                    i.fas.fa-chevron-right.ml-2
+                    i.fas.fa-paper-plane.ms-2

@@ -10,7 +10,7 @@ block main
             .card-body
                 form(
                     // 1. ACTION: Trỏ đến route PATCH với ID của dịch vụ
-                    action=`${PefixAdmin}/dichvu/edit/${dichvu.id}?_method=PATCH` 
+                    action=`/${PefixAdmin}/dichvu/edit/${dichvu.id}?_method=PATCH` 
                     method="POST" 
                     enctype="multipart/form-data"
                     )
@@ -35,7 +35,7 @@ block main
                     .mb-3
                         label.form-label(for="description") Mô tả ngắn:
                         textarea.form-control(
-                            id="description", 
+                            id="my-expressjs-tinymce-app", 
                             name="description", 
                             rows="3"
                             ) #{dichvu.description} 
@@ -56,7 +56,7 @@ block main
                     .mb-3
                         label.form-label(for="content") Nội dung chi tiết:
                         textarea.form-control(
-                            id="content", 
+                            id="my-expressjs-tinymce-app",
                             name="content", 
 
                             rows="5"
@@ -118,6 +118,6 @@ block main
                         button.btn.btn-info.shadow-sm(type="submit")
                             i.fas.fa-edit.me-2
                             | Cập nhật
-                        a.btn.btn-secondary.ms-2(href=`${PefixAdmin}/dichvu`)
+                        a.btn.btn-secondary.ms-2(href=`/${PefixAdmin}/dichvu`)
                             i.fas.fa-arrow-left.me-2
                             | Quay lại

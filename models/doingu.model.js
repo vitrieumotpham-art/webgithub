@@ -37,7 +37,17 @@ const doinguSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    deletedAt: Date // Thêm trường này để lưu vết thời gian khi xóa (Soft delete)
+    createdBy:{
+        accountID:String,
+        createAt:{
+            type:Date,
+            default:Date.now
+        }
+    },
+    deletedBy:{
+        accountID:String,
+        deletedAt:Date
+    },
 }, {
     timestamps: true
 });

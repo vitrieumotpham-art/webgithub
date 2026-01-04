@@ -34,7 +34,11 @@ block main
               .row.g-3.mb-4
                 .col-md-3
                   label.form-label Loại hình
-                  input.form-control(type="text", name="loai_hinh", value=duan.loai_hinh)
+                  select.form-select(name="loai_hinh")
+                    option(value="VanPhong", selected=(duan.loai_hinh == "VanPhong")) Văn Phòng  
+                    option(value="BietThu", selected=(duan.loai_hinh == "BietThu")) Biệt Thự
+                    option(value="NoiThat", selected=(duan.loai_hinh == "NoiThat")) Nội Thất
+                    option(value="NhaPho", selected=(duan.loai_hinh == "NhaPho")) Nhà Phố
                 .col-md-3
                   label.form-label Phong cách
                   input.form-control(type="text", name="phong_cach", value=duan.phong_cach)
@@ -51,9 +55,9 @@ block main
                 .col-md-4
                   label.form-label Trạng thái
                   select.form-select(name="trang_thai")
-                    option(value="Hoàn Thiện", selected=(duan.trang_thai == "Hoàn Thiện")) Hoàn Thiện
-                    option(value="Đang Thi Công", selected=(duan.trang_thai == "Đang Thi Công")) Đang Thi Công
-                    option(value="Đang Thiết Kế", selected=(duan.trang_thai == "Đang Thiết Kế")) Đang Thiết Kế
+                    option(value="HoanThien", selected=(duan.trang_thai == "Hoàn Thiện")) Hoàn Thiện
+                    option(value="DangThiCong", selected=(duan.trang_thai == "Đang Thi Công")) Đang Thi Công
+                    option(value="DangThietKe", selected=(duan.trang_thai == "Đang Thiết Kế")) Đang Thiết Kế
                 
                 .col-md-4.d-flex.align-items-center.pt-4
                   .form-check.form-switch
@@ -76,11 +80,20 @@ block main
                     upload-img-input-duan 
                   )
                   //- Hiển thị ảnh cũ nếu đã có
-                  img(
-                    src=duan.hinh_anh
-                    upload-image-preview
-                    style="width: 150px; margin-top: 15px; display: block;"
-                  )
+                  if (duan.hinh_anh)
+                    img(
+                      src=(Array.isArray(duan.hinh_anh) ? duan.hinh_anh[0] : duan.hinh_anh)
+                      upload-image-preview
+                      class="img-thumbnail"
+                      style="width: 150px; margin-top: 15px; display: block;"
+                    )
+                  else
+                    img(
+                      src=""
+                      upload-image-preview
+                      class="img-thumbnail"
+                      style="width: 150px; margin-top: 15px; display: none;"
+                    )
 
               .mt-4.pt-3.border-top.text-end
                 a.btn.btn-outline-secondary.me-2.px-4(href=`/${PefixAdmin}/project`) Hủy

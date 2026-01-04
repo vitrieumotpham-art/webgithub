@@ -1,143 +1,123 @@
-extends ../../layout/defaut.pug 
+extends ../../layout/defaut.pug
 include ../../mixins/search.pug
-include ../../mixins/pagination.pug  
+include ../../mixins/pagination.pug
+
 block main
-    //- -------------------------------------------
-    //- [KHU VỰC GIẢ LẬP DỮ LIỆU]
-    //- -------------------------------------------
-    -
-        const keyword = "";
-        const roleFilter = "";
-        const statusFilter = "";
+  if(role.permissions.includes("taikhoan_view"))
+    .container-fluid.py-4
+      //- 1. HEADER & BUTTON THÊM MỚI
+      .d-flex.justify-content-between.align-items-center.mb-4
+        div
+          h1.h3.text-primary.fw-bold Quản Lý Nhân Sự
+          p.text-muted.mb-0 Danh sách tài khoản và phân quyền hệ thống
+        if(role.permissions.includes("duan_edit"))
+          a.btn.btn-primary.shadow-sm(href="/admin/account/create")
+            i.fas.fa-user-plus.me-2
+            | Tạo Tài Khoản Mới
 
-        // Thêm màu sắc cho Avatar và Role
+      //- 2. BỘ LỌC (FILTER)
+      .card.shadow-sm.mb-4.border-0
+        .card-body.p-4
+          form(action="" method="GET")
+            .row.g-3
+              //- Search Mixin
+              .col-md-6
+                +search(keyword)
+              
+              //- Filter Role
+              .col-md-3
+                .form-floating
+                  select.form-select(name="role" onchange="this.form.submit()")
+                    option(value="" selected=(!roleFilter)) -- Tất cả vai trò --
+                    option(value="admin" selected=(roleFilter==="admin")) Quản trị viên (Admin)
+                    option(value="editor" selected=(roleFilter==="editor")) Biên tập viên (Editor)
+                    option(value="staff" selected=(roleFilter==="staff")) Nhân viên (Staff)
+                  label(for="role") Lọc theo vai trò
 
-    //- CSS Tùy chỉnh
-    style.
-        .user-card { transition: all 0.3s; border: 1px solid #f0f0f0; }
-        .user-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08)!important; border-color: #0d6efd; }
-        
-        .avatar-box { width: 70px; height: 70px; font-size: 28px; position: relative; }
-        
-        /* Chấm trạng thái (Online/Offline) */
-        .status-dot {
-            width: 15px; height: 15px; border-radius: 50%; border: 3px solid #fff;
-            position: absolute; bottom: 0; right: 0;
-        }
-        .status-active { background-color: #198754; }
-        .status-inactive { background-color: #dc3545; }
+              //- Filter Status
+              .col-md-3
+                .form-floating
+                  select.form-select(name="status" onchange="this.form.submit()")
+                    option(value="" selected=(!status)) -- Tất cả trạng thái --
+                    option(value="active" selected=(status==="active")) Đang hoạt động
+                    option(value="inactive" selected=(status==="inactive")) Đã khóa
+                  label(for="status") Trạng thái
 
-    .container-fluid.mt-4
-        //- 1. HEADER
-        .d-flex.justify-content-between.align-items-center.mb-4
-            div
-                h1.text-primary.fw-bold Quản Lý Nhân Sự
-                p.text-muted.mb-0 Danh sách tài khoản và phân quyền hệ thống
-            
-            button.btn.btn-primary.shadow-sm(onclick="window.location.href='/admin/Account/create'")
-                i.fas.fa-user-plus.me-2
-                | Tạo Tài Khoản
+      //- 3. DANH SÁCH USER (GRID VIEW)
+      if taikhoan.length > 0
+        .row.g-4
+          each user in taikhoan
+            .col-md-6.col-xl-4
+              .card.user-card.h-100.border-0.shadow-sm
+                .card-body.p-4
+                  //- Header Card: Avatar + Tên + Role
+                  .d-flex.align-items-start.mb-3
+                    .position-relative.me-3
+                      //- Giả sử user.avatar chứa URL ảnh, nếu không có thì dùng placeholder
+                      if user.avatar
+                        img.avatar-img.rounded-circle(src=user.avatar alt=user.fullName)
+                      else
+                        .avatar-placeholder.rounded-circle.bg-light.text-primary.fw-bold.d-flex.align-items-center.justify-content-center
+                          | #{user.fullName.charAt(0).toUpperCase()}
+                      
+                      //- Status Dot
+                      span.status-indicator.border.border-white.rounded-circle(class=user.status === 'active' ? 'bg-success' : 'bg-danger')
 
-        //- 2. BỘ LỌC
-        .card.shadow-sm.mb-4.border-0
-            .card-body
-                form.row.g-3(action="", method="GET")
-                    .col-md-6
-                       +search(keyword)
-                    .col-md-3
-                        label.form-label.fw-bold Vai trò:
-                        select.form-select(name="role", id="selectTaikhoan")
-                            option(value="" selected=(!role)) -- Tất cả --
-                            option(value="admin" selected=(role==="admin")) Super Admin
-                            option(value="editor" selected=(role==="editor")) Editor
-                            option(value="staff" selected=(role==="staff")) Staff
+                    .flex-grow-1
+                      h5.fw-bold.mb-1.text-dark.text-truncate(style="max-width: 200px;") #{user.fullName}
+                      span.badge.rounded-pill.px-3(class=`bg-${user.role === 'admin' ? 'danger' : (user.role === 'editor' ? 'warning' : 'info')}`) 
+                        | #{user.role.toUpperCase()}
+
+                  hr.text-muted.my-3
+
+                  //- Body Card: Thông tin liên hệ
+                  .info-list.d-flex.flex-column.gap-2
+                    .d-flex.align-items-center.text-muted
+                      i.fas.fa-briefcase.me-3.text-center.width-20
+                      span.text-dark #{user.title || 'Chưa cập nhật chức vụ'}
                     
-                    .col-md-3
-                        label.form-label.fw-bold Trạng thái:
-                        select.form-select(name="status", id="selectTrangthaitaikhoan")
-                            option(value="" selected=(!status)) -- Tất cả --
-                            option(value="active"  selected=(status==="active")) Hoạt động
-                            option(value="inactive" selected=(status==="inactive")) Đã khóa    
+                    .d-flex.align-items-center.text-muted
+                      i.fas.fa-envelope.me-3.text-center.width-20
+                      span.text-truncate(title=user.email) #{user.email}
+                    
+                    .d-flex.align-items-center.text-muted
+                      i.fas.fa-phone.me-3.text-center.width-20
+                      span #{user.phone || '---'}
+                    
+                    .d-flex.align-items-center.text-muted
+                      i.far.fa-clock.me-3.text-center.width-20
+                      small Login cuối: #{user.lastLogin ? user.lastLogin : 'Chưa đăng nhập'}
 
-        //- 3. DANH SÁCH USER (CARD GRID)
-        if taikhoan.length > 0
-            .row.g-4
-                each user in taikhoan
-                    .col-md-6.col-xl-4
-                        .card.user-card.h-100.shadow-sm
-                            .card-body.p-4
-                                //- Phần thông tin chính
-                                .d-flex.align-items-center.mb-4
-                                    //- Avatar giả lập
-                                    .avatar-box.rounded-circle.d-flex.align-items-center.justify-content-center.text-white.fw-bold.me-3(#{user.avatar})
-                                        | #{user.fullName.charAt(0)}
-                                        //- Chấm trạng thái
-                                        .status-dot(class=user.status === 'active' ? 'status-active' : 'status-inactive')
-                                    
-                                    div
-                                        h5.fw-bold.mb-1.text-dark #{user.fullName}
-                                        span.badge.rounded-pill(class=user.roleColor) #{user.role}
-                                
-                                //- Thông tin chi tiết
-                                .d-flex.flex-column.gap-2.mb-4
-                                    .d-flex.align-items-center.text-muted
-                                        i.fas.fa-briefcase.me-3.text-center(style="width: 20px")
-                                        span #{user.title}
-                                    .d-flex.align-items-center.text-muted
-                                        i.fas.fa-envelope.me-3.text-center(style="width: 20px")
-                                        span #{user.email}
-                                    .d-flex.align-items-center.text-muted
-                                        i.fas.fa-phone.me-3.text-center(style="width: 20px")
-                                        span #{user.phone}
-                                    .d-flex.align-items-center.text-muted
-                                        i.far.fa-clock.me-3.text-center(style="width: 20px")
-                                        small Online: #{user.lastLogin}
+                //- Footer Card: Actions
+                .card-footer.bg-transparent.border-0.pb-4.pt-0
+                  .d-flex.justify-content-between.gap-2
+                    if(role.permissions.includes("duan_edit"))
+                      a.btn.btn-light.flex-grow-1(href=`/admin/account/edit/${user.id}`)
+                        i.fas.fa-pen.me-1
+                        | Sửa
+                    
+                    if user.status === 'active'
+                      button.btn.btn-outline-warning(onclick=`changeStatus('${user.id}', 'inactive')` data-bs-toggle="tooltip" title="Khóa tài khoản")
+                        i.fas.fa-lock
+                    else
+                      button.btn.btn-outline-success(onclick=`changeStatus('${user.id}', 'active')` data-bs-toggle="tooltip" title="Mở khóa")
+                        i.fas.fa-unlock
+                    if(role.permissions.includes("duan_edit"))
+                      a.btn.btn-outline-danger(href=`/admin/account/delete/${user.id}`)
+                        i.fas.fa-pen.me-1
+                        | xóa
 
-                            //- Footer Hành động
-                            .card-footer.bg-white.border-top-0.pb-3.pt-0
-                                .d-flex.justify-content-between.gap-2
-                                    a.btn.btn-light.flex-grow-1(href=`/admin/accounts/edit/${user.id}`)
-                                        i.fas.fa-cog.me-1
-                                        | Cấu hình
-                                    
-                                    if user.status === 'active'
-                                        button.btn.btn-outline-warning(onclick=`toggleStatus(${user.id}, 'inactive')`, title="Khóa tài khoản")
-                                            i.fas.fa-lock khóa 
-                                    else
-                                        button.btn.btn-outline-success(onclick=`toggleStatus(${user.id}, 'active')`, title="Mở khóa")
-                                            i.fas.fa-unlock mở khóa
-                                    
-                                    button.btn.btn-outline-danger(onclick=`deleteAccount(${user.id})`, title="Xóa")
-                                        i.fas.fa-trash xóa
+        //- 4. PHÂN TRANG
+        .mt-4.d-flex.justify-content-center
+          +pagination(pagination)
+      
+      else
+        //- Empty State
+        .text-center.py-5
+          img.mb-3(src="/images/no-data.svg" alt="No data" style="width: 150px; opacity: 0.5")
+          h5.text-muted Không tìm thấy tài khoản nào phù hợp.
+          a.btn.btn-link(href="/admin/accounts") Xóa bộ lọc
 
-        else
-            .text-center.py-5
-                p.text-muted Không tìm thấy tài khoản nào.
-
-    //- Form ẩn để xử lý Logic
-    form#action-form(method="POST", action="")
-
-    //- SCRIPT XỬ LÝ
-    script.
-        const actionForm = document.getElementById('action-form');
-
-        // Hàm Đổi trạng thái (Khóa/Mở)
-        function toggleStatus(id, newStatus) {
-            const msg = newStatus === 'inactive' ? 'Bạn muốn KHÓA tài khoản này?' : 'Bạn muốn KÍCH HOẠT lại tài khoản này?';
-            if(confirm(msg)) {
-                // actionForm.action = `/admin/accounts/change-status/${newStatus}/${id}?_method=PATCH`;
-                // actionForm.submit();
-                alert(`Đã gửi lệnh đổi trạng thái ID ${id} sang ${newStatus}`);
-            }
-        }
-
-        // Hàm Xóa tài khoản
-        function deleteAccount(id) {
-            if(confirm('CẢNH BÁO: Hành động này sẽ xóa vĩnh viễn tài khoản và không thể khôi phục. Bạn chắc chắn chứ?')) {
-                // actionForm.action = `/admin/accounts/delete/${id}?_method=DELETE`;
-                // actionForm.submit();
-                alert(`Đã xóa tài khoản ID ${id}`);
-            }
-        }
-    .mt-4.d-flex.justify-content-center
-            +pagination(pagination) 
+    //- FORM ẨN ĐỂ XỬ LÝ LOGIC (DELETE/PATCH)
+    form#form-change-status(action="" method="POST" data-path="/admin/accounts/change-status")
+    form#form-delete-item(action="" method="POST" data-path="/admin/accounts/delete")

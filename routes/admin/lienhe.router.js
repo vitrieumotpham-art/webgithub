@@ -1,7 +1,13 @@
-const express = require('express');
-const route = express.Router();
-const LienheController = require("../../controllers/admin/Lienhe.controller");
+const express = require("express");
+const router = express.Router();
+const controller = require("../../controllers/admin/Lienhe.controller");
 
-route.get("/", LienheController.Lienhe);
+router.get("/", controller.Lienhe);
 
-module.exports = route;
+// Sửa lại cho khớp với Modal: Bỏ :id vì ta sẽ gửi id trong req.body
+router.post("/change-status", controller.changeStatus); 
+
+// Thêm route xóa đúng với tên hàm trong controller
+router.post("/delete/:id", controller.deleteItem);
+
+module.exports = router;

@@ -50,7 +50,7 @@ if (buttonChangeStatus.length > 0) {
             const urlToReturn = button.getAttribute("data-return-url"); 
             const statusChange = statusCurrent == "active" ? "inactive" : "active";
             
-            formChangeStatus.action = `${path}/${statusChange}/${id}?_method=PATCH`;
+            formChangeStatus.action = `/${path}/${statusChange}/${id}?_method=PATCH`;
             if (returnUrlInput) returnUrlInput.value = urlToReturn;
             formChangeStatus.submit();
         });

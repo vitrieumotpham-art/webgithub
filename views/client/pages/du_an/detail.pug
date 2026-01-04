@@ -1,0 +1,156 @@
+extends ../../layouts/defaut.pug
+
+block main
+    .project-detail-page
+        //- 1. HERO SECTION (BANNER TĨNH HOẶC BACKGROUND NHẸ)
+        section.project-header.py-5.bg-white
+            .container
+                nav(aria-label="breadcrumb").mb-4
+                    ol.breadcrumb
+                        li.breadcrumb-item: a(href="/").text-decoration-none.text-muted Trang chủ
+                        li.breadcrumb-item: a(href="/du-an").text-decoration-none.text-muted Dự án
+                        li.breadcrumb-item.active.text-primary.fw-bold #{project.loai_hinh}
+                
+                .row.align-items-end
+                    .col-lg-8
+                        h1.display-4.fw-bold.text-dark.mb-3 #{project.ten_du_an}
+                        .project-main-meta.d-flex.flex-wrap.gap-4
+                            span.text-muted #[i.fas.fa-map-marker-alt.text-primary.me-2] #{project.dia_diem}
+                            span.text-muted #[i.fas.fa-calendar-alt.text-primary.me-2] Hoàn thành: #{project.nam_thuc_hien}
+                            span.text-muted #[i.fas.fa-check-circle.text-success.me-2] Trạng thái: #{project.trang_thai}
+                    .col-lg-4.text-lg-end.mt-3.mt-lg-0
+                        button.btn.btn-outline-primary.rounded-pill.px-4.me-2(onclick="window.print()")
+                            i.fas.fa-print.me-2
+                            | Lưu báo cáo
+                        form(action=`/cart/add/${project.id}` method="POST" style="display: inline-block;")
+                            input(type="hidden" name="quantity" value="1")
+                            button.btn.btn-outline-danger.rounded-pill.px-4.me-2(type="submit")
+                                i.far.fa-heart.me-2
+                                span Thêm vào yêu thích
+                        button.btn.btn-primary.rounded-pill.px-4    
+                            i.fas.fa-share-alt.me-2
+                            | Chia sẻ
+
+        //- 2. IMAGE SHOWCASE (Sử dụng kiến trúc Masonry hoặc Grid chuẩn)
+        section.project-gallery.mb-5
+            .container
+                .row.g-3
+                    if project.hinh_anh && project.hinh_anh.length > 0
+                        .col-md-8
+                            .main-img-wrapper.position-relative.overflow-hidden.rounded-4.shadow-sm
+                                img.img-fluid.w-100(src=project.hinh_anh[0] alt=project.ten_du_an style="height: 500px; object-fit: cover;")
+                                span.badge.bg-dark.position-absolute.bottom-0.end-0.m-3.opacity-75 #[i.fas.fa-search-plus.me-1] Phóng to
+                        
+                        .col-md-4
+                            .row.g-3
+                                //- Hiển thị tối đa 2 ảnh phụ để tạo lưới đẹp
+                                each img, index in project.hinh_anh.slice(1, 3)
+                                    .col-12
+                                        .sub-img-wrapper.overflow-hidden.rounded-4.shadow-sm
+                                            img.img-fluid.w-100(src=img alt=`Chi tiết ${index + 1}` style="height: 242px; object-fit: cover; transition: 0.5s")
+                    else
+                        .col-12
+                            .empty-gallery.bg-light.text-center.py-5.rounded-4
+                                i.fas.fa-image.fa-3x.text-muted.mb-3
+                                p Hình ảnh đang được cập nhật...
+
+        //- 3. CHI TIẾT NỘI DUNG & THÔNG SỐ
+        section.project-body.pb-5
+            .container
+                .row
+                    .col-lg-8
+                        //- Tabs điều hướng nội dung cho chuyên nghiệp
+                        ul.nav.nav-tabs.border-0.mb-4#projectTab(role="tablist")
+                            li.nav-item
+                                button.nav-link.active.border-0.fw-bold.px-4(data-bs-toggle="tab" data-bs-target="#desc") TỔNG QUAN
+                            li.nav-item
+                                button.nav-link.border-0.fw-bold.px-4(data-bs-toggle="tab" data-bs-target="#process") QUY TRÌNH
+
+                        .tab-content.bg-white.p-4.rounded-4.shadow-sm
+                            .tab-pane.fade.show.active#desc
+                                h3.h5.fw-bold.mb-3 Ý tưởng thiết kế
+                                .description-text.text-secondary.lh-lg
+                                    | !{project.mo_ta}
+                                
+                                .highlights.mt-4.row.g-3
+                                    .col-sm-6
+                                        .p-3.border.rounded-3
+                                            i.fas.fa-lightbulb.text-warning.mb-2
+                                            h6.fw-bold Tối ưu ánh sáng
+                                            p.small.mb-0 Tận dụng 90% ánh sáng tự nhiên qua hệ cửa kính cao cấp.
+                                    .col-sm-6
+                                        .p-3.border.rounded-3
+                                            i.fas.fa-leaf.text-success.mb-2
+                                            h6.fw-bold Vật liệu xanh
+                                            p.small.mb-0 Sử dụng gỗ công nghiệp đạt chuẩn E1 an toàn sức khỏe.
+
+                            .tab-pane.fade#process
+                                .timeline.py-3
+                                    .timeline-item.d-flex.mb-4
+                                        .icon.pe-3
+                                            span.badge.rounded-circle.bg-primary.p-2 01
+                                        .text
+                                            h6.fw-bold Khảo sát & Tư vấn
+                                            p.small Đo đạc thực tế và lắng nghe nhu cầu khách hàng.
+                                    .timeline-item.d-flex.mb-4
+                                        .icon.pe-3
+                                            span.badge.rounded-circle.bg-primary.p-2 02
+                                        .text
+                                            h6.fw-bold Thiết kế 3D & Kỹ thuật
+                                            p.small Phác họa không gian và bóc tách khối lượng chi tiết.
+                                    .timeline-item.d-flex
+                                        .icon.pe-3
+                                            span.badge.rounded-circle.bg-primary.p-2 03
+                                        .text
+                                            h6.fw-bold Thi công & Bàn giao
+                                            p.small Lắp đặt hoàn thiện và vệ sinh công nghiệp trước khi bàn giao.
+
+                    .col-lg-4
+                        //- Card thông số kỹ thuật nâng cấp
+                        .sticky-top(style="top: 100px;")
+                            .card.border-0.shadow-sm.rounded-4.mb-4
+                                .card-body.p-4
+                                    h5.fw-bold.mb-4 #[i.fas.fa-info-circle.me-2.text-primary] THÔNG SỐ KỸ THUẬT
+                                    .spec-list
+                                        .d-flex.justify-content-between.mb-3.pb-2.border-bottom
+                                            span.text-muted Chủ đầu tư
+                                            span.fw-bold #{project.chu_dau_tu}
+                                        .d-flex.justify-content-between.mb-3.pb-2.border-bottom
+                                            span.text-muted Quy mô
+                                            span.fw-bold #{project.so_tang} tầng
+                                        .d-flex.justify-content-between.mb-3.pb-2.border-bottom
+                                            span.text-muted Diện tích
+                                            span.fw-bold #{project.dien_tich} m²
+                                        .d-flex.justify-content-between.mb-3.pb-2.border-bottom
+                                            span.text-muted Phong cách
+                                            span.badge.bg-light.text-dark.border #{project.phong_cach}
+                                        .d-flex.justify-content-between.mb-3.pb-2.border-bottom
+                                            span.text-muted Ngân sách
+                                            span.fw-bold.text-danger #{project.chi_phi ? project.chi_phi.toLocaleString() + ' VNĐ' : 'Liên hệ'}
+                            
+                            //- Box cam kết
+                            .card.bg-dark.text-white.border-0.shadow-sm.rounded-4
+                                .card-body.p-4.text-center
+                                    h6.fw-bold CAM KẾT PNT DECOR
+                                    ul.list-unstyled.small.text-start.mt-3
+                                        li.mb-2 #[i.fas.fa-check.text-success.me-2] Bảo hành kết cấu 05 năm.
+                                        li.mb-2 #[i.fas.fa-check.text-success.me-2] Thi công giống 99% bản vẽ 3D.
+                                        li.mb-2 #[i.fas.fa-check.text-success.me-2] Không phát sinh chi phí ngoài hợp đồng.
+                                    a.btn.btn-warning.w-100.py-3.rounded-pill.mt-3.fw-bold(href="/lien-he") 
+                                        | NHẬN BÁO GIÁ TƯƠNG TỰ
+
+        //- 4. DỰ ÁN CÙNG LOẠI (Nếu có)
+        section.related-projects.py-5.bg-light
+            .container
+                h4.fw-bold.mb-4 DỰ ÁN TƯƠNG TỰ
+                .row.g-4
+                    //- Giả sử bạn có biến relatedProjects truyền từ controller
+                    if relatedProjects
+                        each item in relatedProjects
+                            .col-md-4
+                                .card.border-0.shadow-sm.h-100.rounded-4
+                                    img.card-img-top.rounded-top-4(src=item.hinh_anh[0] style="height: 200px; object-fit: cover;")
+                                    .card-body
+                                        h6.fw-bold.text-truncate #{item.ten_du_an}
+                                        p.small.text-muted #{item.dia_diem}
+                                        a.stretched-link(href=`/du-an/${item.slug}`)

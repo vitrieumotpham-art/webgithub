@@ -37,7 +37,7 @@ block main
               .mb-3
                 label.form-label.fw-bold(for="description") Tiểu sử / Kinh nghiệm
                 //- Textarea không dùng thuộc tính value, nội dung nằm giữa thẻ
-                textarea#description.form-control(name="description" rows="5") #{data.description}
+                textarea.form-control(name="description" rows="5" id="my-expressjs-tinymce-app") #{data.description}
 
         .col-md-4
           .card.shadow-sm.border-0.mb-4

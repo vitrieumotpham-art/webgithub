@@ -1,28 +1,173 @@
 aside.sidebar
-  .logo
-    //- Thêm dấu / vào trước biến
-    a(href=`/${PefixAdmin}/dashboard`) AdminPanel
+  style.
+    :root {
+      --sidebar-width: 260px;
+      --sidebar-bg: #1a1a1a;
+      --pnt-gold: #c5a059;
+      --text-muted: #adadad;
+      --hover-bg: #252525;
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      height: 100vh;
+      background-color: var(--sidebar-bg);
+      color: #fff;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 1050;
+      overflow-y: auto;
+      border-right: 1px solid #333;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Đẩy nội dung chính sang phải tránh bị đè */
+    body:has(.sidebar) .main-content {
+      margin-left: var(--sidebar-width) !important;
+      width: calc(100% - var(--sidebar-width)) !important;
+      min-height: 100vh;
+      display: block;
+    }
+
+    .sidebar-header {
+      padding: 30px 20px;
+      text-align: center;
+      background: #111;
+      border-bottom: 1px solid #2d2d2d;
+    }
+    .sidebar-header a {
+      color: var(--pnt-gold);
+      text-decoration: none;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-section-title {
+      padding: 25px 25px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-item a {
+      display: flex;
+      align-items: center;
+      padding: 14px 25px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+      font-size: 15px;
+    }
+
+    .nav-item a i {
+      width: 28px;
+      font-size: 17px;
+      margin-right: 10px;
+      text-align: center;
+    }
+
+    .nav-item a:hover, .nav-item a.active {
+      background: rgba(197, 160, 89, 0.1);
+      color: var(--pnt-gold);
+      border-left-color: var(--pnt-gold);
+    }
+
+    .sidebar::-webkit-scrollbar { width: 5px; }
+    .sidebar::-webkit-scrollbar-thumb { background: #333; }
+
+  .sidebar-header
+    a(href=`/${PefixAdmin}/dashboard`)
+      i.fa-solid.fa-compass-drafting.me-2
+      span PNT DECOR
+
   nav.sidebar-nav
-    ul
-      li  
-        a(href=`/${PefixAdmin}/dashboard`) Trang tổng quan
-      li
-        //- Sửa Project -> project (viết thường)
-        a(href=`/${PefixAdmin}/project`) Quản lý Dự án
-      li
-        //- Sửa Baiviet -> baiviet (viết thường)
-        a(href=`/${PefixAdmin}/baiviet`) Quản lý Bài viết
-      li
-        //- Sửa Dichvu -> dichvu (viết thường)
-        a(href=`/${PefixAdmin}/dichvu`) Quản lý Dịch vụ
-      li
-        //- Sửa Doingu -> doingu (viết thường)
-        a(href=`/${PefixAdmin}/doingu`) Quản lý Đội ngũ
-      li   
-        a(href=`/${PefixAdmin}/lienhe`) Quản lý Liên hệ
-      li
-        a(href=`/${PefixAdmin}/hinhanh`) Quản lý Ảnh
-      li
-        a(href=`/${PefixAdmin}/account`) Quản lý Tài khoản
-      li
-        a(href=`/${PefixAdmin}/phanhoi`) Phản hồi
+    .nav-section-title BÁO CÁO & THỐNG KÊ
+    ul.nav-list
+      if (role.permissions.includes("tongquan_view"))
+        li.nav-item
+          - var isActive = (path === `/${PefixAdmin}/dashboard` ? "active" : "")
+          a(href=`/${PefixAdmin}/dashboard`, class=isActive)
+            i.fa-solid.fa-gauge-high
+            span Trang tổng quan
+      li.nav-item
+        - var isActive = (path === `/${PefixAdmin}/thongke` ? "active" : "")
+        a(href=`/${PefixAdmin}/thongke`, class=isActive)
+          i.fa-solid.fa-chart-pie
+          span Thống kê chi tiết
+
+    .nav-section-title QUẢN LÝ DỰ ÁN
+    ul.nav-list
+      if (role.permissions.includes("doanhmuc_view"))
+        li.nav-item
+          - var isActive = (path && path.indexOf(`/${PefixAdmin}/doanhmuc`) !== -1 ? "active" : "")
+          a(href=`/${PefixAdmin}/doanhmuc`, class=isActive)
+            i.fa-solid.fa-layer-group
+            span Danh mục
+      if (role.permissions.includes("duan_view"))
+        li.nav-item
+          - var isActive = (path && path.indexOf(`/${PefixAdmin}/project`) !== -1 ? "active" : "")
+          a(href=`/${PefixAdmin}/project`, class=isActive)
+            i.fa-solid.fa-trowel-bricks
+            span Dự án thi công
+      if (role.permissions.includes("baiviet_view"))
+        li.nav-item
+          - var isActive = (path && path.indexOf(`/${PefixAdmin}/baiviet`) !== -1 ? "active" : "")
+          a(href=`/${PefixAdmin}/baiviet`, class=isActive)
+            i.fa-solid.fa-newspaper
+            span Bài viết / Tin tức
+
+    .nav-section-title DỊCH VỤ & KHÁCH HÀNG
+    ul.nav-list
+      if (role.permissions.includes("dichvu_view"))
+        li.nav-item
+          - var isActive = (path && path.indexOf(`/${PefixAdmin}/dichvu`) !== -1 ? "active" : "")
+          a(href=`/${PefixAdmin}/dichvu`, class=isActive)
+            i.fa-solid.fa-bell-concierge
+            span Dịch vụ
+      if (role.permissions.includes("lienhe_view"))
+        li.nav-item
+          - var isActive = (path && path.indexOf(`/${PefixAdmin}/lienhe`) !== -1 ? "active" : "")
+          a(href=`/${PefixAdmin}/lienhe`, class=isActive)
+            i.fa-solid.fa-id-card-clip
+            span Quản lý Liên hệ
+      if (role.permissions.includes("phanhoi_view"))
+        li.nav-item
+          - var isActive = (path && path.indexOf(`/${PefixAdmin}/phanhoi`) !== -1 ? "active" : "")
+          a(href=`/${PefixAdmin}/phanhoi`, class=isActive)
+            i.fa-solid.fa-comment-dots
+            span Phản hồi khách
+
+    .nav-section-title CẤU HÌNH
+    ul.nav-list
+      if (role.permissions.includes("taikhoan_view"))
+        li.nav-item
+          - var isActive = (path && path.indexOf(`/${PefixAdmin}/account`) !== -1 ? "active" : "")
+          a(href=`/${PefixAdmin}/account`, class=isActive)
+            i.fa-solid.fa-user-gear
+            span Quản lý Tài khoản
+      if (role.permissions.includes("roles_view"))
+        li.nav-item
+          - var isActive = (path === `/${PefixAdmin}/roles` ? "active" : "")
+          a(href=`/${PefixAdmin}/roles`, class=isActive)
+            i.fa-solid.fa-shield-halved
+            span Nhóm quyền
+      if (role.permissions.includes("phanquyen_view"))
+        li.nav-item
+          - var isActive = (path === `/${PefixAdmin}/roles/permissions` ? "active" : "")
+          a(href=`/${PefixAdmin}/roles/permissions`, class=isActive)
+            i.fa-solid.fa-key
+            span Phân quyền

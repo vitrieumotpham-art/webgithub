@@ -1,71 +1,49 @@
 extends ../../layouts/defaut.pug
 
 include ../../mixins/box.head.pug
-include ../../mixins/article-card.pug 
 
 block main
-    title Tin Tức & Sự Kiện - PNT DECOR
+    title #{pageTitle}
     link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css")
     link(rel="stylesheet", href="/css/client/news.css") 
 
-block main
-    main
+    main.news-page
         section.section-banner
-            img.banner-image(src="/img/nha/du-an-biet-thu-hien-dai-san-vuon-rong-800m²-quan-9.jpg" alt="Tin tức và Sự kiện")
+            img.banner-image(src="/img/mau-de-nghi-thuc-hien-du-an-dau-tu_2502152238.jpg" alt="Tin tức PNT DECOR")
             .banner-overlay
-                h1.banner-title.fade-in.appear TIN TỨC & KIẾN THỨC
+                h1.banner-title TIN TỨC & KIẾN THỨC
 
-        section.section-articles
+        section.section-articles.py-5
             .container
                 +box-head('BÀI VIẾT MỚI NHẤT')
                 
-                .articles-grid
-                    - 
-                        const articles = [
-                            { 
-                                title: "Xu hướng thiết kế nội thất Minimalism 2025", 
-                                date: "10/11/2025", 
-                                image: "https://images.unsplash.com/photo-1512918728841-f9273c545747?q=80&w=2070&auto=format&fit=crop",
-                                link: "/tin-tuc/xu-huong-minimalism",
-                                summary: "Phân tích các yếu tố chính tạo nên phong cách tối giản được ưa chuộng nhất trong năm 2025."
-                            },
-                            { 
-                                title: "4 bước thi công biệt thự không phát sinh chi phí", 
-                                date: "05/11/2025", 
-                                image: "https://images.unsplash.com/photo-1579762715118-a6f1d4b93471?q=80&w=2070&auto=format&fit=crop",
-                                link: "/tin-tuc/thi-cong-biet-thu",
-                                summary: "Quy trình quản lý vật tư và tiến độ giúp chủ nhà kiểm soát ngân sách hiệu quả."
-                            },
-                            { 
-                                title: "Công nghệ BIM trong quản lý dự án kiến trúc", 
-                                date: "01/11/2025", 
-                                image: "https://images.unsplash.com/photo-1543286386-713fe7260533?q=80&w=2070&auto=format&fit=crop",
-                                link: "/tin-tuc/cong-nghe-bim",
-                                summary: "Vai trò của Building Information Modeling trong việc tối ưu hóa thiết kế và thi công."
-                            },
-                            { 
-                                title: "Bí quyết chọn vật liệu thân thiện môi trường", 
-                                date: "25/10/2025", 
-                                image: "https://images.unsplash.com/photo-1502920875042-421712ae43dc?q=80&w=1934&auto=format&fit=crop",
-                                link: "/tin-tuc/vat-lieu-xanh",
-                                summary: "Những vật liệu xây dựng và nội thất an toàn, bền vững và tốt cho sức khỏe."
-                            }
-                        ]
-                    
-                    each article in articles
-                        +article-card(article.title, article.date, article.image, article.link, article.summary)
-
-                .text-center.mt-12
-                    a.btn-secondary(href="#")
-                        | TẢI THÊM BÀI VIẾT 
-                        i.fas.fa-chevron-down.ml-2
-
-        section.section-cta.fade-in
-            .container
-                h3.cta-title BẮT ĐẦU DỰ ÁN KIẾN TẠO KHÔNG GIAN CỦA BẠN
-                p.cta-text Liên hệ ngay để nhận được tư vấn từ kiến trúc sư chuyên nghiệp.
-                a.cta-btn.btn-white(href="http://localhost:3000/lienhe")
-                    | YÊU CẦU TƯ VẤN 
-                    i.fas.fa-phone-alt
-
-    
+                .row.g-4
+                    if articles && articles.length > 0
+                        each item in articles
+                            .col-md-6.col-lg-4
+                                .article-card.h-100.shadow-sm.rounded-3.overflow-hidden.bg-white
+                                    a(href=`/tintuc/${item.slugLink}`)
+                                        .image-wrapper(style="height: 220px; overflow: hidden;")
+                                            img.w-100.h-100(src=item.thumbnail alt=item.title style="object-fit: cover;")
+                                    
+                                    .p-4
+                                        if item.is_new
+                                            span.badge.bg-danger.mb-2 MỚI
+                                        
+                                        .meta.small.text-muted.mb-2
+                                            i.far.fa-calendar-alt.me-2
+                                            //- Dùng dateFormat đã xử lý ở Controller
+                                            span #{item.dateFormat}
+                                            i.far.fa-eye.ms-3.me-1
+                                            span #{item.views || 0} lượt xem
+                                        
+                                        h3.h5.fw-bold.mb-3
+                                            a.text-dark.text-decoration-none(href=`/tintuc/${item.slug}`) #{item.title}
+                                        
+                                        p.text-muted.small.line-clamp-3 #{item.description}
+                                        
+                                        a.btn-readmore.text-primary.fw-bold.text-decoration-none.small(href=`/tintuc/${item.slug}`)
+                                            | XEM CHI TIẾT #[i.fas.fa-arrow-right.ms-1]
+                    else
+                        .col-12.text-center.py-5
+                            p.text-muted Không tìm thấy bài viết nào.
