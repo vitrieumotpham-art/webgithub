@@ -3,22 +3,18 @@ const account = require("../../models/taikhoan.models");
 const searchHelper = require("../../helpers/search.js");
 const paginationbaivietHelper = require("../../helpers/pagination.js");
 const mongoose = require('mongoose');
-const systemConfig = require("../../config/system.js"); // Sửa chính tả sytemcofig
+const systemConfig = require("../../config/system.js");
 const uploadToCloudinary = require("../../helpers/uploadToCloudinary");
-//admin/Baiviet
 module.exports.Baiviet = async (req, res) => {
     try {
         let find = { deleted: false };
 
-        // 1. Bộ lọc trạng thái
         const trangthai = req.query.status;
         if (trangthai) find.status = trangthai;
 
-        // 2. Tìm kiếm
         const objectSearch = searchHelper(req.query);
         if (objectSearch.regex) find.title = objectSearch.regex;
 
-        // 3. Phân trang
         const countbaiviet = await baiviet.countDocuments(find);
         let objectPagination = paginationbaivietHelper(
             { currentPage: 1, limitItem: 8 },
@@ -26,14 +22,11 @@ module.exports.Baiviet = async (req, res) => {
             countbaiviet
         );
 
-        // 4. Lấy dữ liệu bài viết
         const listBaiViet = await baiviet.find(find)
             .sort({ createdAt: "desc" })
             .limit(objectPagination.limitItem)
             .skip(objectPagination.skip)
-            .lean(); // Quan trọng để gán thêm thuộc tính accountFullname
-
-        // 5. Lấy tên người tạo
+            .lean();
         for (const item of listBaiViet) {
             if (item.createdBy && item.createdBy.accountID) {
                 const user = await account.findOne({
@@ -59,15 +52,12 @@ module.exports.Baiviet = async (req, res) => {
     try {
         let find = { deleted: false };
 
-        // 1. Bộ lọc trạng thái
         const trangthai = req.query.status;
         if (trangthai) find.status = trangthai;
 
-        // 2. Tìm kiếm
         const objectSearch = searchHelper(req.query);
         if (objectSearch.regex) find.title = objectSearch.regex;
 
-        // 3. Phân trang
         const countbaiviet = await baiviet.countDocuments(find);
         let objectPagination = paginationbaivietHelper(
             { currentPage: 1, limitItem: 8 },
@@ -75,14 +65,12 @@ module.exports.Baiviet = async (req, res) => {
             countbaiviet
         );
 
-        // 4. Lấy dữ liệu bài viết
         const listBaiViet = await baiviet.find(find)
             .sort({ createdAt: "desc" })
             .limit(objectPagination.limitItem)
             .skip(objectPagination.skip)
-            .lean(); // Quan trọng để gán thêm thuộc tính accountFullname
+            .lean(); 
 
-        // 5. Lấy tên người tạo
         for (const item of listBaiViet) {
             if (item.createdBy && item.createdBy.account_id) {
                 const user = await account.findOne({
@@ -108,28 +96,22 @@ module.exports.Baiviet = async (req, res) => {
 module.exports.changStatus = async (req, res) => {
     const status = req.params.status;
     const id = req.params.id;
-    // LẤY URL CHUYỂN HƯỚNG TỪ FORM ẨN (JavaScript đã gửi)
     const returnUrl = req.body.returnUrl;
 
     try {
-        // Cập nhật Database
         await baiviet.updateOne({
             _id: id
         }, {
             status: status
         });
-        // (Khuyến nghị: Thêm thông báo flash tại đây)
 
     } catch (error) {
         console.error("Lỗi cập nhật trạng thái bài viết:", error);
     }
 
-    // LOGIC CHUYỂN HƯỚNG:
     if (returnUrl) {
-        // Chuyển hướng về URL đầy đủ (có ?page=X&status=Y)
         res.redirect(returnUrl);
     } else {
-        // Chuyển hướng dự phòng về trang đầu tiên
         res.redirect("/admin/baiviet");
     }
 }
@@ -140,10 +122,8 @@ module.exports.createBaiviet = async (req, res) => {
 }
 module.exports.createBaivietPost = async (req, res) => {
     try {
-        // 1. Xử lý dữ liệu số
         req.body.views = req.body.views ? parseInt(req.body.views) : 0;
         
-        // 2. Xử lý vị trí (Position)
         if (!req.body.position || req.body.position === "") {
             const countBaiviet = await baiviet.countDocuments({ deleted: false });
             req.body.position = countBaiviet + 1;
@@ -151,7 +131,6 @@ module.exports.createBaivietPost = async (req, res) => {
             req.body.position = parseInt(req.body.position);
         }
 
-        // 3. Xử lý người tạo (Thống nhất accountID)
         if (res.locals.user) {
             req.body.createdBy = {
                 account_id: res.locals.user.id,
@@ -159,7 +138,6 @@ module.exports.createBaivietPost = async (req, res) => {
             };
         }
 
-        // 4. Xử lý hình ảnh (Thumbnail)
         if (req.file) {
             try {
                 const result = await uploadToCloudinary(req.file.buffer);
@@ -169,7 +147,6 @@ module.exports.createBaivietPost = async (req, res) => {
             }
         }
 
-        // 5. Checkbox sang Boolean
         req.body.featured = (req.body.featured === "true" || req.body.featured === "on");
 
         const newBaiviet = new baiviet(req.body);
@@ -217,20 +194,17 @@ module.exports.deleteItem = async (req, res) => {
         res.redirect("/admin/baiviet");
     }
 };
-// ===================================
-// [GET] /admin/baiviet/edit/:id
-// ===================================
+
 module.exports.edit = async (req, res) => {
     try {
         const id = req.params.id;
 
-        // Kiểm tra ID hợp lệ
+
         if (!mongoose.Types.ObjectId.isValid(id)) {
             req.flash("error", "ID bài viết không hợp lệ.");
             return res.redirect(`/${systemConfig.prefixAdmin}/baiviet`);
         }
 
-        // Tìm bài viết theo ID và chưa bị xóa
         const record = await baiviet.findOne({
             _id: id,
             deleted: false
@@ -252,9 +226,7 @@ module.exports.edit = async (req, res) => {
     }
 };
 
-// ===================================
-// [PATCH] /admin/baiviet/edit/:id
-// ===================================
+
 module.exports.editPatch = async (req, res) => {
     try {
         const id = req.params.id;
@@ -269,13 +241,13 @@ module.exports.editPatch = async (req, res) => {
 
         req.body.featured = (req.body.featured === "true" || req.body.featured === "on");
 
-        // Ghi lại lịch sử chỉnh sửa
+
         if (res.locals.user) {
             const updatedBy = {
                 accountID: res.locals.user.id,
                 updatedAt: new Date()
             };
-            // Thêm vào mảng lịch sử thay vì ghi đè (Nếu schema hỗ trợ)
+
             await baiviet.updateOne({ _id: id }, {
                 ...req.body,
                 $push: { updatedBy: updatedBy } 
@@ -291,4 +263,63 @@ module.exports.editPatch = async (req, res) => {
         req.flash("error", "Cập nhật thất bại!");
         res.redirect("back");
     }
+};
+
+module.exports.trash = async (req, res) => {
+    try {
+        let find = { deleted: true };
+
+
+        const objectSearch = searchHelper(req.query);
+        if (objectSearch.regex) find.title = objectSearch.regex;
+
+
+        const countbaiviet = await baiviet.countDocuments(find);
+        let objectPagination = paginationbaivietHelper(
+            { currentPage: 1, limitItem: 8 },
+            req.query,
+            countbaiviet
+        );
+
+        const listBaiViet = await baiviet.find(find)
+            .sort({ "deletedAt.deletedAt": "desc" })
+            .limit(objectPagination.limitItem)
+            .skip(objectPagination.skip)
+            .lean();
+
+
+        for (const item of listBaiViet) {
+            if (item.deletedAt && item.deletedAt.account_id) {
+                const user = await account.findOne({
+                    _id: item.deletedAt.account_id
+                }).select("fullName");
+                if (user) item.accountFullname = user.fullName;
+            }
+        }
+
+        res.render("admin/pages/baiviet/trash.pug", {
+            pageTitle: "Thùng rác bài viết",
+            baiviet: listBaiViet,
+            keyword: objectSearch.keyword,
+            pagination: objectPagination,
+            PefixAdmin: "admin"
+        });
+    } catch (error) {
+        res.redirect("back");
+    }
+};
+
+
+module.exports.restore = async (req, res) => {
+    const id = req.params.id;
+    await baiviet.updateOne({ _id: id }, { deleted: false });
+    req.flash("success", "Khôi phục bài viết thành công!");
+    res.redirect("back");
+};
+
+module.exports.deletePermanently = async (req, res) => {
+    const id = req.params.id;
+    await baiviet.deleteOne({ _id: id });
+    req.flash("success", "Đã xóa vĩnh viễn bài viết!");
+    res.redirect("back");
 };

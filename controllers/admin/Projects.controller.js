@@ -350,3 +350,86 @@ module.exports.changeMulti = async (req, res) => {
 
 // 1. XỬ LÝ XÓA BẢN GHI (Dùng chung cho cả Dự án, Dịch vụ, Danh mục)
 // 2. XỬ LÝ BỘ LỌC TRẠNG THÁI (STATUS)
+// [GET] /admin/project/trash
+module.exports.trash = async (req, res) => {
+    try {
+        let find = { deleted: true };
+
+        // 1. Tìm kiếm trong thùng rác
+        const objectSearch = searchHelper(req.query);
+        if (objectSearch.regex) find.ten_du_an = objectSearch.regex;
+
+        // 2. Phân trang thùng rác
+        const countDuan = await Duan.countDocuments(find);
+        let objectPagination = paginationHelper(
+            { currentPage: 1, limitItem: 8 },
+            req.query,
+            countDuan
+        );
+
+        // 3. Lấy dữ liệu
+        const listDuAn = await Duan.find(find)
+            .sort({ "deletedBy.deletedAt": "desc" }) // Xóa gần nhất hiện lên đầu
+            .limit(objectPagination.limitItem)
+            .skip(objectPagination.skip)
+            .lean();
+
+        // 4. Lấy tên người đã thực hiện xóa
+        for (const item of listDuAn) {
+            if (item.deletedBy && item.deletedBy.accountID) {
+                const user = await account.findOne({
+                    _id: item.deletedBy.accountID
+                }).select("fullName");
+                if (user) item.accountFullname = user.fullName;
+            }
+        }
+
+        res.render("admin/pages/project/trash.pug", {
+            pageTitle: "Thùng rác dự án",
+            duan: listDuAn,
+            keyword: objectSearch.keyword,
+            pagination: objectPagination,
+            PefixAdmin: systemConfig.prefixAdmin
+        });
+    } catch (error) {
+        console.error("Lỗi trang thùng rác:", error);
+        res.redirect(`/${systemConfig.prefixAdmin}/project`);
+    }
+};
+// [PATCH] /admin/project/restore/:id
+module.exports.restore = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        await Duan.updateOne({ _id: id }, { 
+            deleted: false,
+            $push: {
+                updatedBy: {
+                    accountID: res.locals.user.id,
+                    updatedAt: new Date()
+                }
+            }
+        });
+
+        req.flash("success", "Khôi phục dự án thành công!");
+        res.redirect("back");
+    } catch (error) {
+        req.flash("error", "Khôi phục thất bại!");
+        res.redirect("back");
+    }
+};
+// [DELETE] /admin/project/delete-permanently/:id
+module.exports.deletePermanently = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        // Xóa thật sự khỏi MongoDB
+        await Duan.deleteOne({ _id: id });
+
+        req.flash("success", "Đã xóa vĩnh viễn dự án khỏi hệ thống!");
+        res.redirect("back");
+    } catch (error) {
+        req.flash("error", "Xóa vĩnh viễn thất bại!");
+        res.redirect("back");
+    }
+};

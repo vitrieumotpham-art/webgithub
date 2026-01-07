@@ -27,7 +27,7 @@ block main
             .col-lg-4.col-md-6
               .card.h-100.shadow-sm.service-card-item.border-0
                 .overflow-hidden.position-relative
-                  a(href=`/dich-vu/detail/${item.slug}`)
+                  a(href=`/dichvu/detail/${item.slug}`)
                     img.card-img-top(
                       src=item.thumbnail 
                       alt=item.title
@@ -37,11 +37,11 @@ block main
                 
                 .card-body.p-4
                   h3.h5.card-title.fw-bold.mb-3
-                    a.text-decoration-none.text-dark(href=`/dich-vu/detail/${item.slug}`)= item.title
+                    a.text-decoration-none.text-dark(href=`/dichvu/detail/${item.slug}`)= item.title
                   
                   p.card-text.text-muted.mb-4.small !{item.description}
                   
-                  a.read-more.text-primary.fw-bold.text-decoration-none.d-inline-flex.align-items-center(href=`/dich-vu/detail/${item.slug}`) 
+                  a.read-more.text-primary.fw-bold.text-decoration-none.d-inline-flex.align-items-center(href=`/dichvu/detail/${item.slug}`) 
                     | Xem chi tiết 
                     i.fas.fa-arrow-right.ms-2
         else

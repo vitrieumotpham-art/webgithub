@@ -13,6 +13,7 @@ const roles=require("./roles.router");
 const auth=require("./auth.router");
 const myaccount=require("./my-account.router");
 const thongke=require("./thongke.router");
+const setting=require("./setting.router");
 
 module.exports = (app) => {
   const path_admin = "/" + systemConfig.prefixAdmin;
@@ -41,4 +42,5 @@ module.exports = (app) => {
   app.use(path_admin + "/doanhmuc", doanhmuc);
   app.use(path_admin + "/my-account", myaccount);
   app.use(path_admin + "/thongke", thongke);
+  app.use(path_admin + "/settings", setting);
 }

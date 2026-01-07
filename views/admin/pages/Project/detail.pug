@@ -1,61 +1,130 @@
 extends ../../layout/defaut.pug
 
 block main
-  .container-fluid.mt-4
-    .row.justify-content-center
-      .col-lg-10
-        .card.shadow-sm.border-0
-          .card-header.bg-white.py-3.d-flex.justify-content-between.align-items-center
-            h4.mb-0.text-primary.fw-bold Thông Tin Chi Tiết Dự Án
-            div
-              if(role.permissions.includes("duan_edit"))
-                a.btn.btn-warning.btn-sm.me-2(href=`/${PefixAdmin}/project/edit/${project.id}`)
-                  i.fas.fa-edit.me-1
-                  | Sửa dự án
-              a.btn.btn-outline-secondary.btn-sm(href=`/${PefixAdmin}/project`)
-                i.fas.fa-arrow-left.me-1
-                | Quay lại danh sách
+  //- Phần CSS này giúp đẩy nội dung xuống dưới Header cố định và làm đẹp giao diện
+  style.
+    .project-detail-wrapper {
+      padding-top: 100px; /* Chống bị Header che khuất */
+      min-height: 100vh;
+      background-color: #f8f9fa;
+      padding-bottom: 50px;
+    }
+    .card-detail {
+      border-radius: 15px;
+      border: none;
+      overflow: hidden;
+    }
+    .info-label {
+      color: #6c757d;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .info-value {
+      color: #212529;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: block;
+    }
+    .content-render img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
 
-          .card-body.p-4
-            .row
-              .col-md-5.mb-4
-                if project.hinh_anh
-                  img.img-fluid.rounded.shadow-sm(src=project.hinh_anh, style="width: 100%; border: 1px solid #eee")
-                
-              .col-md-7
-                h2.fw-bold.mb-3 #{project.ten_du_an}
-                
-                if project.is_noibat
-                  span.badge.bg-danger.mb-4.px-3.py-2 Hot / Nổi bật
-                
-                .row.g-4
-                  .col-6
-                    label.text-muted.small.d-block Chủ đầu tư
-                    span.fw-bold #{project.chu_dau_tu || "Chưa cập nhật"}
-                  .col-6
-                    label.text-muted.small.d-block Địa điểm
-                    span.fw-bold #{project.dia_diem || "Chưa cập nhật"}
-                  .col-6
-                    label.text-muted.small.d-block Loại hình
-                    span.fw-bold #{project.loai_hinh}
-                  .col-6
-                    label.text-muted.small.d-block Trạng thái
-                    span.badge.bg-success #{project.trang_thai}
-            
-            hr.my-4
-            
-            .row.text-center.bg-light.py-3.rounded
-              .col-4
-                small.text-muted.d-block Số tầng
-                span.h5.fw-bold #{project.so_tang}
-              .col-4.border-start
-                small.text-muted.d-block Diện tích
-                span.h5.fw-bold #{project.dien_tich} m²
-              .col-4.border-start
-                small.text-muted.d-block Năm thực hiện
-                span.h5.fw-bold #{project.nam_thuc_hien}
+  .project-detail-wrapper
+    if project
+      .container-fluid
+        .row.justify-content-center
+          .col-lg-11
+            //- Breadcrumb và Nút hành động
+            .d-flex.justify-content-between.align-items-center.mb-3
+              nav(aria-label='breadcrumb')
+                ol.breadcrumb.mb-0
+                  li.breadcrumb-item: a(href=`/${PefixAdmin}/project`) Dự án
+                  li.breadcrumb-item.active Chi tiết dự án
+              .actions
+                if(role.permissions.includes("duan_edit"))
+                  a.btn.btn-warning.btn-sm.px-3.me-2(href=`/${PefixAdmin}/project/edit/${project.id}`)
+                    i.fas.fa-edit.me-1
+                    | Chỉnh sửa
+                a.btn.btn-outline-secondary.btn-sm.px-3(href=`/${PefixAdmin}/project`)
+                  i.fas.fa-arrow-left.me-1
+                  | Quay lại
 
-            if project.noi_dung
-              .mt-5
-                h5.fw-bold.border-bottom.pb-2 Mô tả dự án
-                .mt-3 !{project.noi_dung}
+            .card.card-detail.shadow-sm
+              .card-body.p-4
+                .row
+                  //- Cột trái: Hình ảnh đại diện
+                  .col-md-5.mb-4
+                    if project.hinh_anh && project.hinh_anh.length > 0
+                      //- Kiểm tra: Nếu là mảng thì lấy phần tử [0], nếu là chuỗi thì lấy chính nó
+                      - let imgSource = Array.isArray(project.hinh_anh) ? project.hinh_anh[0] : project.hinh_anh
+                      img.img-fluid.rounded.shadow-sm(
+                        src=imgSource
+                        alt=project.ten_du_an
+                        style="width: 100%; height: 350px; object-fit: cover; border: 1px solid #eee;"
+                      )
+                    else
+                      img.img-fluid.rounded.shadow-sm(
+                        src="/admin/images/no-image.png"
+                        style="width: 100%; height: 350px; object-fit: cover; background: #eee;"
+                      )
+                  
+                  //- Cột phải: Thông tin tóm tắt
+                  .col-md-7
+                    h1.fw-bold.mb-3.text-dark(style="font-size: 2rem;") #{project.ten_du_an}
+                    
+                    if project.is_noibat
+                      span.badge.bg-danger.mb-4.px-3.py-2 
+                        i.fas.fa-star.me-1
+                        | DỰ ÁN NỔI BẬT
+                    
+                    .row.g-4
+                      .col-sm-6
+                        span.info-label Chủ đầu tư
+                        span.info-value #{project.chu_dau_tu || "N/A"}
+                      .col-sm-6
+                        span.info-label Địa điểm
+                        span.info-value #{project.dia_diem || "N/A"}
+                      .col-sm-6
+                        span.info-label Loại hình
+                        span.info-value.text-primary #{project.loai_hinh}
+                      .col-sm-6
+                        span.info-label Trạng thái
+                        div.mt-1
+                          if project.trang_thai == "HoanThien"
+                            span.badge.bg-success.px-3 Hoàn Thiện
+                          else if project.trang_thai == "DangThiCong"
+                            span.badge.bg-warning.text-dark.px-3 Đang Thi Công
+                          else
+                            span.badge.bg-info.px-3 #{project.trang_thai}
+                
+                //- Thông số kỹ thuật nhanh
+                .row.text-center.bg-light.py-4.rounded.mt-4.mx-0
+                  .col-4
+                    small.text-muted.d-block.text-uppercase.mb-1 Số tầng
+                    span.h4.fw-bold.mb-0 #{project.so_tang || 0}
+                  .col-4.border-start.border-end
+                    small.text-muted.d-block.text-uppercase.mb-1 Diện tích
+                    span.h4.fw-bold.mb-0 #{project.dien_tich || 0} 
+                    small.ms-1 m²
+                  .col-4
+                    small.text-muted.d-block.text-uppercase.mb-1 Năm
+                    span.h4.fw-bold.mb-0 #{project.nam_thuc_hien || "---"}
+
+                //- Phần nội dung chi tiết từ trình soạn thảo (CKEditor/TinyMCE)
+                if project.noi_dung
+                  .mt-5
+                    h5.fw-bold.border-bottom.pb-2.text-uppercase(style="letter-spacing: 1px;") 
+                      i.fas.fa-file-alt.me-2.text-warning
+                      | Chi tiết dự án
+                    .mt-4.content-render(style="line-height: 1.8; font-size: 1.05rem;") 
+                      | !{project.noi_dung}
+    else
+      .container.text-center(style="padding-top: 150px;")
+        .alert.alert-warning Không tìm thấy thông tin dự án này.
+        a.btn.btn-primary(href=`/${PefixAdmin}/project`) Quay lại danh sách

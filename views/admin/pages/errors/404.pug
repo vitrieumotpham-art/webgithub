@@ -1,0 +1,150 @@
+doctype html
+html
+  head
+    title 404 - Page Not Found
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    //- Font chữ và CSS
+    style.
+      @import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+      
+      *, *:before, *:after {
+        box-sizing: border-box;
+      }
+
+      html, body {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 16px;
+        background-color: #000;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+        user-select: none;
+      }
+
+      .container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .center-xy {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        position: absolute;
+      }
+
+      .copy-container {
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      p {
+        color: #fff;
+        font-size: 24px;
+        letter-spacing: .2px;
+        margin: 0;
+        display: inline-block;
+      }
+
+      .handle {
+        background: #ffe500;
+        width: 14px;
+        height: 30px;
+        position: absolute;
+        display: inline-block;
+        margin-left: 5px;
+      }
+
+      #cb-replay {
+        fill: #666;
+        width: 30px;
+        margin: 15px;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        cursor: pointer;
+        transition: fill 0.3s;
+      }
+
+      #cb-replay:hover {
+        fill: #ffe500;
+      }
+
+      .back-home {
+        position: absolute;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #666;
+        text-decoration: none;
+        border: 1px solid #666;
+        padding: 10px 20px;
+        border-radius: 4px;
+        transition: 0.3s;
+      }
+      .back-home:hover {
+        color: #000;
+        background: #fff;
+      }
+
+  body
+    .container
+      .copy-container.center-xy
+        p 404, page not found.
+        span.handle
+      
+      a(href="/admin/dashboard" class="back-home") Quay lại Admin
+
+      svg#cb-replay(version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 279.9 297.3")
+        g
+          path(d="M269.4,162.6c-2.7,66.5-55.6,120.1-121.8,123.9c-77,4.4-141.3-60-136.8-136.9C14.7,81.7,71,27.8,140,27.8 c1.8,0,3.5,0,5.3,0.1c0.3,0,0.5,0.2,0.5,0.5v15c0,1.5,1.6,2.4,2.9,1.7l35.9-20.7c1.3-0.7,1.3-2.6,0-3.3L148.6,0.3 c-1.3-0.7-2.9,0.2-2.9,1.7v15c0,0.3-0.2,0.5-0.5,0.5c-1.7-0.1-3.5-0.1-5.2-0.1C63.3,17.3,1,78.9,0,155.4 C-1,233.8,63.4,298.3,141.9,297.3c74.6-1,135.1-60.2,138-134.3c0.1-3-2.3-5.4-5.3-5.4l0,0C271.8,157.6,269.5,159.8,269.4,162.6z")
+
+    //- Nhúng thư viện cần thiết (jQuery và GSAP)
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js")
+    
+    //- Script xử lý hiệu ứng
+    script.
+      $(document).ready(function() {
+        var $copyContainer = $(".copy-container"),
+            $replayIcon = $('#cb-replay'),
+            $copy = $copyContainer.find('p'),
+            text = $copy.text();
+
+        // Thay thế SplitText bằng cách thủ công vì SplitText là plugin trả phí của GSAP
+        $copy.html("");
+        for (var i = 0; i < text.length; i++) {
+          var char = text[i] === " " ? "&nbsp;" : text[i];
+          $copy.append('<span class="char">' + char + '</span>');
+        }
+
+        var $chars = $(".char"),
+            tl = new TimelineMax(),
+            handleTL = new TimelineMax({repeat: -1, yoyo: true});
+
+        // Hiệu ứng con trỏ nhấp nháy
+        handleTL.fromTo('.handle', 0.4, {autoAlpha: 0}, {autoAlpha: 1});
+
+        function animateText() {
+          tl.staggerFromTo($chars, 0.01, {autoAlpha: 0}, {autoAlpha: 1}, 0.05);
+          
+          // Di chuyển con trỏ theo chữ (ước tính)
+          var fullWidth = $copy.width();
+          TweenMax.to('.handle', text.length * 0.05, {
+            x: fullWidth, 
+            ease: SteppedEase.config(text.length),
+            delay: 0.05
+          });
+        }
+
+        animateText();
+
+        $replayIcon.on('click', function() {
+          tl.restart();
+          TweenMax.set('.handle', {x: 0});
+          animateText();
+        });
+      });

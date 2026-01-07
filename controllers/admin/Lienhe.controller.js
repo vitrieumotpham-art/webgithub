@@ -2,7 +2,6 @@ const lienhe = require("../../models/lienhe.model");
 const Account = require("../../models/taikhoan.models.js");
 const searchHelper = require("../../helpers/search.js");
 
-// [GET] /admin/lienhe
 module.exports.Lienhe = async (req, res) => {
     try {
         let find = { deleted: false };
@@ -16,16 +15,12 @@ module.exports.Lienhe = async (req, res) => {
             ];
         }
 
-        // Lấy danh sách liên hệ, sắp xếp mới nhất lên đầu
         const listLienhe = await lienhe.find(find).sort({ createdAt: -1 });
 
-        // Xử lý hiển thị tên nhân viên phụ trách cuối cùng lên giao diện Kanban
         if (Array.isArray(listLienhe)) {
             for (const item of listLienhe) {
                 if (item.history && item.history.length > 0) {
-                    // Lấy phần tử cuối cùng trong mảng history (lần cập nhật mới nhất)
                     const lastUpdate = item.history[item.history.length - 1];
-                    // Gán tên nhân viên vào biến ảo để Pug hiển thị
                     item.accountFullName = lastUpdate.updatedBy ? lastUpdate.updatedBy.fullName : "Hệ thống";
                 }
             }
@@ -48,10 +43,6 @@ module.exports.changeStatus = async (req, res) => {
     try {
         const { id, status, note } = req.body;
 
-        /**
-         * SỬ DỤNG $push: Để thêm một bản ghi vào mảng history mà không làm mất lịch sử cũ.
-         * SỬ DỤNG $set: Để cập nhật trạng thái và ghi chú hiện tại của khách hàng.
-         */
         await lienhe.updateOne(
             { _id: id },
             { 
@@ -65,7 +56,7 @@ module.exports.changeStatus = async (req, res) => {
                         note: note,
                         updatedBy: {
                             account_id: res.locals.user.id,
-                            fullName: res.locals.user.fullName // Tên nhân viên đăng nhập
+                            fullName: res.locals.user.fullName 
                         },
                         updatedAt: new Date()
                     }

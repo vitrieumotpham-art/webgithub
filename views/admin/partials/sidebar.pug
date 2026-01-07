@@ -105,9 +105,10 @@ aside.sidebar
             span Trang tổng quan
       li.nav-item
         - var isActive = (path === `/${PefixAdmin}/thongke` ? "active" : "")
-        a(href=`/${PefixAdmin}/thongke`, class=isActive)
-          i.fa-solid.fa-chart-pie
-          span Thống kê chi tiết
+        if (role.permissions.includes("thongke_view"))
+          a(href=`/${PefixAdmin}/thongke`, class=isActive)
+            i.fa-solid.fa-chart-pie
+            span Thống kê chi tiết
 
     .nav-section-title QUẢN LÝ DỰ ÁN
     ul.nav-list
@@ -171,3 +172,9 @@ aside.sidebar
           a(href=`/${PefixAdmin}/roles/permissions`, class=isActive)
             i.fa-solid.fa-key
             span Phân quyền
+      if (role.permissions.includes("settings_view"))
+        li.nav-item
+          - var isActive = (path === `/${PefixAdmin}/settings/general` ? "active" : "")
+          a(href=`/${PefixAdmin}/settings/general`, class=isActive)
+            i.fa-solid.fa-key
+            span cài đặt chung

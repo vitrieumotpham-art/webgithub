@@ -1,102 +1,91 @@
-const Roles=require("../../models/roles.model");
-const searchHelper=require ("../../helpers/search.js");
-module.exports.rolesindex= async (rep,res)=>{
+const Roles = require("../../models/roles.model");
+
+// [GET] /admin/roles
+module.exports.rolesindex = async (req, res) => {
     try {
-     let find={
+        // Chỉ lấy những nhóm quyền chưa bị xóa
+        let find = {
+            deleted: false
+        };
 
-      }
-    //   const objectSearch=searchHelper(rep.query);
-    // if (objectSearch.regex) {
-    //         find.$or = [
-    //             { 
-    //               fullName: objectSearch.regex },
-    //               { 
-    //               email: objectSearch.regex },
-    //             { phone: objectSearch.regex }
-    //         ];
-    //     }
-    const listroles= await Roles.find(find);
-    res.render("admin/pages/roles/index.pug",{
-    roles:listroles,
-    pageTitle:"Tran phân quyền ",
-    PrefixAdmin: "/admin",
-    // keyword:objectSearch.keyword,
-});
+        const listroles = await Roles.find(find);
+
+        res.render("admin/pages/roles/index.pug", {
+            pageTitle: "Danh Sách Nhóm Quyền",
+            roles: listroles,
+            PrefixAdmin: "/admin"
+        });
     } catch (error) {
-    console.log("Lỗi lấy danh sách dự án:", error);
-    res.redirect("back"); 
+        console.error("Lỗi lấy danh sách nhóm quyền:", error);
+        res.redirect("/admin/dashboard");
     }
+};
 
-}
-module.exports.create= async (rep,res)=>{
-res.render("admin/pages/roles/create.pug",{
-    pageTitle:"Trang tạo phân quyền ",
-});
-    
-}
+// [GET] /admin/roles/create
+module.exports.create = async (req, res) => {
+    res.render("admin/pages/roles/create.pug", {
+        pageTitle: "Tạo Mới Nhóm Quyền",
+    });
+};
+
+// [POST] /admin/roles/create
 module.exports.postcreate = async (req, res) => {
     try {
-        // 1. Kiểm tra nếu tên nhóm quyền trống (bảo vệ phía Server)
-        // if (!req.body.ten_du_an) {
-        //     // Bạn có thể dùng req.flash để báo lỗi nếu có thư viện express-flash
-        //     res.redirect("back");
-        //     return;
-        // }
+        // Gán thông tin người tạo từ res.locals.user (đã xử lý ở middleware auth)
+        if (res.locals.user) {
+            req.body.createdBy = {
+                accountID: res.locals.user.id
+            };
+        }
 
-        // 2. Tạo đối tượng mới dựa trên dữ liệu từ Form (Tiêu đề & Mô tả)
-        // Lưu ý: permissions mặc định sẽ là [] theo Schema đã định nghĩa
         const record = new Roles(req.body);
-
-        // 3. Lưu vào Database
         await record.save();
 
-        // 4. Thông báo thành công và chuyển hướng về trang danh sách
         console.log("Tạo mới nhóm quyền thành công!");
-        res.redirect(`/admin/roles`); 
-
+        res.redirect(`/admin/roles`);
     } catch (error) {
-        // Xử lý lỗi (ví dụ: trùng tên nếu bạn đặt unique: true)
-        console.log("Lỗi tạo nhóm quyền:", error);
+        console.error("Lỗi tạo nhóm quyền:", error);
         res.redirect("back");
     }
 };
+
+// [GET] /admin/roles/edit/:id
 module.exports.edit = async (req, res) => {
     try {
-        const id = req.params.id; 
-        
-        // 1. Sửa Role thành Roles (cho khớp với tên bạn require ở đầu file)
+        const id = req.params.id;
+
         const data = await Roles.findOne({
             _id: id,
             deleted: false
         });
 
         if (data) {
-            // 2. Render ra file pug chỉnh sửa
             res.render("admin/pages/roles/edit", {
-                pageTitle: "Chỉnh sửa nhóm quyền",
-                data: data 
+                pageTitle: "Chỉnh Sửa Nhóm Quyền",
+                data: data
             });
         } else {
-            // 3. Nếu không tìm thấy, quay về danh sách
             res.redirect("/admin/roles");
         }
     } catch (error) {
-        console.log("Lỗi trang Edit:", error);
+        console.error("Lỗi trang Edit:", error);
         res.redirect("/admin/roles");
     }
 };
+
 // [PATCH] /admin/roles/edit/:id
 module.exports.editPatch = async (req, res) => {
     try {
         const id = req.params.id;
-        // Cập nhật record với dữ liệu mới từ req.body (title, mo_ta)
+
+        // Cập nhật thông tin và thêm vào lịch sử chỉnh sửa nếu cần
         await Roles.updateOne({ _id: id }, req.body);
-        
+
         console.log("Cập nhật thành công!");
         res.redirect("/admin/roles");
     } catch (error) {
-        console.log("Lỗi cập nhật:", error);
-        res.redirect("/admin/roles");
+        console.error("Lỗi cập nhật:", error);
+        res.redirect("back");
     }
 };
 
@@ -109,33 +98,80 @@ module.exports.detail = async (req, res) => {
             deleted: false
         });
 
-        res.render("admin/pages/roles/detail", {
-            pageTitle: "Chi tiết nhóm quyền",
-            role: role
-        });
+        if (role) {
+            res.render("admin/pages/roles/detail", {
+                pageTitle: "Chi Tiết Nhóm Quyền",
+                role: role
+            });
+        } else {
+            res.redirect("/admin/roles");
+        }
     } catch (error) {
+        console.error("Lỗi trang Detail:", error);
         res.redirect("/admin/roles");
     }
 };
+
+// [GET] /admin/roles/permissions
 module.exports.permissions = async (req, res) => {
     try {
         let find = { deleted: false };
-        const record = await Roles.find(find); // Đừng quên await
+        const records = await Roles.find(find);
 
-        // "admin/pages/roles/permissions" là đường dẫn file .pug của bạn
         res.render("admin/pages/roles/permissions", {
             pageTitle: "Phân Quyền Hệ Thống",
-            records: record
+            records: records
         });
     } catch (error) {
+        console.error("Lỗi trang Permissions:", error);
         res.redirect("/admin/roles");
     }
 };
 
+// [PATCH] /admin/roles/permissions
 module.exports.permissionsPatch = async (req, res) => {
- const permissionsPatch= JSON.parse(req.body.permissions);
- for (const element of permissionsPatch) {
-    await Roles.updateOne({_id:element.id},{permissions:element.per})
- }
- res.redirect("back");
+    try {
+        const permissionsPatch = JSON.parse(req.body.permissions);
+
+        for (const element of permissionsPatch) {
+            await Roles.updateOne(
+                { _id: element.id },
+                { permissions: element.per }
+            );
+        }
+
+        console.log("Cập nhật phân quyền thành công!");
+        res.redirect("back");
+    } catch (error) {
+        console.error("Lỗi cập nhật phân quyền:", error);
+        res.redirect("back");
+    }
+};
+
+// [DELETE] /admin/roles/delete/:id
+module.exports.deleteItem = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        // Xóa mềm và lưu thông tin người xóa
+        const updateObject = {
+            deleted: true,
+            deletedBy: {
+                deletedAt: new Date()
+            }
+        };
+
+        // Nếu middleware auth đã nạp thông tin user vào res.locals.user
+        if (res.locals.user) {
+            updateObject.deletedBy.accountID = res.locals.user.id;
+        }
+
+        await Roles.updateOne({ _id: id }, updateObject);
+
+        console.log(`Đã xóa nhóm quyền: ${id}`);
+        res.redirect("back");
+    } catch (error) {
+        console.error("Lỗi khi xóa nhóm quyền:", error);
+        res.redirect("/admin/roles");
+    }
 };

@@ -7,7 +7,7 @@ try {
                 duan.countDocuments(),
                 baiviet.countDocuments(),
                 lienhe.countDocuments() ,
-                duan.countDocuments({is_noibat:'true'})// Hoặc { type: { $nin: ['image', 'video'] } } nếu muốn đếm các loại còn lại
+                duan.countDocuments({is_noibat:'true'})
             ]);
             const listbaiviiet= await baiviet.find(); 
              const listlienhe= await lienhe.find(); 

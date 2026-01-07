@@ -1,7 +1,10 @@
 header.header
-  //- 1. LOGO
+  //- 1. LOGO: Lấy từ database, dùng websiteName làm alt cho SEO
   a.logo(href="/")
-    img(src="/img/pnt-letter-logo-design-inspiration-260nw-2361378981.jpg" alt="Logo PNT DECOR")
+    img(
+      src=(settingGeneral ? settingGeneral.logo : "/img/logo.png") 
+      alt=(settingGeneral ? settingGeneral.websiteName : "PNT DECOR")
+    )
   
   //- 2. MENU
   nav.list-menu
@@ -15,13 +18,17 @@ header.header
   
   //- 3. KHU VỰC BÊN PHẢI
   .header-right.d-flex.align-items-center
+    //- THÔNG TIN LIÊN HỆ: Lấy số điện thoại và email từ Model
     .thongtin.d-none.d-xl-block
-      p.mb-0 +84 914 761 150
-      p.mb-0 info@apes.com.vn
+      p.mb-0 #{settingGeneral ? settingGeneral.phone : '+84 914 761 150'}
+      p.mb-0 #{settingGeneral ? settingGeneral.email : 'info@apes.com.vn'}
     
+    //- MẠNG XÃ HỘI: Lấy link từ Model
     .social.mx-3.d-flex.gap-2
-      a(href="#" target="_blank"): img(src="/img/icons8-facebook-36.png" alt="FB" width="24")
-      a(href="#" target="_blank"): img(src="/img/icons8-instagram-logo-36.png" alt="Insta" width="24")
+      a(href=(settingGeneral ? settingGeneral.facebook : "#") target="_blank")
+        img(src="/img/icons8-facebook-36.png" alt="FB" width="24")
+      a(href=(settingGeneral ? settingGeneral.instagram : "#") target="_blank")
+        img(src="/img/icons8-instagram-logo-36.png" alt="Insta" width="24")
 
     //- NÚT YÊU THÍCH
     .cart-icon.mx-2
@@ -32,7 +39,7 @@ header.header
         )
           | #{miniCart ? miniCart.totalQuantity : 0}
 
-    //- PHẦN ĐĂNG NHẬP / ĐĂNG KÝ (MỚI)
+    //- PHẦN ĐĂNG NHẬP / ĐĂNG KÝ
     .auth-area.mx-2
       if user
         //- Trạng thái đã đăng nhập
@@ -51,7 +58,7 @@ header.header
           a.btn.btn-sm.btn-outline-dark.rounded-pill.px-3(href="/user/login") Đăng nhập
           a.btn.btn-sm.btn-primary.rounded-pill.px-3.d-none.d-md-inline-block(href="/user/register") Đăng ký
     
-    //- Ô tìm kiếm
+    //- Ô TÌM KIẾM
     .search-box.ms-2
       form(action="/search" method="GET").d-flex.align-items-center
         input.search-input(type="text" name="keyword" placeholder="Tìm dự án..." value=keyword)

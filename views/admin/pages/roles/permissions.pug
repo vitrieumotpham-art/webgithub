@@ -294,6 +294,31 @@ block main
                   each item in records
                     td.text-center
                       input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("phanquyen_edit")))
+                //- 12. nhóm quản lý cài đặt chung 
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1)
+                    i.fas.fa-key.me-2
+                    | QUẢN LÝ CÀI ĐẶT CHUNG
+                tr(data-name="settings_view")
+                  td Xem phân quyền
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("settings_view")))
+                tr(data-name="luu_setting")
+                  td lưu phân quyền
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("luu_setting")))
+                //- 13. thống kê
+                tr.table-secondary
+                  td.fw-bold(colspan=records.length + 1)
+                    i.fas.fa-key.me-2
+                    | QUẢN LÝ THỐNG KÊ
+                tr(data-name="thongke_view")
+                  td Xem thống kê
+                  each item in records
+                    td.text-center
+                      input.form-check-input(type="checkbox" checked=(item.permissions && item.permissions.includes("thongke_view")))
     else
       .text-center.py-5
         .mb-3

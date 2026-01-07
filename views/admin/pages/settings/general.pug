@@ -1,0 +1,122 @@
+extends ../../layout/defaut.pug
+
+block main
+  if (role.permissions.includes("settings_view"))
+    .container-fluid.mt-4
+      .d-flex.justify-content-between.align-items-center.mb-4
+        h1.text-primary.fw-bold Cài Đặt Chung Website
+        
+      .card.shadow-sm.border-0
+        .card-body.p-4
+          form(
+            action=`/admin/settings/general?_method=PATCH`
+            method="POST"
+            enctype="multipart/form-data"
+          )
+            .row
+              //- Cột trái: Hình ảnh Logo
+              .col-md-4.text-center.border-end
+                .mb-4
+                  label.form-label.fw-bold Logo Website
+                  .upload-image.mt-2(upload-image)
+                    img(
+                      src=(settingGeneral ? settingGeneral.logo : "/img/default-logo.png")
+                      alt="Logo Preview"
+                      class="img-thumbnail d-block mx-auto mb-2"
+                      style="max-height: 150px;"
+                      upload-image-preview
+                    )
+                    input.form-control.form-control-sm(
+                      type="file"
+                      name="logo"
+                      accept="image/*"
+                      upload-image-input
+                    )
+                
+                .alert.alert-info.small.text-start
+                  i.fas.fa-info-circle.me-2
+                  | Nên sử dụng ảnh định dạng .png hoặc .svg để có hiển thị tốt nhất.
+
+              //- Cột phải: Thông tin chi tiết
+              .col-md-8
+                .row
+                  .col-md-6.mb-3
+                    label.form-label.fw-bold Tên website
+                    input.form-control(
+                      type="text"
+                      name="websiteName"
+                      value=(settingGeneral ? settingGeneral.websiteName : "")
+                    )
+                  
+                  .col-md-6.mb-3
+                    label.form-label.fw-bold Email liên hệ
+                    input.form-control(
+                      type="email"
+                      name="email"
+                      value=(settingGeneral ? settingGeneral.email : "")
+                    )
+
+                  .col-md-6.mb-3
+                    label.form-label.fw-bold Số điện thoại
+                    input.form-control(
+                      type="text"
+                      name="phone"
+                      value=(settingGeneral ? settingGeneral.phone : "")
+                    )
+
+                  .col-md-6.mb-3
+                    label.form-label.fw-bold Bản quyền (Copyright)
+                    input.form-control(
+                      type="text"
+                      name="copyright"
+                      value=(settingGeneral ? settingGeneral.copyright : "")
+                    )
+
+                  .col-12.mb-3
+                    label.form-label.fw-bold Địa chỉ
+                    input.form-control(
+                      type="text"
+                      name="address"
+                      value=(settingGeneral ? settingGeneral.address : "")
+                    )
+
+                  .col-12.mb-3
+                    label.form-label.fw-bold Mô tả ngắn
+                    textarea.form-control(
+                      name="description"
+                      rows="3"
+                    ) #{settingGeneral ? settingGeneral.description : ""}
+
+                hr.my-4
+
+                h5.text-secondary.mb-3 #[i.fas.fa-share-nodes.me-2] Mạng xã hội
+                .row
+                  .col-md-4.mb-3
+                    .input-group
+                      span.input-group-text.bg-primary.text-white: i.fab.fa-facebook-f
+                      input.form-control(
+                        type="text"
+                        name="facebook"
+                        value=(settingGeneral ? settingGeneral.facebook : "")
+                      )
+                  .col-md-4.mb-3
+                    .input-group
+                      span.input-group-text.bg-danger.text-white: i.fab.fa-instagram
+                      input.form-control(
+                        type="text"
+                        name="instagram"
+                        value=(settingGeneral ? settingGeneral.instagram : "")
+                      )
+                  .col-md-4.mb-3
+                    .input-group
+                      span.input-group-text.bg-info.text-white: i.fab.fa-twitter
+                      input.form-control(
+                        type="text"
+                        name="socialOther"
+                        value=(settingGeneral ? settingGeneral.socialOther : "")
+                      )
+
+                  .mt-4.text-end
+                    button.btn.btn-primary.px-5(type="submit")
+                      i.fas.fa-save.me-2
+                      | Lưu thay đổi

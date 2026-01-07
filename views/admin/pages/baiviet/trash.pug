@@ -1,0 +1,96 @@
+extends ../../layout/defaut.pug 
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug 
+include ../../mixins/moment.pug 
+
+block main
+  if(role.permissions.includes("baiviet_view"))
+    .container-fluid.mt-4
+      //- 1. TIÊU ĐỀ & NÚT QUAY LẠI
+      .d-flex.justify-content-between.align-items-center.mb-4
+        div
+          h1.h3.text-danger.fw-bold Thùng Rác Bài Viết
+          p.text-muted Danh sách các bài viết đã xóa tạm thời
+        a.btn.btn-outline-primary.shadow-sm(href=`/admin/baiviet`)
+          i.fas.fa-arrow-left.me-2
+          | Quay lại danh sách
+
+      //- 2. BỘ LỌC & TÌM KIẾM
+      .card.border-0.shadow-sm.mb-4
+        .card-body
+          .row.g-3
+            .col-md-12
+              +search(keyword)
+
+      //- 3. DANH SÁCH BÀI VIẾT ĐÃ XÓA
+      .d-flex.flex-column.gap-3
+        if baiviet.length > 0
+          each article in baiviet
+            .card.shadow-sm.border-0.overflow-hidden
+              .card-body.p-0
+                .d-flex.flex-column.flex-md-row
+                  //- Cột Hình ảnh
+                  .flex-shrink-0
+                    img(
+                      src=(article.thumbnail ? article.thumbnail : "/images/no-image.png"), 
+                      alt=article.title, 
+                      style="width: 200px; height: 150px; object-fit: cover;"
+                    )
+                  
+                  //- Cột Nội dung
+                  .flex-grow-1.p-3
+                    h5.fw-bold.mb-1.text-dark #{article.title}
+                    p.text-muted.small.mb-2
+                      i.fas.fa-calendar-times.me-1
+                      | Ngày xóa: 
+                      +formatDate(article.deletedAt.deletedAt)
+                      span.mx-2 |
+                      i.fas.fa-user-slash.me-1
+                      | Người xóa: #{article.accountFullname ? article.accountFullname : '---'}
+                    
+                    span.badge.bg-danger.rounded-pill Đã xóa mềm
+
+                  //- Cột Hành động (Khôi phục & Xóa vĩnh viễn)
+                  .d-flex.flex-row.flex-md-column.justify-content-center.align-items-center.bg-light.p-3.gap-2.border-start
+                    //- Nút Khôi phục
+                    button.btn.btn-sm.btn-success.w-100(
+                      button-restore
+                      data-id=article._id
+                    )
+                      i.fas.fa-undo.me-1
+                      | Khôi phục
+                    
+                    //- Nút Xóa vĩnh viễn
+                    button.btn.btn-sm.btn-outline-danger.w-100(
+                      button-delete-permanently
+                      data-id=article._id
+                    )
+                      i.fas.fa-eraser.me-1
+                      | Xóa vĩnh viễn
+
+        else
+          .text-center.py-5
+            .mb-3
+              i.fas.fa-trash-restore.fa-3x.text-light
+            p.text-muted Thùng rác trống.
+            
+      .mt-4.d-flex.justify-content-center
+        +pagination(pagination) 
+        
+      //- FORM ẨN XỬ LÝ KHÔI PHỤC
+      form#form-restore-item(
+        action=""
+        method="POST"
+        data-path=`${PefixAdmin}/baiviet/restore`
+      )
+        input(type="hidden", name="_method", value="PATCH")
+
+      //- FORM ẨN XỬ LÝ XÓA VĨNH VIỄN
+      form#form-delete-permanently(
+        action=""
+        method="POST"
+        data-path=`${PefixAdmin}/baiviet/delete-permanently`
+      )
+        input(type="hidden", name="_method", value="DELETE")
+        
+      script(src="/js/admin/baiviet-trash.js")

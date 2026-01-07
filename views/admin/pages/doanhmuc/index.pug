@@ -90,12 +90,14 @@ block main
                           href=`/${PefixAdmin}/doanhmuc/edit/${item.id}`
                         )
                           i.fas.fa-edit
+                          |sửa
                       if(role.permissions.includes("doanhmuc_delete"))
                         button.btn.btn-outline-danger.btn-sm(
                           button-delete
                           data-id=item.id
                         )
                           i.fas.fa-trash
+                          |xóa
               else
                 tr
                   td.text-center.py-5(colspan="5")

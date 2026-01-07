@@ -1,8 +1,11 @@
 const express = require("express");
-const route=express.Router();
-const dichvu=require("../../controllers/client/dichvu")
+const route = express.Router();
+const controller = require("../../controllers/client/dichvu");
 
-route.get("/dichvu",dichvu.dichvu);
+// Khớp với module.exports.index
+route.get("/", controller.dichvu);
 
+// Khớp với module.exports.detail
+route.get("/detail/:slug", controller.detail);
 
-module.exports=route;
+module.exports = route;

@@ -37,5 +37,12 @@ route.patch(
 route.delete("/delete/:id", controller.deleteItem); 
 route.patch("/change-hoatdongduan/:is_noibat/:id", controller.changeHoatdong);
 route.patch("/change-multi", controller.changeMulti);
+// 1. Xem danh sách đã xóa
+route.get("/trash", controller.trash);
 
+// 2. Khôi phục dự án
+route.patch("/restore/:id", controller.restore);
+
+// 3. Xóa vĩnh viễn khỏi Database
+route.delete("/delete-permanently/:id", controller.deletePermanently);
 module.exports = route;

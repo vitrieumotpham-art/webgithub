@@ -20,6 +20,10 @@ block main
               .col-md-8
                 +search(keyword)
               .col-md-4.text-end
+                if(role.permissions.includes("duan_view"))
+                  a.btn.btn-outline-secondary.shadow-sm(href=`/${PefixAdmin}/project/trash`)
+                    i.fas.fa-trash-restore.me-2
+                    | Thùng rác
                 if(role.permissions.includes("duan_add"))
                   a.btn.btn-primary.shadow-sm(href=`/${PefixAdmin}/project/create`)
                     i.fas.fa-plus-circle.me-2
@@ -163,6 +167,7 @@ block main
                   if(role.permissions.includes("duan_delete"))
                     button.btn.btn-outline-danger.btn-sm(data-id=item._id, button-delete)
                       i.fas.fa-trash-alt
+                      | Xóa
 
         .mt-4.d-flex.justify-content-center
           +pagination(pagination) 
@@ -182,7 +187,6 @@ block main
       data-path=`/${PefixAdmin}/project/change-hoatdongduan`
     )
       input(type="hidden", name="returnUrl", value="")
-      //- method-override sẽ đọc dòng này để hiểu là PATCH
       input(type="hidden", name="_method", value="PATCH")
       
     //- Form xóa (DELETE)

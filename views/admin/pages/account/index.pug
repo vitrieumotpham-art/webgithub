@@ -5,13 +5,13 @@ include ../../mixins/pagination.pug
 block main
   if(role.permissions.includes("taikhoan_view"))
     .container-fluid.py-4
-      //- 1. HEADER & BUTTON THÊM MỚI
+      //- 1. HEADER
       .d-flex.justify-content-between.align-items-center.mb-4
         div
           h1.h3.text-primary.fw-bold Quản Lý Nhân Sự
           p.text-muted.mb-0 Danh sách tài khoản và phân quyền hệ thống
-        if(role.permissions.includes("duan_edit"))
-          a.btn.btn-primary.shadow-sm(href="/admin/account/create")
+        if(role.permissions.includes("taikhoan_add"))
+          a.btn.btn-primary.shadow-sm(href=`/${PrefixAdmin}/account/create`)
             i.fas.fa-user-plus.me-2
             | Tạo Tài Khoản Mới
 
@@ -20,104 +20,96 @@ block main
         .card-body.p-4
           form(action="" method="GET")
             .row.g-3
-              //- Search Mixin
               .col-md-6
                 +search(keyword)
               
-              //- Filter Role
+              //- Filter Role (Động)
               .col-md-3
                 .form-floating
                   select.form-select(name="role" onchange="this.form.submit()")
                     option(value="" selected=(!roleFilter)) -- Tất cả vai trò --
-                    option(value="admin" selected=(roleFilter==="admin")) Quản trị viên (Admin)
-                    option(value="editor" selected=(roleFilter==="editor")) Biên tập viên (Editor)
-                    option(value="staff" selected=(roleFilter==="staff")) Nhân viên (Staff)
-                  label(for="role") Lọc theo vai trò
+                    each item in roles
+                      option(value=item.id selected=(roleFilter === item.id)) #{item.title}
+                  label Lọc theo vai trò
 
-              //- Filter Status
               .col-md-3
                 .form-floating
                   select.form-select(name="status" onchange="this.form.submit()")
                     option(value="" selected=(!status)) -- Tất cả trạng thái --
                     option(value="active" selected=(status==="active")) Đang hoạt động
                     option(value="inactive" selected=(status==="inactive")) Đã khóa
-                  label(for="status") Trạng thái
+                  label Trạng thái
 
-      //- 3. DANH SÁCH USER (GRID VIEW)
+      //- 3. DANH SÁCH USER
       if taikhoan.length > 0
         .row.g-4
           each user in taikhoan
             .col-md-6.col-xl-4
               .card.user-card.h-100.border-0.shadow-sm
                 .card-body.p-4
-                  //- Header Card: Avatar + Tên + Role
                   .d-flex.align-items-start.mb-3
                     .position-relative.me-3
-                      //- Giả sử user.avatar chứa URL ảnh, nếu không có thì dùng placeholder
                       if user.avatar
-                        img.avatar-img.rounded-circle(src=user.avatar alt=user.fullName)
+                        img.avatar-img.rounded-circle(src=user.avatar alt=user.fullName style="width: 60px; height: 60px; object-fit: cover;")
                       else
-                        .avatar-placeholder.rounded-circle.bg-light.text-primary.fw-bold.d-flex.align-items-center.justify-content-center
+                        .avatar-placeholder.rounded-circle.bg-light.text-primary.fw-bold.d-flex.align-items-center.justify-content-center(style="width: 60px; height: 60px;")
                           | #{user.fullName.charAt(0).toUpperCase()}
                       
-                      //- Status Dot
-                      span.status-indicator.border.border-white.rounded-circle(class=user.status === 'active' ? 'bg-success' : 'bg-danger')
+                      span.status-indicator.border.border-white.rounded-circle(
+                        class=user.status === 'active' ? 'bg-success' : 'bg-danger'
+                        style="width: 15px; height: 15px; position: absolute; bottom: 0; right: 0;"
+                      )
 
                     .flex-grow-1
                       h5.fw-bold.mb-1.text-dark.text-truncate(style="max-width: 200px;") #{user.fullName}
-                      span.badge.rounded-pill.px-3(class=`bg-${user.role === 'admin' ? 'danger' : (user.role === 'editor' ? 'warning' : 'info')}`) 
-                        | #{user.role.toUpperCase()}
+                      //- HIỂN THỊ TÊN QUYỀN Ở ĐÂY
+                      if user.roleTitle
+                        span.badge.bg-info.rounded-pill.px-3 #{user.roleTitle}
+                      else
+                        span.badge.bg-secondary.rounded-pill.px-3 Chưa có quyền
 
                   hr.text-muted.my-3
 
-                  //- Body Card: Thông tin liên hệ
                   .info-list.d-flex.flex-column.gap-2
                     .d-flex.align-items-center.text-muted
-                      i.fas.fa-briefcase.me-3.text-center.width-20
-                      span.text-dark #{user.title || 'Chưa cập nhật chức vụ'}
+                      i.fas.fa-envelope.me-3(style="width: 20px")
+                      span.text-truncate #{user.email}
                     
                     .d-flex.align-items-center.text-muted
-                      i.fas.fa-envelope.me-3.text-center.width-20
-                      span.text-truncate(title=user.email) #{user.email}
-                    
-                    .d-flex.align-items-center.text-muted
-                      i.fas.fa-phone.me-3.text-center.width-20
+                      i.fas.fa-phone.me-3(style="width: 20px")
                       span #{user.phone || '---'}
                     
-                    .d-flex.align-items-center.text-muted
-                      i.far.fa-clock.me-3.text-center.width-20
-                      small Login cuối: #{user.lastLogin ? user.lastLogin : 'Chưa đăng nhập'}
+                    if user.accountFullname
+                      .d-flex.align-items-center.text-muted
+                        i.fas.fa-user-tag.me-3(style="width: 20px")
+                        small Tạo bởi: #{user.accountFullname}
 
-                //- Footer Card: Actions
                 .card-footer.bg-transparent.border-0.pb-4.pt-0
                   .d-flex.justify-content-between.gap-2
-                    if(role.permissions.includes("duan_edit"))
-                      a.btn.btn-light.flex-grow-1(href=`/admin/account/edit/${user.id}`)
+                    if(role.permissions.includes("taikhoan_edit"))
+                      a.btn.btn-light.flex-grow-1(href=`/${PrefixAdmin}/account/edit/${user._id}`)
                         i.fas.fa-pen.me-1
                         | Sửa
                     
+                    //- Nút thay đổi trạng thái và xóa (Logic giữ nguyên)
                     if user.status === 'active'
-                      button.btn.btn-outline-warning(onclick=`changeStatus('${user.id}', 'inactive')` data-bs-toggle="tooltip" title="Khóa tài khoản")
+                      button.btn.btn-outline-warning(onclick=`changeStatus('${user._id}', 'inactive')`)
                         i.fas.fa-lock
                     else
-                      button.btn.btn-outline-success(onclick=`changeStatus('${user.id}', 'active')` data-bs-toggle="tooltip" title="Mở khóa")
+                      button.btn.btn-outline-success(onclick=`changeStatus('${user._id}', 'active')`)
                         i.fas.fa-unlock
-                    if(role.permissions.includes("duan_edit"))
-                      a.btn.btn-outline-danger(href=`/admin/account/delete/${user.id}`)
-                        i.fas.fa-pen.me-1
-                        | xóa
+                    
+                    if(role.permissions.includes("taikhoan_delete"))
+                      button.btn.btn-outline-danger(onclick=`deleteItem('${user._id}')`)
+                        i.fas.fa-trash
 
-        //- 4. PHÂN TRANG
         .mt-4.d-flex.justify-content-center
           +pagination(pagination)
       
       else
-        //- Empty State
         .text-center.py-5
-          img.mb-3(src="/images/no-data.svg" alt="No data" style="width: 150px; opacity: 0.5")
           h5.text-muted Không tìm thấy tài khoản nào phù hợp.
-          a.btn.btn-link(href="/admin/accounts") Xóa bộ lọc
 
-    //- FORM ẨN ĐỂ XỬ LÝ LOGIC (DELETE/PATCH)
-    form#form-change-status(action="" method="POST" data-path="/admin/accounts/change-status")
-    form#form-delete-item(action="" method="POST" data-path="/admin/accounts/delete")
+    //- Form ẩn xử lý logic
+    form#form-change-status(action="" method="POST" data-path=`/${PrefixAdmin}/account/change-status`)
+    form#form-delete-item(action="" method="POST" data-path=`/${PrefixAdmin}/account/delete`)

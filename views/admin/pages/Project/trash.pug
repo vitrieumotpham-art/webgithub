@@ -1,0 +1,91 @@
+extends ../../layout/defaut.pug 
+include ../../mixins/search.pug 
+include ../../mixins/pagination.pug 
+include ../../mixins/moment.pug 
+
+block main
+  .container-fluid.mt-4
+    .d-flex.justify-content-between.align-items-center.mb-4
+      div
+        h1.text-secondary.fw-bold Thùng Rác Dự Án
+        p.text-muted.mb-0 Danh sách các dự án đã xóa (Có thể khôi phục hoặc xóa vĩnh viễn)
+      div
+        a.btn.btn-outline-primary.shadow-sm(href=`/${PefixAdmin}/project`)
+          i.fas.fa-arrow-left.me-2
+          | Quay lại danh sách
+
+    .card.shadow-sm.mb-4.border-0
+      .card-body
+        .row.g-3.mb-3
+          .col-md-12
+            +search(keyword)
+
+    if duan.length > 0
+      .row.g-4
+        each item in duan
+          .col-12.col-md-6.col-lg-4.col-xl-3
+            .card.h-100.shadow-sm.border-0.project-card.opacity-75
+              .position-relative
+                if item.hinh_anh && item.hinh_anh.length > 0
+                  img.card-img-top(src=item.hinh_anh[0], alt=item.ten_du_an, style="height: 180px; object-fit: cover; filter: grayscale(50%);")
+                else
+                  img.card-img-top(src="/img/no-image.png", alt="No Image", style="height: 180px; object-fit: cover;")
+                
+                .position-absolute.top-0.end-0.m-2
+                  span.badge.bg-secondary Đã xóa
+
+              .card-body
+                h5.card-title.fw-bold.text-truncate.mb-3.text-muted #{item.ten_du_an}
+                
+                .row.g-2.small.text-muted
+                  .col-12
+                    i.fas.fa-user-slash.me-2.text-warning
+                    | Người xóa: 
+                    b #{item.accountFullname || 'Hệ thống'}
+                  .col-12
+                    i.fas.fa-clock.me-2
+                    | Thời gian xóa: 
+                    if item.deletedBy && item.deletedBy.deletedAt
+                      span.text-danger
+                        +formatDateTime(item.deletedBy.deletedAt)
+
+              .card-footer.bg-white.border-top-0.d-flex.gap-2.pb-3
+                //- Nút Khôi phục
+                button.btn.btn-success.btn-sm.flex-grow-1(
+                  data-id=item._id
+                  button-restore
+                )
+                  i.fas.fa-undo-alt.me-1
+                  | Khôi phục
+
+                //- Nút Xóa vĩnh viễn
+                button.btn.btn-danger.btn-sm(
+                  data-id=item._id
+                  button-delete-permanently
+                )
+                  i.fas.fa-eraser
+                  | Xóa hẳn
+
+      .mt-4.d-flex.justify-content-center
+        +pagination(pagination)
+    else
+      .text-center.py-5
+        .py-5.bg-light.rounded-3
+          i.fas.fa-trash.fa-3x.text-muted.mb-3
+          p.text-muted.fs-5 Thùng rác trống.
+
+  //- Form ẩn để xử lý khôi phục (PATCH)
+  form#form-restore-item(
+    action="" 
+    method="POST" 
+    data-path=`/${PefixAdmin}/project/restore`
+  )
+    input(type="hidden", name="_method", value="PATCH")
+
+  //- Form ẩn để xóa vĩnh viễn (DELETE)
+  form#form-delete-permanently(
+    action="" 
+    method="POST" 
+    data-path=`/${PefixAdmin}/project/delete-permanently`
+  )
+    input(type="hidden", name="_method", value="DELETE")

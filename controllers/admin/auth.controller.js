@@ -1,9 +1,8 @@
 const taikhoan = require("../../models/taikhoan.models");
 const Roles=require("../../models/roles.model");
 const md5 = require("md5");
-const systemConfig = require("../../config/system.js"); // Sửa chính tả sytemcofig
+const systemConfig = require("../../config/system.js"); 
 module.exports.login = async (req, res) => {
-    // Chỉ redirect nếu thực sự có token hợp lệ (kiểm tra thêm trong middleware)
     if (req.cookies.tokenAdmin) {
         return res.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
     } 
@@ -19,25 +18,21 @@ module.exports.loginPost = async (req, res) => {
         deleted: false
     });
 
-    // 1. Kiểm tra sự tồn tại của user
     if (!user) {
         console.log("Email không tồn tại");
-        return res.redirect(req.get("Referrer") || "/"); // Thêm return
+        return res.redirect(req.get("Referrer") || "/");
     }
 
-    // 2. Kiểm tra mật khẩu (Lúc này chắc chắn user đã tồn tại)
     if (md5(password) !== user.password) {
         console.log("Sai mật khẩu");
-        return res.redirect(req.get("Referrer") || "/"); // Thêm return
+        return res.redirect(req.get("Referrer") || "/"); 
     }
 
-    // 3. Kiểm tra trạng thái
     if (user.status !== "active") {
         console.log("Tài khoản đang bị khóa");
-        return res.redirect(req.get("Referrer") || "/"); // Thêm return
+        return res.redirect(req.get("Referrer") || "/"); 
     }
 
-    // 4. Thành công
     res.cookie("tokenAdmin", user.token);
     return res.redirect(`/${systemConfig.prefixAdmin}/dashboard`);
 };

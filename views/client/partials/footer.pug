@@ -3,16 +3,21 @@ footer.footer
     .footer-content
       // Cột 1: Thông tin thương hiệu
       .footer-col.brand-col
-        a.footer-logo(href="#")
-          img(src="/img/pnt-letter-logo-design-inspiration-260nw-2361378981.jpg" alt="PNT DECOR Logo")
-          span PNT DECOR
-        p.footer-desc Kiến tạo không gian sống đẳng cấp. Chúng tôi mang đến giải pháp nội thất tinh tế và tiện nghi nhất cho ngôi nhà của bạn.
+        a.footer-logo(href="/")
+          img(
+            src=(settingGeneral ? settingGeneral.logo : "/img/logo.png") 
+            alt=(settingGeneral ? settingGeneral.websiteName : "PNT DECOR")
+          )
+          span #{settingGeneral ? settingGeneral.websiteName : "PNT DECOR"}
+        
+        p.footer-desc #{settingGeneral ? settingGeneral.description : "Kiến tạo không gian sống đẳng cấp."}
+        
         .footer-social
-          a(href="#")
+          a(href=(settingGeneral ? settingGeneral.facebook : "#") target="_blank")
             img(src="/img/icons8-facebook-36.png" alt="Facebook")
-          a(href="#")
+          a(href=(settingGeneral ? settingGeneral.instagram : "#") target="_blank")
             img(src="/img/icons8-instagram-logo-36.png" alt="Instagram")
-          a(href="#")
+          a(href=(settingGeneral ? settingGeneral.socialOther : "#") target="_blank")
             img(src="/img/sosial/icons8-social-30.png" alt="Social")
 
       // Cột 2: Menu Chính
@@ -24,7 +29,7 @@ footer.footer
           li: a(href="/duan") Dự án tiêu biểu
           li: a(href="/tintuc") Tin tức & Sự kiện
 
-      // Cột 3: Dịch vụ (Thêm vào cho đầy đặn)
+      // Cột 3: Dịch vụ
       .footer-col
         h4.footer-title Dịch Vụ
         ul.footer-links
@@ -39,15 +44,15 @@ footer.footer
         ul.footer-contact-list
           li 
             span.icon 📍
-            span 123 Đường ABC, Quận XYZ, TP. Đà Nẵng
+            span #{settingGeneral ? settingGeneral.address : "Địa chỉ đang cập nhật"}
           li 
             span.icon 📞
-            span +84 914 761 150
+            span #{settingGeneral ? settingGeneral.phone : "SĐT đang cập nhật"}
           li 
             span.icon ✉️
-            span info@apes.com.vn
+            span #{settingGeneral ? settingGeneral.email : "Email đang cập nhật"}
 
   // Phần bản quyền dưới cùng
   .footer-bottom
     .container
-      p © 2025 PNT DECOR. All Rights Reserved. Designed by You.
+      p #{settingGeneral ? settingGeneral.copyright : "© 2025 PNT DECOR. All Rights Reserved."}

@@ -31,6 +31,6 @@ const rolesSchema = new mongoose.Schema({
 });
 
 // Sửa lại: Tên biến Schema phải khớp với bên trên (rolesSchema)
-const Role = mongoose.model('Role', rolesSchema, "roles");
+const Role = mongoose.model('Roles', rolesSchema, "roles");
 
 module.exports = Role;

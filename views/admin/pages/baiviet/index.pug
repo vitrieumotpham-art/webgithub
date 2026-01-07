@@ -2,18 +2,27 @@ extends ../../layout/defaut.pug
 include ../../mixins/search.pug
 include ../../mixins/pagination.pug 
 include ../../mixins/moment.pug 
+
 block main
   if(role.permissions.includes("baiviet_view"))
     .container-fluid.mt-4
-      //- 1. TIÊU ĐỀ & NÚT THÊM MỚI
+      //- 1. TIÊU ĐỀ & NÚT THÊM MỚI / THÙNG RÁC
       .d-flex.justify-content-between.align-items-center.mb-4
         div
           h1.h3.text-primary.fw-bold Danh Sách Bài Viết
           p.text-muted Quản lý tin tức, blog và các bài viết kiến trúc
-        if(role.permissions.includes("duan_edit"))
-          a.btn.btn-success.shadow-sm(href="/admin/baiviet/create")
-            i.fas.fa-plus-circle.me-2
-            | Thêm Bài Viết Mới
+        
+        .d-flex.gap-2
+          //- Nút Thùng rác
+          a.btn.btn-outline-danger.shadow-sm(href=`/${PefixAdmin}/baiviet/trash`)
+            i.fas.fa-trash-alt.me-2
+            | Thùng rác
+          
+          //- Nút Thêm mới
+          if(role.permissions.includes("duan_edit"))
+            a.btn.btn-success.shadow-sm(href=`/${PefixAdmin}/baiviet/create`)
+              i.fas.fa-plus-circle.me-2
+              | Thêm Bài Viết Mới
 
       //- 2. BỘ LỌC & TÌM KIẾM
       .card.border-0.shadow-sm.mb-4
@@ -28,6 +37,8 @@ block main
                 option(value="", selected=(!status)) -- Tất cả trạng thái --
                 option(value="active", selected=(status === "active")) Đang hoạt động
                 option(value="inactive", selected=(status === "inactive")) Dừng hoạt động
+      
+      //- 3. DANH SÁCH BÀI VIẾT
       .d-flex.flex-column.gap-3
         if baiviet.length > 0
           each article, index in baiviet
@@ -37,75 +48,68 @@ block main
                   //- Cột Hình ảnh (Bên trái)
                   .flex-shrink-0
                     if article.thumbnail
-                      img(src=article.thumbnail, alt=article.title, style="width: 100%; height: 150px; width: 200px; object-fit: cover;")
+                      img(src=article.thumbnail, alt=article.title, style="width: 200px; height: 150px; object-fit: cover;")
                     else
-                      img(src="/images/no-image.png", alt="No Image", style="width: 100%; height: 150px; width: 200px; object-fit: cover; background: #eee;")
+                      img(src="/images/no-image.png", alt="No Image", style="width: 200px; height: 150px; object-fit: cover; background: #eee;")
                   
                   //- Cột Nội dung (Ở giữa)
                   .flex-grow-1.p-3
                     .d-flex.justify-content-between.align-items-start
                       h5.fw-bold.mb-1 
-                        a.text-decoration-none.text-dark(href=`/admin/baiviet/detail/${article.id}`) #{article.title}
+                        a.text-decoration-none.text-dark(href=`/${PefixAdmin}/baiviet/detail/${article.id}`) #{article.title}
                       
                       //- Trạng thái
                       if article.status === 'active'
                         a(href="javascript:;"
-                        data-status=article.status
-                        data-id= article._id
-                        data-return-url=url 
-                        button-change-status 
-                        class="badge bg-success rounded-pill"
+                          data-status=article.status
+                          data-id= article._id
+                          button-change-status 
+                          class="badge bg-success rounded-pill"
                         ) Active
                       else
                         a(href="javascript:;"
-                        data-status=article.status
-                        data-id= article._id
-                        data-return-url=url 
-                        button-change-status 
-                        class="badge bg-secondary rounded-pill"
+                          data-status=article.status
+                          data-id= article._id
+                          button-change-status 
+                          class="badge bg-secondary rounded-pill"
                         ) Inactive
                         
                     p.text-muted.small.mb-2
-                      //- Sử dụng Mixin đã nhúng ở trên
                       | Ngày tạo: 
                       +formatDate(article.createdAt)
                       span.mx-1 |
-                      //- Kiểm tra lại biến accountFullname
                       | Người tạo: #{article.accountFullname ? article.accountFullname : '---'}
                     
                   //- Cột Hành động (Bên phải cùng)
                   .d-flex.flex-row.flex-md-column.justify-content-center.align-items-center.bg-light.p-3.gap-2.border-start
                     if(role.permissions.includes("duan_edit"))
-                      a.btn.btn-sm.btn-warning.w-100(href=`/admin/baiviet/edit/${article._id}`) 
+                      a.btn.btn-sm.btn-warning.w-100(href=`/${PefixAdmin}/baiviet/edit/${article._id}`) 
                         i.fas.fa-pen.me-1
                         | Sửa
                     
-                    form.w-100(
-                      action=`/${PefixAdmin}/baiviet/delete/${article._id}?_method=DELETE`
-                      method="POST"
-                      onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?')"
-                    )
-                      if(role.permissions.includes("duan_edit"))
+                    if(role.permissions.includes("duan_edit"))
+                      form.w-100(
+                        action=`/${PefixAdmin}/baiviet/delete/${article._id}?_method=DELETE`
+                        method="POST"
+                        onsubmit="return confirm('Bạn có chắc chắn muốn chuyển bài viết này vào thùng rác?')"
+                      )
                         button.btn.btn-sm.btn-danger.w-100(type="submit")
                           i.fas.fa-trash.me-1
                           | Xóa
 
         else
           .text-center.py-5
-            p.text-muted Không có dữ liệu.
+            p.text-muted Không có bài viết nào ở đây.
             
       .mt-4.d-flex.justify-content-center
         +pagination(pagination) 
         
-      //- FORM ẨN XỬ LÝ THAY ĐỔI TRẠNG THÁI ĐƠN LẺ
+      //- FORM ẨN XỬ LÝ THAY ĐỔI TRẠNG THÁI
       form#form-change-status(
         action=""
         method="POST"
-        data-path=`${PefixAdmin}/baiviet/change-status`
-        ) 
-        // 1. Gửi URL chuyển hướng về trang cũ
-        input(type="hidden", name="returnUrl", value="")
-        // 2. Gửi phương thức PATCH
+        data-path=`/${PefixAdmin}/baiviet/change-status`
+      ) 
         input(type="hidden", name="_method", value="PATCH")
         
       script(src="/js/admin/baiviet.js")

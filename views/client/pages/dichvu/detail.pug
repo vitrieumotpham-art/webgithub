@@ -1,0 +1,111 @@
+extends ../../layouts/defaut.pug
+
+block main
+  //- Thêm CSS trực tiếp để xử lý khoảng cách với Header Fixed
+  style.
+    :root { --pnt-gold: #c5a059; --pnt-dark: #1a1a1a; }
+    
+    /* CSS đẩy nội dung xuống để không bị Header che */
+    .service-detail-wrapper {
+      padding-top: 100px; /* Đẩy xuống 100px (vì Header của bạn cao 80px) */
+      background-color: #f8f9fa;
+      min-height: 100vh;
+    }
+
+    .page-header { 
+      background: #fff; 
+      border-bottom: 1px solid #eee; 
+      padding: 20px 0; 
+      margin-bottom: 30px; 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .detail-card { border: none; border-radius: 15px; overflow: hidden; background: #fff; }
+    .thumbnail-box { position: relative; width: 100%; height: 400px; overflow: hidden; border-radius: 15px; background: #eee; }
+    .thumbnail-box img { width: 100%; height: 100%; object-fit: cover; }
+    .price-badge { font-size: 24px; color: var(--pnt-gold); font-weight: 700; }
+    .service-content { line-height: 1.8; color: #444; }
+    .service-content img { max-width: 100%; height: auto; border-radius: 10px; margin: 20px 0; }
+    .status-active { color: #28a745; background: rgba(40, 167, 69, 0.1); padding: 5px 15px; border-radius: 20px; font-size: 14px; }
+    .status-inactive { color: #dc3545; background: rgba(220, 53, 69, 0.1); padding: 5px 15px; border-radius: 20px; font-size: 14px; }
+
+  if (record)
+    .service-detail-wrapper
+      .page-header
+        .container-fluid
+          .d-flex.justify-content-between.align-items-center
+            div
+              h1.h3.fw-bold.mb-1 #{record.title}
+              nav(aria-label='breadcrumb')
+                ol.breadcrumb.mb-0
+                  li.breadcrumb-item: a(href=`/${PefixAdmin}/dichvu`) Dịch vụ
+                  li.breadcrumb-item.active(aria-current='page') Chi tiết dịch vụ
+
+      .container-fluid.pb-5
+        .row
+          //- Cột trái: Hình ảnh và Nội dung chính
+          .col-lg-8
+            .detail-card.shadow-sm.p-4.mb-4
+              if (record.thumbnail)
+                .thumbnail-box.mb-4
+                  img(src=record.thumbnail, alt=record.title)
+              
+              h4.fw-bold.mb-3 Nội dung chi tiết
+              .service-content.mt-3
+                if (record.content)
+                  //- Dùng !{...} để render code HTML từ CKEditor/TinyMCE
+                  div !{record.content}
+                else
+                  p.text-muted.italic (Chưa có nội dung mô tả chi tiết cho dịch vụ này)
+
+          //- Cột phải: Thông số và Thông tin phụ
+          .col-lg-4
+            //- Thẻ thông tin giá và trạng thái
+            .detail-card.shadow-sm.p-4.mb-4
+              h5.fw-bold.mb-4 Thông tin dịch vụ
+              
+              .mb-4
+                label.text-muted.small.text-uppercase.fw-bold Giá dịch vụ
+                .price-badge #{record.price ? record.price : 'Liên hệ'}
+              
+              .mb-4
+                label.text-muted.small.text-uppercase.fw-bold Trạng thái
+                div.mt-1
+                  if (record.status === "active")
+                    span.status-active 
+                      i.fa-solid.fa-circle-check.me-2
+                      | Đang kinh doanh
+                  else
+                    span.status-inactive
+                      i.fa-solid.fa-circle-xmark.me-2
+                      | Tạm dừng
+
+              .mb-4
+                label.text-muted.small.text-uppercase.fw-bold Vị trí hiển thị
+                div.mt-1
+                  span.badge.bg-light.text-dark.border #{record.position}
+
+              if (record.description)
+                .mb-0
+                  label.text-muted.small.text-uppercase.fw-bold Mô tả ngắn
+                  p.mt-2.text-muted.small !{record.description}
+
+            //- Thẻ thông tin quản trị
+            .detail-card.shadow-sm.p-4.bg-light
+              h6.fw-bold.mb-3 Nhật ký hệ thống
+              .small
+                p.mb-2
+                  span.text-muted Người tạo: 
+                  span.fw-bold #{record.accountFullname || 'Admin'}
+                p.mb-2
+                  span.text-muted Ngày tạo: 
+                  //- Dùng Optional Chaining ?. để tránh lỗi khi createdAt không tồn tại
+                  span.fw-bold #{record.createdAt ? record.createdAt.toLocaleDateString('vi-VN') : 'N/A'}
+                if (record.updatedAt)
+                  p.mb-0
+                    span.text-muted Cập nhật cuối: 
+                    span.fw-bold #{record.updatedAt.toLocaleDateString('vi-VN')}
+
+  else
+    //- Nếu không có record, vẫn cần padding để không bị header che alert
+    .container(style="padding-top: 100px;")
+      .alert.alert-danger Không tìm thấy dữ liệu dịch vụ.
