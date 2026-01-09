@@ -3,7 +3,6 @@ const Cart = require("../../models/cart.model");
 module.exports.cartId = async (req, res, next) => {
     try {
         if (!req.cookies.cartId) {
-            // Logic tạo giỏ hàng mới nếu chưa có
             const cart = new Cart();
             await cart.save();
             const expiresTime = 1000 * 60 * 60 * 24 * 365; // 1 năm

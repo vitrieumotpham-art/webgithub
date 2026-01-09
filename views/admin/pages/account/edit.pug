@@ -1,82 +1,129 @@
 extends ../../layout/defaut.pug
 
 block main
-  h1(class="mb-4") Chỉnh sửa tài khoản
+  .container-fluid.py-4
+    .row.justify-content-center
+      .col-md-8
+        .card.shadow-sm.border-0
+          .card-header.bg-white.py-3
+            h1.h4.text-primary.mb-0.fw-bold 
+              i.fas.fa-user-edit.me-2
+              | Chỉnh sửa tài khoản nhân sự
+          
+          .card-body.p-4
+            form(
+              action=`/${PrefixAdmin}/account/edit/${data.id}?_method=PATCH`
+              method="POST"
+              enctype="multipart/form-data"
+            )
+              //- 1. Họ tên
+              .mb-3
+                label.form-label.fw-bold(for="fullName") Họ tên *
+                input#fullName.form-control(
+                  type="text"
+                  name="fullName"
+                  required
+                  value=data.fullName
+                  placeholder="Nhập đầy đủ họ tên"
+                )
+              
+              .row
+                //- 2. Tên đăng nhập (Username - Quan trọng để khớp Model)
+                .col-md-6.mb-3
+                  label.form-label.fw-bold(for="username") Tên đăng nhập *
+                  input#username.form-control(
+                    type="text"
+                    name="username"
+                    value=data.username
+                    required
+                    readonly
+                  )
+                  small.text-muted Tên đăng nhập không thể thay đổi.
 
-  form(
-    action=`/admin/account/edit/${data.id}?_method=PATCH`
-    method="POST"
-    enctype="multipart/form-data"
-  )
-    .mb-3
-      label.form-label.fw-bold(for="fullName") Họ tên *
-      input#fullName.form-control(
-        type="text"
-        name="fullName"
-        required
-        value=data.fullName
-      )
-    
-    .mb-3
-      label.form-label.fw-bold(for="email") Email *
-      input#email.form-control(
-        type="email"
-        name="email"
-        required
-        value=data.email
-      )
-    
-    .mb-3
-      label.form-label.fw-bold(for="password") Mật khẩu
-      input#password.form-control(
-        type="password"
-        name="password"
-        placeholder="Để trống nếu muốn giữ nguyên mật khẩu cũ"
-      )
+                //- 3. Email
+                .col-md-6.mb-3
+                  label.form-label.fw-bold(for="email") Email *
+                  input#email.form-control(
+                    type="email"
+                    name="email"
+                    required
+                    value=data.email
+                    placeholder="vidu@email.com"
+                  )
+              
+              //- 4. Mật khẩu (Logic xử lý tại Controller)
+              .mb-3
+                label.form-label.fw-bold(for="password") Mật khẩu mới
+                input#password.form-control(
+                  type="password"
+                  name="password"
+                  placeholder="Để trống nếu muốn giữ nguyên mật khẩu cũ"
+                )
+                div.alert.alert-info.mt-2.py-2
+                  small 
+                    i.fas.fa-info-circle.me-1
+                    | Nếu bạn nhập mật khẩu mới, hệ thống sẽ tự động cập nhật. Nếu để trống, mật khẩu cũ sẽ được giữ lại.
 
-    .mb-3(upload-image)
-      label.form-label.fw-bold(for="avatar") Ảnh đại diện
-      input#avatar.form-control-file.d-block(
-        type="file"
-        name="avatar"
-        accept="image/*"
-        upload-image-input
-      )
-      img(
-        src=data.avatar
-        class="img-thumbnail mt-2"
-        width="150px"
-        upload-image-preview
-      )
+              //- 5. Ảnh đại diện
+              .mb-3(upload-image)
+                label.form-label.fw-bold(for="avatar") Ảnh đại diện
+                input#avatar.form-control.mb-2(
+                  type="file"
+                  name="avatar"
+                  accept="image/*"
+                  upload-image-input
+                )
+                .preview-container.mt-2
+                  img(
+                    src=(data.avatar ? data.avatar : "/admin/images/default-avatar.png")
+                    class="img-thumbnail shadow-sm"
+                    width="120px"
+                    upload-image-preview
+                  )
 
-    .mb-3
-      label.form-label.fw-bold(for="role_id") Nhóm quyền
-      select#role_id.form-select(name="role_id")
-        option(value="" disabled) -- Chọn nhóm quyền --
-        each item in roles
-          option(
-            value=item.id
-            selected=(item.id == data.role_id ? true : false)
-          ) #{item.title}
+              //- 6. Nhóm quyền
+              .mb-3
+                label.form-label.fw-bold(for="role_id") Nhóm quyền truy cập
+                select#role_id.form-select(name="role" required)
+                  option(value="" disabled) -- Chọn nhóm quyền --
+                  each item in roles
+                    option(
+                      value=item.id
+                      selected=(item.id == data.role ? true : false)
+                    ) #{item.title}
+                if !roles || roles.length === 0
+                  small.text-danger Vui lòng tạo nhóm quyền trước.
 
-    .mb-3
-      label.form-label.fw-bold.d-block Trạng thái
-      .form-check.form-check-inline
-        input#statusActive.form-check-input(
-          type="radio"
-          name="status"
-          value="active"
-          checked=(data.status === "active" ? true : false)
-        )
-        label.form-check-label(for="statusActive") Hoạt động
-      .form-check.form-check-inline
-        input#statusInActive.form-check-input(
-          type="radio"
-          name="status"
-          value="inactive"
-          checked=(data.status === "inactive" ? true : false)
-        )
-        label.form-check-label(for="statusInActive") Dừng hoạt động
+              //- 7. Trạng thái
+              .mb-4
+                label.form-label.fw-bold.d-block Trạng thái hoạt động
+                .form-check.form-check-inline
+                  input#statusActive.form-check-input(
+                    type="radio"
+                    name="status"
+                    value="active"
+                    checked=(data.status === "active" ? true : false)
+                  )
+                  label.form-check-label.text-success(for="statusActive") 
+                    i.fas.fa-check-circle.me-1
+                    | Đang hoạt động
+                .form-check.form-check-inline
+                  input#statusInActive.form-check-input(
+                    type="radio"
+                    name="status"
+                    value="inactive"
+                    checked=(data.status === "inactive" ? true : false)
+                  )
+                  label.form-check-label.text-danger(for="statusInActive") 
+                    i.fas.fa-times-circle.me-1
+                    | Đã khóa
 
-    .mb-3
-      button.btn.btn-primary(type="submit") Cập nhật
+              hr.my-4
+
+              //- 8. Nút thao tác
+              .d-flex.justify-content-end.gap-2
+                a.btn.btn-outline-secondary.px-4(href=`/${PrefixAdmin}/account`) 
+                  | Quay lại
+                button.btn.btn-primary.px-4(type="submit") 
+                  i.fas.fa-save.me-2
+                  | Cập nhật ngay

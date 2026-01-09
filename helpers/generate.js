@@ -7,8 +7,6 @@ const generateRandomString = (length) => {
     }
     return result;
 };
-
-// Export cả 2 tên để controller gọi kiểu gì cũng trúng
 module.exports.token = generateRandomString; 
 module.exports.generateRandomString = generateRandomString;
 

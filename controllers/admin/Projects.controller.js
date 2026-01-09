@@ -305,52 +305,57 @@ module.exports.changeMulti = async (req, res) => {
         } = req.body;
         const idsArray = ids.split(",");
 
+        // Thông tin người thực hiện thao tác hàng loạt
+        const actionBy = {
+            accountID: res.locals.user.id,
+            updatedAt: new Date()
+        };
+
         switch (type) {
             case "true":
                 await Duan.updateMany({
-                    _id: {
-                        $in: idsArray
-                    }
+                    _id: { $in: idsArray }
                 }, {
-                    is_noibat: true
+                    is_noibat: true,
+                    $push: { updatedBy: actionBy } // Lưu vết người đặt nổi bật
                 });
-                req.flash("success", "Đã cập nhật trạng thái nổi bật!");
+                req.flash("success", `Đã cập nhật trạng thái nổi bật cho ${idsArray.length} dự án!`);
                 break;
+
             case "false":
                 await Duan.updateMany({
-                    _id: {
-                        $in: idsArray
-                    }
+                    _id: { $in: idsArray }
                 }, {
-                    is_noibat: false
+                    is_noibat: false,
+                    $push: { updatedBy: actionBy } // Lưu vết người bỏ nổi bật
                 });
-                req.flash("success", "Đã bỏ trạng thái nổi bật!");
+                req.flash("success", `Đã bỏ trạng thái nổi bật cho ${idsArray.length} dự án!`);
                 break;
+
             case "delete-all":
+                // CẬP NHẬT TẠI ĐÂY: Thêm người xóa và thời gian xóa
                 await Duan.updateMany({
-                    _id: {
-                        $in: idsArray
-                    }
+                    _id: { $in: idsArray }
                 }, {
                     deleted: true,
-                    deletedAt: new Date()
+                    deletedBy: {
+                        accountID: res.locals.user.id,
+                        deletedAt: new Date()
+                    }
                 });
-                req.flash("success", "Đã xóa các dự án được chọn!");
+                req.flash("success", `Đã chuyển ${idsArray.length} dự án vào thùng rác!`);
                 break;
+
             default:
                 break;
         }
         res.redirect("back");
     } catch (error) {
+        console.error("Lỗi changeMulti:", error);
+        req.flash("error", "Có lỗi xảy ra trong quá trình xử lý hàng loạt!");
         res.redirect("back");
     }
 };
-// doanh muc
-// --- QUẢN LÝ DANH MỤC & CÁC MODULE ADMIN ---
-
-// 1. XỬ LÝ XÓA BẢN GHI (Dùng chung cho cả Dự án, Dịch vụ, Danh mục)
-// 2. XỬ LÝ BỘ LỌC TRẠNG THÁI (STATUS)
-// [GET] /admin/project/trash
 module.exports.trash = async (req, res) => {
     try {
         let find = { deleted: true };

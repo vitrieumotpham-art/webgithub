@@ -68,19 +68,13 @@ app.use(async (req, res, next) => {
         next();
     }
 });
-
-// Cấu hình định tuyến (Routes) - Phải đặt SAU Middleware toàn cục
 routeAdmin(app);
 routeClient(app);
-
-// Xử lý lỗi 404
 app.use((req, res) => {
     console.log("Đường dẫn lỗi:", req.method, req.originalUrl);
-    
-    // Thiết lập mã trạng thái 404
+
     res.status(404);
 
-    // Kiểm tra nếu đường dẫn bắt đầu bằng /admin thì hiện trang lỗi của admin
     // (Giả sử bạn có file 404 riêng cho admin)
     if (req.originalUrl.includes("/admin")) {
         res.render("admin/pages/errors/404.pug", {

@@ -89,24 +89,34 @@ if(buttonpagination.length > 0){
     });
 }
 
-// ====== CHỨC NĂNG XÓA ĐƠN LẺ (SINGLE DELETE) ======
-const buttondelete = document.querySelectorAll("[button-delete]");
-if (buttondelete.length > 0) {
-    const formdeleteItem = document.querySelector("#form-delete-item");
-    if (formdeleteItem) {
-        let datapath = formdeleteItem.getAttribute("data-path");
-        buttondelete.forEach(button => {
-            button.addEventListener("click", () => {
-                if (confirm("Bạn có xác nhận xóa không?")) {
-                    const id = button.getAttribute("data-id");
-                    const returnUrl = encodeURIComponent(window.location.href); 
-                    if(!datapath.startsWith('/')) { datapath = '/' + datapath; }
-                    formdeleteItem.action = `${datapath}/${id}?_method=DELETE&returnUrl=${returnUrl}`;
-                    formdeleteItem.submit(); 
+// Chức năng xóa đơn lẻ
+const buttonsDelete = document.querySelectorAll("[button-delete]");
+if (buttonsDelete.length > 0) {
+    const formDelete = document.querySelector("#form-delete-item");
+    const path = formDelete.getAttribute("data-path"); // Lấy ra /admin/project/delete
+
+    buttonsDelete.forEach(button => {
+        button.addEventListener("click", () => {
+            const isConfirm = confirm("Bạn có chắc chắn muốn xóa dự án này?");
+            if (isConfirm) {
+                // Lấy ID từ thuộc tính data-id của nút bấm
+                const id = button.getAttribute("data-id");
+                
+                if (id) {
+                    // TẠO URL CHUẨN: /admin/project/delete/658xxx?_method=DELETE
+                    const action = `${path}/${id}?_method=DELETE`;
+                    
+                    // Gán vào action của form
+                    formDelete.action = action;
+                    
+                    // Gửi form đi
+                    formDelete.submit();
+                } else {
+                    console.error("Lỗi: Không tìm thấy data-id trên nút bấm!");
                 }
-            });
+            }
         });
-    }
+    });
 }
 
 // ====== THAY ĐỔI TRẠNG THÁI HOẠT ĐỘNG ĐƠN LẺ ======

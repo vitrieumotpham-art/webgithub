@@ -1,118 +1,102 @@
 /**
- * Chức năng: Thay đổi trạng thái (Khóa/Mở khóa) của tài khoản.
- * Lưu ý: Hiện tại chỉ log ra console, cần tích hợp Fetch/AJAX để gửi request đến API.
- * * @param {number} id - ID của tài khoản cần thay đổi trạng thái.
- * @param {string} newStatus - Trạng thái mới ('active' để mở khóa, 'inactive' hoặc giá trị khác để khóa).
+ * Chức năng: Thay đổi trạng thái (Khóa/Mở khóa)
+ * Gọi từ Pug: changeStatus(id, status)
  */
-function toggleStatus(id, newStatus) {
-    // Xác định hành động (Mở khóa nếu newStatus là 'active', ngược lại là Khóa)
-    const action = newStatus === 'active' ? 'Mở khóa' : 'Khóa';
+function changeStatus(id, newStatus) {
+    const action = newStatus === 'active' ? 'mở khóa' : 'khóa';
+    const formChangeStatus = document.querySelector("#form-change-status");
 
-    if (confirm(`Bạn có chắc chắn muốn ${action} tài khoản ID: ${id}?`)) {
-        // --- LOGIC XỬ LÝ API SẼ ĐƯỢC THÊM VÀO ĐÂY ---
-        
-        // Ví dụ sử dụng fetch API (giả định):
-        /*
-        fetch(`/api/admin/users/${id}/status`, {
-            method: 'PATCH', // Hoặc PUT
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ status: newStatus })
-        })
-        .then(response => {
-            if (response.ok) {
-                alert(`${action} tài khoản ID ${id} thành công!`);
-                // location.reload(); // Tải lại trang để cập nhật bảng
-            } else {
-                alert(`Lỗi khi ${action} tài khoản ID ${id}.`);
-            }
-        })
-        .catch(error => console.error('Lỗi mạng:', error));
-        */
-       
-        console.log(`Gửi yêu cầu ${action} tài khoản ID: ${id}`);
+    if (formChangeStatus) {
+        if (confirm(`Bạn có chắc chắn muốn ${action} tài khoản này?`)) {
+            const path = formChangeStatus.getAttribute("data-path");
+            // Cấu trúc URL: /admin/account/change-status/active/ID?_method=PATCH
+            const actionUrl = `${path}/${newStatus}/${id}?_method=PATCH`;
+
+            formChangeStatus.action = actionUrl;
+            formChangeStatus.submit();
+        }
+    } else {
+        console.error("Lỗi: Không tìm thấy form #form-change-status trên trang!");
     }
 }
 
 /**
- * Chức năng: Xóa vĩnh viễn tài khoản người dùng/admin.
- * Lưu ý: Hiện tại chỉ log ra console, cần tích hợp Fetch/AJAX để gửi request đến API.
- * * @param {number} id - ID của tài khoản cần xóa.
- * @param {string} name - Tên của người dùng/tài khoản (để hiển thị cảnh báo rõ ràng hơn).
+ * Chức năng: Xóa tài khoản (Xóa mềm)
+ * Gọi từ Pug: deleteItem(id)
  */
-function deleteAccount(id, name) {
-    if (confirm(`CẢNH BÁO: Bạn có chắc chắn muốn XÓA VĨNH VIỄN tài khoản của ${name} (ID: ${id})? Hành động này không thể hoàn tác!`)) {
-        // --- LOGIC XỬ LÝ API SẼ ĐƯỢC THÊM VÀO ĐÂY ---
-        
-        // Ví dụ sử dụng fetch API (giả định):
-        /*
-        fetch(`/api/admin/users/${id}`, {
-            method: 'DELETE',
-        })
-        .then(response => {
-            if (response.ok) {
-                alert(`Đã XÓA tài khoản ${name} (ID ${id}) thành công!`);
-                // location.reload(); // Tải lại trang để cập nhật bảng
-            } else {
-                alert(`Lỗi khi XÓA tài khoản ${name}.`);
-            }
-        })
-        .catch(error => console.error('Lỗi mạng:', error));
-        */
-        
-        console.log(`Gửi yêu cầu XÓA tài khoản ID: ${id}`);
+function deleteItem(id) {
+    const formDelete = document.querySelector("#form-delete-item");
+    if (formDelete) {
+        if (confirm(`Bạn có chắc chắn muốn XÓA tài khoản này?`)) {
+            const path = formDelete.getAttribute("data-path");
+            // SỬA TẠI ĐÂY: Đổi PATCH thành DELETE
+            const actionUrl = `${path}/${id}?_method=DELETE`; 
+            
+            formDelete.action = actionUrl;
+            formDelete.submit();
+        }
     }
 }
-const selectedtaikhoan= document.getElementById('selectTaikhoan');
-if(selectedtaikhoan){
-    selectedtaikhoan.addEventListener('change', function(){
-      const selected= this.value;
-      const currenturl= new URL(window.location.href);
-      if(selected){
-        currenturl.searchParams.set('role',selected);
 
-      }else{
-        currenturl.searchParams.delete('role');
-      }
-       window.location.href=currenturl.toString();
-    });
-   
-}
-const selectedtrangthaitaikhoan= document.getElementById('selectTrangthaitaikhoan');
-if(selectedtrangthaitaikhoan){
-    selectedtrangthaitaikhoan.addEventListener('change', function(){
-      const selected= this.value;
-      const currenturl= new URL(window.location.href);
-      if(selected){
-        currenturl.searchParams.set('status',selected);
-
-      }else{
-        currenturl.searchParams.delete('status');
-      }
-       window.location.href=currenturl.toString();
-    });
-   
-}
-const formsearchaccount = document.getElementById('search');
-
-// THÊM DÒNG NÀY: Chỉ chạy khi tìm thấy ô search trên trang hiện tại
-if (formsearchaccount) { 
-    formsearchaccount.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault(); 
-            
-            let url = new URL(window.location.href);
-            const keyword = e.target.value;
-            
-            if (keyword) {
-                url.searchParams.set('keyword', keyword);
+/**
+ * Các sự kiện khác sau khi trang load xong
+ */
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // --- BỘ LỌC THEO QUYỀN (ROLE) ---
+    const selectRole = document.getElementById('selectTaikhoan');
+    if (selectRole) {
+        selectRole.addEventListener('change', function () {
+            const selected = this.value;
+            const currenturl = new URL(window.location.href);
+            if (selected) {
+                currenturl.searchParams.set('role', selected);
             } else {
-                url.searchParams.delete('keyword');
+                currenturl.searchParams.delete('role');
             }
-            
-            window.location.href = url.href;
-        }
-    });
-}
-// forsearch
+            // Reset trang khi lọc
+            currenturl.searchParams.delete('page');
+            window.location.href = currenturl.toString();
+        });
+    }
+
+    // --- BỘ LỌC THEO TRẠNG THÁI ---
+    const selectStatus = document.getElementById('selectTrangthaitaikhoan');
+    if (selectStatus) {
+        selectStatus.addEventListener('change', function () {
+            const selected = this.value;
+            const currenturl = new URL(window.location.href);
+            if (selected) {
+                currenturl.searchParams.set('status', selected);
+            } else {
+                currenturl.searchParams.delete('status');
+            }
+            // Reset trang khi lọc
+            currenturl.searchParams.delete('page');
+            window.location.href = currenturl.toString();
+        });
+    }
+
+    // --- TÌM KIẾM (SEARCH) ---
+    const inputSearch = document.getElementById('search');
+    if (inputSearch) {
+        inputSearch.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+
+                let url = new URL(window.location.href);
+                const keyword = e.target.value;
+
+                if (keyword) {
+                    url.searchParams.set('keyword', keyword);
+                } else {
+                    url.searchParams.delete('keyword');
+                }
+                // Reset về trang 1 khi tìm kiếm
+                url.searchParams.delete('page'); 
+
+                window.location.href = url.href;
+            }
+        });
+    }
+});

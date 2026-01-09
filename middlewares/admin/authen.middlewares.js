@@ -33,11 +33,7 @@ module.exports.requireAuth = async (req, res, next) => {
 
         // 4. Gán user vào locals
         res.locals.user = user;
-
-        // --- DÒNG QUAN TRỌNG NHẤT ĐƯỢC THÊM VÀO ---
-        // Gán path vào locals để file sidebar.pug nhận diện được trang đang đứng
         res.locals.path = req.originalUrl; 
-        // ------------------------------------------
         
         next();
     } catch (error) {

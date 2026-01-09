@@ -95,13 +95,16 @@ block main
                     if user.status === 'active'
                       button.btn.btn-outline-warning(onclick=`changeStatus('${user._id}', 'inactive')`)
                         i.fas.fa-lock
+                        | khóa
                     else
                       button.btn.btn-outline-success(onclick=`changeStatus('${user._id}', 'active')`)
                         i.fas.fa-unlock
+                        | mở khóa
                     
                     if(role.permissions.includes("taikhoan_delete"))
                       button.btn.btn-outline-danger(onclick=`deleteItem('${user._id}')`)
                         i.fas.fa-trash
+                        | xóa
 
         .mt-4.d-flex.justify-content-center
           +pagination(pagination)

@@ -2,29 +2,31 @@ const express = require('express');
 const route = express.Router();
 const AccountController = require("../../controllers/admin/Account.controller");
 const multer = require("multer");
-const storageMulter = require("../../helpers/storageMuter");
 const uploadCloud = require("../../middlewares/admin/uploadCloud.middleware");
-// BƯỚC 1: Hãy tạo file validate riêng cho Account, đừng dùng chung với dichvu
-// const validates = require("../../validates/admin/account.validate"); 
 
 const upload = multer();
 
 route.get("/", AccountController.Account);
 route.get("/create", AccountController.createAccount);
+
+// [POST] Tạo tài khoản mới
+route.post("/create",
+    upload.single("avatar"), // "avatar" phải khớp với name trong file PUG
+    uploadCloud.upload,
+    AccountController.createAccountPost
+);
+
 route.get("/edit/:id", AccountController.edit);
 
-// [PATCH] Xử lý cập nhật bài viết
+// [PATCH] Cập nhật tài khoản
 route.patch(
     "/edit/:id",
-    upload.single("avatar"), // Lưu ý: Tên field phải khớp với file PUG và Controller
+    upload.single("avatar"),
     uploadCloud.upload,
     AccountController.editPatch
 );
-route.post("/create",
-    upload.single("avatar"), // Đảm bảo name="avatar" trong file Pug
-     uploadCloud.upload,
-    AccountController.createAccountPost
-);
-// route.delete("/delete/:id", AccountController.deleteItem); 
+
+route.delete("/delete/:id", AccountController.deleteItem); 
+route.patch("/change-status/:status/:id", AccountController.changeStatus);
 
 module.exports = route;

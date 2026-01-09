@@ -64,7 +64,6 @@ block main
             .col-md-4
               +sort()
 
-      //- Chức năng thay đổi nhiều
       if duan.length > 0
         .card.shadow-sm.mb-4.border-0
           .card-body.bg-light.rounded
@@ -86,9 +85,7 @@ block main
                     option(value="false") Bỏ Nổi bật 
                     option(value="delete-all") Xóa tất cả
                 
-                //- Input ẩn để chứa danh sách ID gửi lên server
                 input(type="text" name="ids" value="" class="form-control d-none")
-                //- Input ẩn để server biết quay lại trang hiện tại sau khi xử lý
                 input(type="hidden" name="returnUrl" value=url)
                 
                 button(type="submit" class="btn btn-primary ms-3") Áp dụng
@@ -98,7 +95,6 @@ block main
             .col-12.col-md-6.col-lg-4.col-xl-3
               .card.h-100.shadow-sm.border-0.project-card
                 .position-relative
-                  //- Checkbox cho từng item
                   .form-check.position-absolute.top-0.start-0.m-2.z-2
                     input.form-check-input.item-checkbox(type="checkbox", value=item._id)
                   
@@ -108,7 +104,6 @@ block main
                     else
                       img.card-img-top(src="/img/no-image.png", alt="No Image", style="height: 200px; object-fit: cover;")
                   
-                  //- Nút thay đổi trạng thái nổi bật đơn lẻ
                   .position-absolute.top-0.end-0.m-2
                     if item.is_noibat
                       button.badge.bg-danger.border-0(
@@ -137,10 +132,9 @@ block main
                       i.fas.fa-ruler-combined.me-2.text-success
                       | #{item.dien_tich} m²
                     .col-6
-                      i.far.fa-calendar-alt.me-2.text-primary
+                      i.fas.fa-calendar-alt.me-2.text-primary
                       | #{item.nam_thuc_hien}
 
-                  //- Thông tin người tạo/cập nhật
                   .mt-3.pt-2.border-top.small
                     .d-flex.align-items-start.mb-2
                       i.fas.fa-user-plus.mt-1.me-2.text-info
@@ -165,7 +159,11 @@ block main
                       i.fas.fa-edit.me-1
                       | Sửa
                   if(role.permissions.includes("duan_delete"))
-                    button.btn.btn-outline-danger.btn-sm(data-id=item._id, button-delete)
+                    //- Nút xóa quan trọng nhất
+                    button.btn.btn-outline-danger.btn-sm(
+                      data-id=item._id 
+                      button-delete
+                    )
                       i.fas.fa-trash-alt
                       | Xóa
 
@@ -178,7 +176,7 @@ block main
             i.fas.fa-folder-open.fa-3x.text-muted.mb-3
             p.text-muted.fs-5 Không tìm thấy dự án nào phù hợp.
 
-    //- ====== CÁC FORM ẨN ĐỂ XỬ LÝ LOGIC (BẮT BUỘC) ======
+    //- ====== CÁC FORM ẨN ĐỂ XỬ LÝ LOGIC (ĐÃ SỬA PATH) ======
     
     //- Form đổi trạng thái Nổi bật (PATCH)
     form#form-change-hoatdongduan(
@@ -189,7 +187,7 @@ block main
       input(type="hidden", name="returnUrl", value="")
       input(type="hidden", name="_method", value="PATCH")
       
-    //- Form xóa (DELETE)
+    //- Form xóa (DELETE) - BỎ DẤU / Ở CUỐI DATA-PATH ĐỂ JS TỰ NỐI
     form#form-delete-item(
       action=""
       method="POST" 

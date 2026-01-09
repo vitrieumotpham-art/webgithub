@@ -25,7 +25,7 @@ module.exports.doanhmuc = async (req, res) => {
 
         res.render("admin/pages/doanhmuc/index.pug", {
             pageTitle: "Quản Lý Danh Mục",
-            records: records, // Truyền trực tiếp records phẳng
+            records: records, 
             keyword: req.query.keyword || "",
             status: req.query.status || ""
         });
